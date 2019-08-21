@@ -24,9 +24,11 @@ import { useQuery } from "./index";
 
  useData({title: "Ioan Chivu", url: "http://inu.ro"}, query, 'generalSettings')
  * ```
- * 
+ *
  */
 const useData = (defaultValues, query, filter, variables = {}) => {
+  console.log("useData");
+
   /**
    * Queries the database
    */
