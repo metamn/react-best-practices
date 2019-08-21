@@ -11,32 +11,30 @@ import { useData } from "../../hooks";
 import Description from "../Description";
 import md from "./LoadingDataGraphQLApollo.md";
 import { Article as _Article } from "../SemanticHTML";
+import Placeholder, { PlaceholderPropTypes } from "../Placeholder";
 
 /**
  * Defines the prop types
  */
 const propTypes = {
   /**
-   * The site title
+   * The placeholder
    */
-  title: PropTypes.string,
-  /**
-   * The site url
-   */
-  url: PropTypes.string,
-  /**
-   * The site description
-   */
-  description: PropTypes.string
+  placeholder: PropTypes.shape(PlaceholderPropTypes)
 };
 
 /**
  * Defines the default props
  */
 const defaultProps = {
-  title: "Site Title",
-  url: "#",
-  description: "Site description"
+  placeholder: {
+    format: "text",
+    text: {
+      numberOfRows: 1,
+      rowLength: 30,
+      content: "/ "
+    }
+  }
 };
 
 /**
@@ -57,11 +55,25 @@ const query = gql`
  */
 const Article = styled(_Article)(props => ({}));
 
+const PlaceholderText = props => {
+  const placeholder = Placeholder(props);
+  const { text } = placeholder[0];
+
+  return {
+    title: text,
+    url: text,
+    description: text
+  };
+};
+
 /**
  * Loads site settings from the database
  */
 const Settings = props => {
-  const data = useData(props, query, "generalSettings");
+  const { placeholder } = props;
+  const defaultProps = PlaceholderText(placeholder);
+
+  const data = useData(defaultProps, query, "generalSettings");
   const { title, url, description } = data;
 
   return (

@@ -8,30 +8,30 @@ import { useDataAPI } from "../../hooks";
 import Description from "../Description";
 import md from "./LoadingDataApiAxios.md";
 import { Article as _Article } from "../SemanticHTML";
-import Placeholder from "../Placeholder";
+import Placeholder, { PlaceholderPropTypes } from "../Placeholder";
 
 /**
  * Defines the prop types
  */
 const propTypes = {
   /**
-   * How many articles are returned by the API?
-   *
-   * @link https://hn.algolia.com/api
+   * The placeholder
    */
-  numberOfArticlesReturned: PropTypes.number,
-  /**
-   * How long is the title? The placeholder should mimic the length of the titles.
-   */
-  numberOfCharsForTheTitlePlaceholder: PropTypes.number
+  placeholder: PropTypes.shape(PlaceholderPropTypes)
 };
 
 /**
  * Defines the default props
  */
 const defaultProps = {
-  numberOfArticlesReturned: 20,
-  numberOfCharsForTheTitlePlaceholder: 60
+  placeholder: {
+    format: "text",
+    text: {
+      numberOfRows: 20,
+      rowLength: 60,
+      content: "/ "
+    }
+  }
 };
 
 /**
@@ -42,26 +42,11 @@ const Article = styled(_Article)(props => ({}));
 /**
  * Generates a text placeholder for articles
  */
-const ArticlePlaceholderText = props => {
-  /**
-   * Loads props
-   */
-  const {
-    numberOfArticlesReturned,
-    numberOfCharsForTheTitlePlaceholder
-  } = props;
-
+const PlaceholderText = props => {
   /**
    * Loads the placeholder
    */
-  const placeholder = Placeholder({
-    format: "text",
-    text: {
-      numberOfRows: numberOfArticlesReturned,
-      rowLength: numberOfCharsForTheTitlePlaceholder,
-      content: "/ "
-    }
-  });
+  const placeholder = Placeholder(props);
 
   /**
    * Generates an articles specific placeholder
@@ -84,10 +69,15 @@ const ArticlePlaceholderText = props => {
  */
 const Articles = props => {
   /**
+   * Loads props
+   */
+  const { placeholder } = props;
+
+  /**
    * Loads the data
    */
   const data = useDataAPI(
-    ArticlePlaceholderText(props),
+    PlaceholderText(placeholder),
     "http://hn.algolia.com/api/v1/search?query=redux",
     "hits"
   );
