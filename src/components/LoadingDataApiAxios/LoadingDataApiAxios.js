@@ -8,6 +8,7 @@ import { useDataAPI } from "../../hooks";
 import Description from "../Description";
 import md from "./LoadingDataApiAxios.md";
 import { Article as _Article } from "../SemanticHTML";
+import Placeholder from "../Placeholder";
 
 /**
  * Defines the prop types
@@ -39,31 +40,43 @@ const defaultProps = {
 const Article = styled(_Article)(props => ({}));
 
 /**
- * Generates a placeholder for articles
+ * Generates a text placeholder for articles
  */
-const Placeholder = props => {
+const ArticlePlaceholderText = props => {
+  /**
+   * Loads props
+   */
   const {
     numberOfArticlesReturned,
     numberOfCharsForTheTitlePlaceholder
   } = props;
 
   /**
-   * Generates the placeholder for the title
+   * Loads the placeholder
    */
-  const title = Array(numberOfCharsForTheTitlePlaceholder).fill("/ ");
+  const placeholder = Placeholder({
+    format: "text",
+    text: {
+      numberOfRows: numberOfArticlesReturned,
+      rowLength: numberOfCharsForTheTitlePlaceholder,
+      content: "/ "
+    }
+  });
 
-  return [...Array(numberOfArticlesReturned)].map((_, i) => {
-    /**
-     * Generates a random uuid for the item
-     */
-    const id = uuid.v4();
+  /**
+   * Generates an articles specific placeholder
+   */
+  const articlesPlaceholder = placeholder.map(placeholder => {
+    const { id, text } = placeholder;
 
     return {
       objectID: id,
       url: "#",
-      title: title
+      title: text
     };
   });
+
+  return articlesPlaceholder;
 };
 
 /**
@@ -74,7 +87,7 @@ const Articles = props => {
    * Loads the data
    */
   const data = useDataAPI(
-    Placeholder(props),
+    ArticlePlaceholderText(props),
     "http://hn.algolia.com/api/v1/search?query=redux",
     "hits"
   );
@@ -90,7 +103,7 @@ const Articles = props => {
   return (
     <ul>
       {data.map(item => (
-        <li key={item.objectID} class={item.objectID}>
+        <li key={item.objectID}>
           <a href={item.url}>{item.title}</a>
         </li>
       ))}
