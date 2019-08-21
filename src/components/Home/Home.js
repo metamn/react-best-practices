@@ -2,6 +2,8 @@ import React from "react";
 import PropTypes from "prop-types";
 import styled from "styled-components";
 
+import { Section as _Section } from "../SemanticHTML";
+
 /**
  * Defines the prop types
  */
@@ -15,13 +17,17 @@ const defaultProps = {};
 /**
  * Styles the component container
  */
-const Container = styled("div")(props => ({}));
+const Container = styled(_Section)(props => ({}));
 
 /**
  * Displays the component
  */
 const Home = props => {
-  return <Container className="Home">Home</Container>;
+  return (
+    <Container className="Home" title="Home">
+      Home
+    </Container>
+  );
 };
 
 Home.propTypes = propTypes;
