@@ -8,6 +8,8 @@ import gql from "graphql-tag";
 
 import { useData } from "../../hooks";
 
+import Description from "../Description";
+import md from "./LoadingDataGraphQLApollo.md";
 import { Article as _Article } from "../SemanticHTML";
 
 /**
@@ -80,8 +82,8 @@ const LoadingDataGraphQLApollo = props => {
       <Article
         className="LoadingDataGraphQLApollo"
         title="Loading data from GraphQL with Apollo"
-        displayTitle={true}
       >
+        <Description file={md} />
         <Settings {...props} />
       </Article>
     </ApolloProvider>

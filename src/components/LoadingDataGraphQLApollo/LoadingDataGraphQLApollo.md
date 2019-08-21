@@ -1,1 +1,1 @@
-## LoadingDataGraphQLApollo
+## Loading data from GraphQL with Apollo

@@ -1,12 +1,11 @@
 import React from "react";
 import styled from "styled-components";
 
-import { useMarkdown } from "../../hooks";
-
-import description from "./LoadingData.md";
+import Description from "../Description";
+import md from "./LoadingData.md";
 import LoadingDataApiAxios from "../LoadingDataApiAxios";
 import LoadingDataGraphQLApollo from "../LoadingDataGraphQLApollo";
-import { Section as _Section, Article as _Article } from "../SemanticHTML";
+import { Section as _Section } from "../SemanticHTML";
 
 /**
  * Defines the prop types
@@ -24,21 +23,12 @@ const defaultProps = {};
 const Section = styled(_Section)(props => ({}));
 
 /**
- * Styles the markdown container
- */
-const Article = styled(_Article)(props => ({}));
-
-/**
  * Displays the component
  */
 const LoadingData = props => {
-  const markdown = useMarkdown(description);
-
   return (
     <Section className="LoadingData" title="Loading Data">
-      <Article className="Description" title="Description">
-        {markdown}
-      </Article>
+      <Description file={md} />
       <LoadingDataApiAxios />
       <LoadingDataGraphQLApollo />
     </Section>

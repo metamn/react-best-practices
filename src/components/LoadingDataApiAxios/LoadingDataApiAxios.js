@@ -3,6 +3,8 @@ import styled from "styled-components";
 
 import { useDataAPI } from "../../hooks";
 
+import Description from "../Description";
+import md from "./LoadingDataApiAxios.md";
 import { Article as _Article } from "../SemanticHTML";
 
 /**
@@ -54,8 +56,8 @@ const LoadingDataApiAxios = props => {
     <Article
       className="LoadingDataApiAxios"
       title="Loading data from an API with Axios"
-      displayTitle={true}
     >
+      <Description file={md} />
       <Articles />
     </Article>
   );
