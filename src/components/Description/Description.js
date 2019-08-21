@@ -4,6 +4,7 @@ import styled from "styled-components";
 
 import { useMarkdown } from "../../hooks";
 import { Article as _Article } from "../SemanticHTML";
+import PlaceholderText, { PlaceholderTextPropTypes } from "../PlaceholderText";
 
 /**
  * Defines the prop types
@@ -12,14 +13,23 @@ const propTypes = {
   /**
    * The imported Markdown file
    */
-  file: PropTypes.string
+  file: PropTypes.string,
+  /**
+   * The placeholder for documentation
+   */
+  placeholder: PropTypes.shape(PlaceholderTextPropTypes)
 };
 
 /**
  * Defines the default props
  */
 const defaultProps = {
-  file: ""
+  file: "",
+  placeholder: {
+    numberOfRows: 10,
+    rowLength: 30,
+    content: "/ "
+  }
 };
 
 /**
@@ -31,8 +41,9 @@ const Article = styled(_Article)(props => ({}));
  * Displays the component
  */
 const Description = props => {
-  const { file } = props;
-  const markdown = useMarkdown(file);
+  const { file, placeholder } = props;
+  const placeholderText = PlaceholderText(placeholder);
+  const markdown = useMarkdown({ file: file, placeholder: placeholderText });
 
   return (
     <Article className="Description" title="Description">

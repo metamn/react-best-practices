@@ -8,7 +8,7 @@ import gql from "graphql-tag";
 
 import { useData } from "../../hooks";
 
-import Description from "../Description";
+import Description, { DescriptionPropTypes } from "../Description";
 import md from "./LoadingDataGraphQLApollo.md";
 import { Article as _Article } from "../SemanticHTML";
 import PlaceholderText, { PlaceholderTextPropTypes } from "../PlaceholderText";
@@ -18,9 +18,13 @@ import PlaceholderText, { PlaceholderTextPropTypes } from "../PlaceholderText";
  */
 const propTypes = {
   /**
-   * The placeholder
+   * The data placeholder
    */
-  placeholder: PropTypes.shape(PlaceholderTextPropTypes)
+  placeholder: PropTypes.shape(PlaceholderTextPropTypes),
+  /**
+   * The description
+   */
+  description: PropTypes.shape(DescriptionPropTypes)
 };
 
 /**
@@ -31,6 +35,14 @@ const defaultProps = {
     numberOfRows: 1,
     rowLength: 30,
     content: "/ "
+  },
+  description: {
+    file: md,
+    placeholder: {
+      numberOfRows: 10,
+      rowLength: 30,
+      content: "/ "
+    }
   }
 };
 
@@ -67,11 +79,15 @@ const SettingsPlaceholder = props => {
 };
 
 /**
+ * Generates a text placeholder for description
+ */
+const DescriptionPlaceholder = props => {};
+
+/**
  * Loads site settings from the database
  */
 const Settings = props => {
-  const { placeholder } = props;
-  const defaultProps = SettingsPlaceholder(placeholder);
+  const defaultProps = SettingsPlaceholder(props);
 
   const data = useData(defaultProps, query, "generalSettings");
   const { title, url, description } = data;
@@ -89,14 +105,16 @@ const Settings = props => {
  * Displays the component
  */
 const LoadingDataGraphQLApollo = props => {
+  const { placeholder, description } = props;
+
   return (
     <ApolloProvider client={apolloClient}>
       <Article
         className="LoadingDataGraphQLApollo"
         title="Loading data from GraphQL with Apollo"
       >
-        <Description file={md} />
-        <Settings {...props} />
+        <Description {...description} />
+        <Settings {...placeholder} />
       </Article>
     </ApolloProvider>
   );
