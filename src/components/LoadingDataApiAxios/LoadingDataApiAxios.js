@@ -1,5 +1,7 @@
 import React from "react";
+import PropTypes from "prop-types";
 import styled from "styled-components";
+import uuid from "uuid";
 
 import { useDataAPI } from "../../hooks";
 
@@ -10,21 +12,56 @@ import { Article as _Article } from "../SemanticHTML";
 /**
  * Defines the prop types
  */
-const propTypes = {};
+const propTypes = {
+  /**
+   * How many articles are returned by the API?
+   *
+   * @link https://hn.algolia.com/api
+   */
+  numberOfArticlesReturned: PropTypes.number,
+  /**
+   * How long is the title? The placeholder should mimic the length.
+   */
+  numberOfCharsForTheTitlePlaceholder: PropTypes.number
+};
 
 /**
  * Defines the default props
  */
-const defaultProps = {};
+const defaultProps = {
+  numberOfArticlesReturned: 20,
+  numberOfCharsForTheTitlePlaceholder: 60
+};
 
 /**
  * Styles the component container
  */
 const Article = styled(_Article)(props => ({}));
 
-const Articles = () => {
+/**
+ * Generates placeholders for articles
+ */
+const Placeholder = props => {
+  const {
+    numberOfArticlesReturned,
+    numberOfCharsForTheTitlePlaceholder
+  } = props;
+
+  const title = Array(numberOfCharsForTheTitlePlaceholder).fill("/ ");
+
+  return [...Array(numberOfArticlesReturned)].map((_, i) => {
+    const id = uuid.v4();
+    return {
+      objectID: id,
+      url: "#",
+      title: title
+    };
+  });
+};
+
+const Articles = props => {
   const data = useDataAPI(
-    null,
+    Placeholder(props),
     "http://hn.algolia.com/api/v1/search?query=redux",
     "hits"
   );
@@ -40,7 +77,7 @@ const Articles = () => {
   return (
     <ul>
       {data.map(item => (
-        <li key={item.objectID}>
+        <li key={item.objectID} class={item.objectID}>
           <a href={item.url}>{item.title}</a>
         </li>
       ))}
@@ -58,7 +95,7 @@ const LoadingDataApiAxios = props => {
       title="Loading data from an API with Axios"
     >
       <Description file={md} />
-      <Articles />
+      <Articles {...props} />
     </Article>
   );
 };
