@@ -2,6 +2,7 @@ import React from "react";
 import PropTypes from "prop-types";
 import styled from "styled-components";
 
+import Logo from "../Logo";
 import { Section as _Section } from "../SemanticHTML";
 
 /**
@@ -17,16 +18,16 @@ const defaultProps = {};
 /**
  * Styles the component container
  */
-const Container = styled(_Section)(props => ({}));
+const Section = styled(_Section)(props => ({}));
 
 /**
  * Displays the component
  */
 const Home = props => {
   return (
-    <Container className="Home" title="Home">
-      Home
-    </Container>
+    <Section className="Home" title="Home">
+      <Logo />
+    </Section>
   );
 };
 
