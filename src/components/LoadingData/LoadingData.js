@@ -2,8 +2,6 @@ import React from "react";
 import PropTypes from "prop-types";
 import styled from "styled-components";
 
-import Logo from "../Logo";
-import LoadingData from "../LoadingData";
 import { Section as _Section } from "../SemanticHTML";
 
 /**
@@ -24,17 +22,21 @@ const Section = styled(_Section)(props => ({}));
 /**
  * Displays the component
  */
-const Home = props => {
+const LoadingData = props => {
   return (
-    <Section className="Home" title="Home">
-      <Logo />
-      <LoadingData />
-    </Section>
+    <Section
+      className="LoadingData"
+      title="Loading Data"
+      displayTitle={true}
+    ></Section>
   );
 };
 
-Home.propTypes = propTypes;
-Home.defaultProps = defaultProps;
+LoadingData.propTypes = propTypes;
+LoadingData.defaultProps = defaultProps;
 
-export default Home;
-export { propTypes as HomePropTypes, defaultProps as HomeDefaultProps };
+export default LoadingData;
+export {
+  propTypes as LoadingDataPropTypes,
+  defaultProps as LoadingDataDefaultProps
+};

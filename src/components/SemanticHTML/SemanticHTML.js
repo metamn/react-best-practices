@@ -29,7 +29,11 @@ const propTypes = {
   /**
    * The element id.
    */
-  id: PropTypes.string
+  id: PropTypes.string,
+  /**
+   * Display element title?
+   */
+  displayTitle: PropTypes.bool
 };
 
 /**
@@ -40,7 +44,8 @@ const defaultProps = {
   className: "section",
   titleElement: "Section Title",
   children: "Section body",
-  id: null
+  id: null,
+  displayTitle: false
 };
 
 /**
@@ -76,9 +81,9 @@ const defaultPropsForNav = {
  *
  * It is always hidden because it is needed only by the HTML outliner / validator.
  */
-const Title = styled("h3")([], {
-  display: "none"
-});
+const Title = styled("h3")(props => ({
+  display: props.displayTitle ? "flex" : "none"
+}));
 
 /**
  * Creates a semantic HTML element with title.
@@ -93,11 +98,11 @@ const Title = styled("h3")([], {
  *
  */
 const SemanticHTMLElement = props => {
-  const { elementName, children, className, title, id } = props;
+  const { elementName, children, className, title, id, displayTitle } = props;
 
   const titleElement = React.createElement(
     Title,
-    { className: "title", key: 1 },
+    { className: "title", key: 1, displayTitle: displayTitle },
     title
   );
 
