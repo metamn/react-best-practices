@@ -2,16 +2,18 @@ import React from "react";
 import { useQuery as _useQuery } from "@apollo/react-hooks";
 
 /**
- * The query hook
+ * Loads data from a GraphQL database with Apollo
  *
- * @param  {[type]} schema         The graphql schema
+ * @param  {Object} schema         The graphql schema
  * @param  {Object} [variables={}] The graphql variables
  * @param  {Object} [options={}]   Additional options
- * @return {[type]}                The data and additional stuff
+ * @return {Object}                The data and additional stuff
+ *
+ * @link https://www.apollographql.com/docs/react/essentials/queries/
  */
 const useQuery = (schema, variables = {}, options = {}) => {
   /**
-   * Run the query
+   * Runs the query
    */
   const { data, loading, error } = _useQuery(schema, {
     variables,
@@ -19,14 +21,14 @@ const useQuery = (schema, variables = {}, options = {}) => {
   });
 
   /**
-   * Display error
+   * Displays error
    */
   if (error) return <p>ERROR: {error.message}</p>;
 
   /**
-   * Return the data, the pagination handlers and more
+   * Returns the data, the pagination handlers and more
    */
   return { data, loading };
 };
 
-export { useQuery };
+export default useQuery;

@@ -1,29 +1,30 @@
 import { useQuery } from "./index";
 
 /**
- * Loads data from database
+ * Loads data from GraphQL with `useQuery`
  *
- * Example: `useData(defaultValues, query, 'generalSettings')` where:
+ * @param  {Object} defaultValues The default values to return while loading data from the DB
+ * @param  {Object} query         The GraphQL query to execute
+ * @param  {String} filter        The part of the data to return
+ * @param  {Array}  variables     The query variable
+ * @return {Object}               The data returned
  *
- * - defaultValues: {title: "Ioan Chivu", url: "http://inu.ro"}
+ * Example:
  *
- * - query:
  * ```
- * query siteInfo {
- * 	generalSettings {
- * 		title
- * 		url
- *  }
- * }
+ * const query = gql`
+   query generalSettings {
+     generalSettings {
+       title
+       url
+       description
+     }
+   }
+ `;
+
+ useData({title: "Ioan Chivu", url: "http://inu.ro"}, query, 'generalSettings')
  * ```
- *
- * - filter: 'generalSettings'
- *
- * @param  Object defaultValues The default values to return while loading data from the DB
- * @param  Object query         The GraphQL query to execute
- * @param  String filter        The part of the data to return
- * @param  Array  variables     The query variable
- * @return Object               The data returned
+ * 
  */
 const useData = (defaultValues, query, filter, variables = {}) => {
   /**
