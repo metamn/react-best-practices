@@ -1,6 +1,7 @@
 import React from "react";
-import PropTypes from "prop-types";
 import styled from "styled-components";
+
+import { useDataApi } from "../../hooks";
 
 import { Article as _Article } from "../SemanticHTML";
 
@@ -23,6 +24,11 @@ const Article = styled(_Article)(props => ({}));
  * Displays the component
  */
 const LoadingDataApiAxios = props => {
+  const data = useDataApi(
+    null,
+    "http://hn.algolia.com/api/v1/search?query=redux"
+  );
+
   return (
     <Article
       className="LoadingDataApiAxios"

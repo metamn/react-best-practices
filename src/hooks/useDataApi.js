@@ -1,16 +1,16 @@
-import React from "react";
 import { useDataApi as _useDataApi } from "use-data-api";
 
 /**
  * Loads data from an API with Axios
  *
  * @param  {Object} defaultValues The default values to return while loading data from the DB
- * @param  {Object} query         The API query URL to call
+ * @param  {String} query         The URL to the API endpoint to be called
  * @return {Object}               The data returned
  *
  * Example:
  * ```
- * useDataApi('Loading...', '"http://hn.algolia.com/api/v1/search?query=redux"')
+ * useDataApi({}, 'http://hn.algolia.com/api/v1/search?query=redux')
+ * ```
  *
  * @link https://www.robinwieruch.de/react-hooks-fetch-data/
  * @link https://github.com/the-road-to-learn-react/react-hooks-introduction/tree/master/src/useDataApiHook-external-example
@@ -20,7 +20,7 @@ const useDataApi = (defaultValues, query) => {
    * Queries the database
    */
   const [{ data, isLoading, isError }, doFetch] = _useDataApi(query, {
-    items: []
+    hits: []
   });
 
   /**
@@ -34,14 +34,14 @@ const useDataApi = (defaultValues, query) => {
    * Logs to console when there is an error
    */
   if (isError) {
-    console.log("useDataApi error:" + error);
+    console.log("useDataApi error:" + isError);
     return;
   }
 
   /**
    * Returns data
    */
-  return data.items;
+  return data.hits;
 };
 
-export default useDataApi;
+export { useDataApi };

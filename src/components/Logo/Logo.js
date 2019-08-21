@@ -1,5 +1,4 @@
 import React from "react";
-import PropTypes from "prop-types";
 import styled from "styled-components";
 
 import { MetaPropTypes, MetaDefaultProps } from "../Meta";
@@ -39,7 +38,7 @@ const Logo = props => {
   /**
    * Loads props
    */
-  const { title, url, description } = props;
+  const { title, url } = props;
 
   return (
     <Header className="Logo">

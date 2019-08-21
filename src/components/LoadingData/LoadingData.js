@@ -1,8 +1,8 @@
 import React from "react";
-import PropTypes from "prop-types";
 import styled from "styled-components";
 
 import LoadingDataApiAxios from "../LoadingDataApiAxios";
+import LoadingDataGraphQLApollo from "../LoadingDataGraphQLApollo";
 import { Section as _Section } from "../SemanticHTML";
 
 /**
@@ -27,6 +27,7 @@ const LoadingData = props => {
   return (
     <Section className="LoadingData" title="Loading Data" displayTitle={true}>
       <LoadingDataApiAxios />
+      <LoadingDataGraphQLApollo />
     </Section>
   );
 };

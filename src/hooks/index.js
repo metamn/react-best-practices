@@ -1,1 +1,3 @@
-export { default as useDataApi } from "./useDataApi";
+export { useDataApi } from "./useDataApi";
+export { useQuery } from "./useQuery";
+export { default as useData } from "./useData";
