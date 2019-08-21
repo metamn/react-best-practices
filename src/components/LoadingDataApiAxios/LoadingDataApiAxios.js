@@ -20,7 +20,7 @@ const propTypes = {
    */
   numberOfArticlesReturned: PropTypes.number,
   /**
-   * How long is the title? The placeholder should mimic the length.
+   * How long is the title? The placeholder should mimic the length of the titles.
    */
   numberOfCharsForTheTitlePlaceholder: PropTypes.number
 };
@@ -39,7 +39,7 @@ const defaultProps = {
 const Article = styled(_Article)(props => ({}));
 
 /**
- * Generates placeholders for articles
+ * Generates a placeholder for articles
  */
 const Placeholder = props => {
   const {
@@ -47,10 +47,17 @@ const Placeholder = props => {
     numberOfCharsForTheTitlePlaceholder
   } = props;
 
+  /**
+   * Generates the placeholder for the title
+   */
   const title = Array(numberOfCharsForTheTitlePlaceholder).fill("/ ");
 
   return [...Array(numberOfArticlesReturned)].map((_, i) => {
+    /**
+     * Generates a random uuid for the item
+     */
     const id = uuid.v4();
+
     return {
       objectID: id,
       url: "#",
@@ -59,7 +66,13 @@ const Placeholder = props => {
   });
 };
 
+/**
+ * Displays the articles
+ */
 const Articles = props => {
+  /**
+   * Loads the data
+   */
   const data = useDataAPI(
     Placeholder(props),
     "http://hn.algolia.com/api/v1/search?query=redux",
