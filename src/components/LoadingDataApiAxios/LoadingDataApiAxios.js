@@ -8,7 +8,7 @@ import { useDataAPI } from "../../hooks";
 import Description from "../Description";
 import md from "./LoadingDataApiAxios.md";
 import { Article as _Article } from "../SemanticHTML";
-import Placeholder, { PlaceholderPropTypes } from "../Placeholder";
+import PlaceholderText, { PlaceholderTextPropTypes } from "../PlaceholderText";
 
 /**
  * Defines the prop types
@@ -17,7 +17,7 @@ const propTypes = {
   /**
    * The placeholder
    */
-  placeholder: PropTypes.shape(PlaceholderPropTypes)
+  placeholder: PropTypes.shape(PlaceholderTextPropTypes)
 };
 
 /**
@@ -25,12 +25,9 @@ const propTypes = {
  */
 const defaultProps = {
   placeholder: {
-    format: "text",
-    text: {
-      numberOfRows: 20,
-      rowLength: 60,
-      content: "/ "
-    }
+    numberOfRows: 20,
+    rowLength: 60,
+    content: "/ "
   }
 };
 
@@ -42,11 +39,11 @@ const Article = styled(_Article)(props => ({}));
 /**
  * Generates a text placeholder for articles
  */
-const PlaceholderText = props => {
+const ArticlesPlaceholder = props => {
   /**
    * Loads the placeholder
    */
-  const placeholder = Placeholder(props);
+  const placeholder = PlaceholderText(props);
 
   /**
    * Generates an articles specific placeholder
@@ -77,7 +74,7 @@ const Articles = props => {
    * Loads the data
    */
   const data = useDataAPI(
-    PlaceholderText(placeholder),
+    ArticlesPlaceholder(placeholder),
     "http://hn.algolia.com/api/v1/search?query=redux",
     "hits"
   );
