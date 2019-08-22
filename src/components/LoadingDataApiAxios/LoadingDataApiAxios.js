@@ -85,7 +85,7 @@ const Articles = props => {
   /**
    * Loads the data
    */
-  const data = useDataAPI(
+  const [data, doFetch] = useDataAPI(
     ArticlesPlaceholder(placeholder),
     "http://hn.algolia.com/api/v1/search?query=redux",
     "hits"

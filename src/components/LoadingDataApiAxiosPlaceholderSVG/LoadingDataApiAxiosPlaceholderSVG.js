@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import PropTypes from "prop-types";
 import styled from "styled-components";
 import { Code } from "react-content-loader";
@@ -40,9 +40,37 @@ const defaultProps = {
 const Article = styled(_Article)(props => ({}));
 
 /**
+ * Displays a load more button
+ */
+const LoadMore = props => {
+  const { page, setPage, doFetch } = props;
+
+  return (
+    <form
+      onSubmit={event => {
+        doFetch(`http://hn.algolia.com/api/v1/search?query=redux&page=${page}`);
+        event.preventDefault();
+      }}
+    >
+      <button type="submit">Got to page: </button>
+      <input
+        type="text"
+        value={page}
+        onChange={event => setPage(event.target.value)}
+      />
+    </form>
+  );
+};
+
+/**
  * Displays the articles
  */
 const Articles = props => {
+  /**
+   * Saves pagination into a state
+   */
+  const [page, setPage] = useState(1);
+
   /**
    * Creates the placeholder
    */
@@ -51,11 +79,13 @@ const Articles = props => {
   /**
    * Loads the data
    */
-  const data = useDataAPI(
+  const [data, doFetch] = useDataAPI(
     null,
-    "http://hn.algolia.com/api/v1/search?query=redux",
+    `http://hn.algolia.com/api/v1/search?query=redux&page=${page}`,
     "hits"
   );
+
+  console.log("data:" + JSON.stringify(data));
 
   if (!data) {
     return "There is no data";
@@ -66,14 +96,17 @@ const Articles = props => {
   }
 
   return typeof data === "object" ? (
-    <ul>
-      {typeof data === "object" &&
-        data.map(item => (
-          <li key={item.objectID}>
-            <a href={item.url}>{item.title}</a>
-          </li>
-        ))}
-    </ul>
+    <>
+      <ul>
+        {typeof data === "object" &&
+          data.map(item => (
+            <li key={item.objectID}>
+              <a href={item.url}>{item.title}</a>
+            </li>
+          ))}
+      </ul>
+      <LoadMore page={page} setPage={setPage} doFetch={doFetch} />
+    </>
   ) : (
     <Placeholder />
   );

@@ -35,7 +35,7 @@ const useDataAPI = (defaultValues, query, filter) => {
   /**
    * Queries the database
    */
-  const [{ data, isLoading, isError }] = useDataApi(query, {
+  const [{ data, isLoading, isError }, doFetch] = useDataApi(query, {
     hits: []
   });
 
@@ -44,7 +44,7 @@ const useDataAPI = (defaultValues, query, filter) => {
    * If there is no default data returns a `Loading...` string
    */
   if (isLoading) {
-    return defaultValues ? defaultValues : "Loading...";
+    return defaultValues ? [defaultValues, doFetch] : ["Loading...", doFetch];
   }
 
   /**
@@ -58,7 +58,7 @@ const useDataAPI = (defaultValues, query, filter) => {
   /**
    * Returns data
    */
-  return data.hits;
+  return [data.hits, doFetch];
 };
 
 export default useDataAPI;
