@@ -27,7 +27,7 @@ const defaultProps = {
     file: md,
     placeholder: {
       numberOfRows: 2,
-      rowLength: 60,
+      rowLength: 30,
       content: "/ "
     }
   }
@@ -42,14 +42,11 @@ const Section = styled(_Section)(props => ({}));
  * Displays the component
  */
 const LoadingData = props => {
-  const { file, description } = props;
-  const placeholderText = PlaceholderText(description);
-
-  console.log("placeholderText:" + JSON.stringify(placeholderText));
+  const { description } = props;
 
   return (
     <Section className="LoadingData" title="Loading Data">
-      <Description file={file} placeholder={placeholderText} />
+      <Description {...description} />
       {/*
       <LoadingDataApiAxios />
       <LoadingDataGraphQLApollo />

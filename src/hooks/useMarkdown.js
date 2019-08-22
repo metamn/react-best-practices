@@ -13,7 +13,7 @@ import Markdown from "react-markdown";
  * import { useMarkdown } from "../../hooks";
  * import description from "./description.md";
  *
- * const markdown = useMarkdown(description);
+ * const markdown = useMarkdown({file: description, placeholder: {}});
  *
  * return {markdown}
  * ```

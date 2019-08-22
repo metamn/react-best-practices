@@ -39,10 +39,20 @@ const Container = styled("div")(props => ({}));
  * Displays the component
  */
 const PlaceholderText = props => {
+  /**
+   * Loads props
+   */
   const { numberOfRows, rowLength, content } = props;
-  const textRow = Array(rowLength).fill(content);
 
-  return [...Array(numberOfRows)].map((_, i) => {
+  /**
+   * Generates a text row
+   */
+  const textRow = [...Array(rowLength)].map(i => content).join("");
+
+  /**
+   * Generates the text rows
+   */
+  const textRows = [...Array(numberOfRows)].map(i => {
     /**
      * Generates a random uuid
      */
@@ -53,6 +63,8 @@ const PlaceholderText = props => {
       text: textRow
     };
   });
+
+  return textRows;
 };
 
 PlaceholderText.propTypes = propTypes;

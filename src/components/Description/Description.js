@@ -3,8 +3,9 @@ import PropTypes from "prop-types";
 import styled from "styled-components";
 
 import { useMarkdown } from "../../hooks";
-import { Article as _Article } from "../SemanticHTML";
+
 import PlaceholderText, { PlaceholderTextPropTypes } from "../PlaceholderText";
+import { Article as _Article } from "../SemanticHTML";
 
 /**
  * Defines the prop types
@@ -42,8 +43,26 @@ const Article = styled(_Article)(props => ({}));
  */
 const Description = props => {
   const { file, placeholder } = props;
+
+  /**
+   * Generates the placeholder
+   */
   const placeholderText = PlaceholderText(placeholder);
-  const markdown = useMarkdown({ file: file, placeholder: placeholderText });
+
+  /**
+   * Converts the placeholder to a string
+   */
+  const placeholderTextToString = placeholderText
+    .map(item => item.text + "\n\n")
+    .join("");
+
+  /**
+   * Loads the markdown file
+   */
+  const markdown = useMarkdown({
+    file: file,
+    placeholder: placeholderTextToString
+  });
 
   return (
     <Article className="Description" title="Description">
