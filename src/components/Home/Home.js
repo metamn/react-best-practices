@@ -2,8 +2,6 @@ import React from "react";
 import styled from "styled-components";
 
 import Logo from "../Logo";
-import LoadingData from "../LoadingData";
-import LoadingWithSuspense from "../LoadingWithSuspense";
 import { Section as _Section } from "../SemanticHTML";
 
 /**
@@ -28,8 +26,6 @@ const Home = props => {
   return (
     <Section className="Home" title="Home">
       <Logo />
-      <LoadingData />
-      <LoadingWithSuspense />
     </Section>
   );
 };
