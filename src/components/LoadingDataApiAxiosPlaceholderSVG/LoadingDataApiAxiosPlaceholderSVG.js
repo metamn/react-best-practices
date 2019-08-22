@@ -65,9 +65,6 @@ const Articles = props => {
     return "Data is null";
   }
 
-  console.log("data:" + JSON.stringify(data));
-  console.log(typeof data);
-
   return typeof data === "object" ? (
     <ul>
       {typeof data === "object" &&
