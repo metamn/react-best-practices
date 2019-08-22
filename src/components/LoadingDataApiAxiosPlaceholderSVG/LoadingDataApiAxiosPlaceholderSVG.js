@@ -85,8 +85,6 @@ const Articles = props => {
     "hits"
   );
 
-  console.log("data:" + JSON.stringify(data));
-
   if (!data) {
     return "There is no data";
   }
