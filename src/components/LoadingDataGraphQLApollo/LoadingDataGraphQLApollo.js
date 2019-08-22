@@ -39,7 +39,7 @@ const defaultProps = {
   description: {
     file: md,
     placeholder: {
-      numberOfRows: 10,
+      numberOfRows: 1,
       rowLength: 30,
       content: "/ "
     }

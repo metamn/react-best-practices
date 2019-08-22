@@ -47,10 +47,8 @@ const LoadingData = props => {
   return (
     <Section className="LoadingData" title="Loading Data">
       <Description {...description} />
-      {/*
       <LoadingDataApiAxios />
       <LoadingDataGraphQLApollo />
-	  */}
     </Section>
   );
 };
