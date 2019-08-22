@@ -8,6 +8,7 @@ import TypographicGrid from "./components/TypographicGrid";
 
 import Home from "./components/Home";
 import LoadingData from "./components/LoadingData";
+import LoadingDataApiAxios from "./components/LoadingDataApiAxios";
 
 const App = () => {
   return (

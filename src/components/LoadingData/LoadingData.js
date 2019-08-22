@@ -1,6 +1,7 @@
 import React from "react";
 import PropTypes from "prop-types";
 import styled from "styled-components";
+import { Link, Route } from "react-router-dom";
 
 import Description, { DescriptionPropTypes } from "../Description";
 import md from "./LoadingData.md";
@@ -54,9 +55,34 @@ const LoadingData = props => {
   return (
     <Section className="LoadingData" title="Loading Data">
       <Description {...description} />
-      <LoadingDataApiAxiosPlaceholderSVG />
-      <LoadingDataApiAxios />
-      <LoadingDataGraphQLApollo />
+
+      <ul>
+        <li>
+          <Link to="/loading-data/api-axios-placeholder-svg">
+            Loading data from an API with Axios using an SVG Placeholder
+          </Link>
+        </li>
+        <li>
+          <Link to="/loading-data/api-axios">
+            Loading data from an API with Axios
+          </Link>
+        </li>
+        <li>
+          <Link to="/loading-data/graphql-apollo">
+            Loading data from GraphQL with Apollo
+          </Link>
+        </li>
+      </ul>
+
+      <Route path="/loading-data/api-axios" component={LoadingDataApiAxios} />
+      <Route
+        path="/loading-data/api-axios-placeholder-svg"
+        component={LoadingDataApiAxiosPlaceholderSVG}
+      />
+      <Route
+        path="/loading-data/graphql-apollo"
+        component={LoadingDataGraphQLApollo}
+      />
     </Section>
   );
 };
