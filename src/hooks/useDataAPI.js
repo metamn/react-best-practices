@@ -1,7 +1,11 @@
 import useDataApi from "use-data-api";
 
 /**
- * Loads data from an API with Axios
+ * Loads data from an API with Axios.
+ *
+ * While loading data either displays default values as a placeholder or returns a `Loading...` string.
+ *
+ * Later this string response can be used to display a graphical placeholder
  *
  * @param  {Object} defaultValues The default values to return while loading data from the DB
  * @param  {String} query         The URL to the API endpoint to be called
@@ -28,8 +32,6 @@ import useDataApi from "use-data-api";
  * @link https://github.com/the-road-to-learn-react/react-hooks-introduction/tree/master/src/useDataApiHook-external-example
  */
 const useDataAPI = (defaultValues, query, filter) => {
-  console.log("useDataAPI");
-
   /**
    * Queries the database
    */
@@ -38,10 +40,11 @@ const useDataAPI = (defaultValues, query, filter) => {
   });
 
   /**
-   * Returns default data while real data is loaded from the database
+   * If there is default data it returns while the real data is loaded from the database.
+   * If there is no default data returns a `Loading...` string
    */
   if (isLoading) {
-    return defaultValues;
+    return defaultValues ? defaultValues : "Loading...";
   }
 
   /**

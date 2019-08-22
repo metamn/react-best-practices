@@ -27,8 +27,6 @@ import { useQuery } from "./index";
  *
  */
 const useData = (defaultValues, query, filter, variables = {}) => {
-  console.log("useData");
-
   /**
    * Queries the database
    */

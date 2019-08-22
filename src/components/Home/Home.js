@@ -1,5 +1,6 @@
 import React from "react";
 import styled from "styled-components";
+import { Link } from "react-router-dom";
 
 import Logo from "../Logo";
 import { Section as _Section } from "../SemanticHTML";
@@ -17,7 +18,11 @@ const defaultProps = {};
 /**
  * Styles the component container
  */
-const Section = styled(_Section)(props => ({}));
+const Section = styled(_Section)(props => ({
+  "& ul": {
+    marginTop: "var(--lem)"
+  }
+}));
 
 /**
  * Displays the component
@@ -26,6 +31,11 @@ const Home = props => {
   return (
     <Section className="Home" title="Home">
       <Logo />
+      <ul>
+        <li>
+          <Link to="/loading-data">Loading data</Link>
+        </li>
+      </ul>
     </Section>
   );
 };

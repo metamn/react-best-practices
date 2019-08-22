@@ -4,8 +4,11 @@ import styled from "styled-components";
 
 import Description, { DescriptionPropTypes } from "../Description";
 import md from "./LoadingData.md";
+
 import LoadingDataApiAxios from "../LoadingDataApiAxios";
 import LoadingDataGraphQLApollo from "../LoadingDataGraphQLApollo";
+import LoadingDataApiAxiosPlaceholderSVG from "../LoadingDataApiAxiosPlaceholderSVG";
+
 import { Section as _Section } from "../SemanticHTML";
 import PlaceholderText from "../PlaceholderText";
 
@@ -36,7 +39,11 @@ const defaultProps = {
 /**
  * Styles the component container
  */
-const Section = styled(_Section)(props => ({}));
+const Section = styled(_Section)(props => ({
+  "& h2": {
+    fontSize: "125%"
+  }
+}));
 
 /**
  * Displays the component
@@ -47,6 +54,7 @@ const LoadingData = props => {
   return (
     <Section className="LoadingData" title="Loading Data">
       <Description {...description} />
+      <LoadingDataApiAxiosPlaceholderSVG />
       <LoadingDataApiAxios />
       <LoadingDataGraphQLApollo />
     </Section>

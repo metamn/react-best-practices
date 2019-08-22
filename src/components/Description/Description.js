@@ -37,7 +37,9 @@ const defaultProps = {
 /**
  * Styles the component container
  */
-const Article = styled(_Article)(props => ({}));
+const Article = styled(_Article)(props => ({
+  margin: "var(--lem) 0"
+}));
 
 /**
  * Displays the component
