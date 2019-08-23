@@ -111,8 +111,8 @@ const useData = (defaultValues, query, filter, variables = {}) => {
   /**
    * Manages the loading state
    *
-   * - If there is default data it returns while the real data is loaded from the database.
-   * - If there is no default data returns a `Loading...` string
+   * - If there is default data it is returned while the real data is loaded from the database.
+   * - If there is no default data it returns a `Loading...` string. In the caller component this can be catched and replaced by a placeholder.
    */
   if (loading) {
     const loading = "Loading...";
@@ -124,10 +124,18 @@ const useData = (defaultValues, query, filter, variables = {}) => {
 
   /**
    * Logs error to console
+   *
+   * Returns `defaultValues` otherwise the UI gets broken since the error is not catched just logged.
+   *
+   * @link: https://www.apollographql.com/docs/react/features/error-handling/
    */
   if (error) {
-    console.log("useQuery error:" + error);
-    return;
+    error.graphQLErrors.map(err => {
+      const { message } = err;
+      console.log("useData error: " + message);
+    });
+
+    return { data: defaultValues, loadMore };
   }
 
   /**

@@ -25,7 +25,7 @@ const defaultProps = {};
  */
 const query = gql`
   query posts($first: Int, $cursor: String) {
-    posts(first: $first, after: $cursor) {
+    postsX(first: $first, after: $cursor) {
       pageInfo {
         hasNextPage
         endCursor
