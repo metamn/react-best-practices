@@ -14,7 +14,7 @@ const useLoadMore = (fetchMore, data, filter, variables) => {
     fetchMore({
       variables: {
         ...variables,
-        // This is Relay style cursor pagination: https://www.apollographql.com/docs/react/features/pagination/#relay-style-cursor-pagination
+        // This is Relay-style cursor pagination: https://www.apollographql.com/docs/react/features/pagination/#relay-style-cursor-pagination
         cursor: data.posts.pageInfo.endCursor
       },
       updateQuery: (previousResult, { fetchMoreResult }) => {
@@ -23,25 +23,37 @@ const useLoadMore = (fetchMore, data, filter, variables) => {
         }
 
         /**
-         * In case of `load more` we should return more edges like:
+         * We can return two kind of results here: 'Load more' or 'Next page'
          *
+         * Next page:
+         * ```
+         * return {...fetchMoreResult}
+         * ```
+         *
+         * Load more:
          * ```
          * return {
-           ...fetchMoreResult,
            posts: {
+             __typename: previousResult.posts.__typename,
+             pageInfo: fetchMoreResult.posts.pageInfo,
              edges: [
                ...previousResult.posts.edges,
                ...fetchMoreResult.posts.edges
              ]
            }
          };
-         * ```
-         *
-         * But this throws an error right now ...
-		 */
+		 ```
+         */
 
         return {
-          ...fetchMoreResult
+          posts: {
+            __typename: previousResult.posts.__typename,
+            pageInfo: fetchMoreResult.posts.pageInfo,
+            edges: [
+              ...previousResult.posts.edges,
+              ...fetchMoreResult.posts.edges
+            ]
+          }
         };
       }
     });
