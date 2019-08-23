@@ -15,7 +15,7 @@ const useQuery = (schema, variables = {}, options = {}) => {
   /**
    * Runs the query
    */
-  const { data, loading, error } = _useQuery(schema, {
+  const { data, loading, error, fetchMore } = _useQuery(schema, {
     variables,
     ...options
   });
@@ -28,7 +28,7 @@ const useQuery = (schema, variables = {}, options = {}) => {
   /**
    * Returns the data, the pagination handlers and more
    */
-  return { data, loading };
+  return { data, loading, fetchMore };
 };
 
 export default useQuery;

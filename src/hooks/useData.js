@@ -1,4 +1,36 @@
+import React, { useState } from "react";
 import { useQuery } from "./index";
+
+/**
+ * Loads the next page
+ *
+ * @param  {[type]} fetchMore [description]
+ * @param  {[type]} data      [description]
+ * @param  {[type]} variables [description]
+ * @return {[type]}           [description]
+ */
+const useLoadMore = (fetchMore, data, filter, variables) => {
+  function loadMore() {
+    fetchMore({
+      variables: {
+        ...variables,
+        cursor: data.posts.pageInfo.endCursor
+      },
+      updateQuery: (previousResult, { fetchMoreResult }) => {
+        if (!fetchMoreResult) {
+          return previousResult;
+        }
+
+        return {
+          ...fetchMoreResult,
+          edges: [...previousResult.posts.edges, ...fetchMoreResult.posts.edges]
+        };
+      }
+    });
+  }
+
+  return loadMore;
+};
 
 /**
  * Loads data from GraphQL with `useQuery`
@@ -12,6 +44,11 @@ import { useQuery } from "./index";
  * Example:
  *
  * ```
+ * const defaultValues = {
+ * 	title: "Ioan Chivu",
+ * 	url: "http://inu.ro"
+ * }
+ *
  * const query = gql`
    query generalSettings {
      generalSettings {
@@ -26,7 +63,7 @@ import { useQuery } from "./index";
     hideEmpty: true
   }
 
- useData({title: "Ioan Chivu", url: "http://inu.ro"}, query, 'generalSettings', variables)
+ useData(defaultValues, query, 'generalSettings', variables)
  * ```
  *
  */
@@ -36,20 +73,29 @@ const useData = (defaultValues, query, filter, variables = {}) => {
    */
   const { data, error, loading, fetchMore } = useQuery(query, variables);
 
+  console.log(typeof fetchMore);
+
   /**
-   * If there is default data it returns while the real data is loaded from the database.
-   * If there is no default data returns a `Loading...` string
+   * Handles pagination
+   */
+  const loadMore = useLoadMore(fetchMore, data, filter, variables);
+
+  /**
+   * Manages the loading state
+   *
+   * - If there is default data it returns while the real data is loaded from the database.
+   * - If there is no default data returns a `Loading...` string
    */
   if (loading) {
     const loading = "Loading...";
 
     return defaultValues
-      ? { data: defaultValues, fetchMore }
-      : { data: loading, fetchMore };
+      ? { data: defaultValues, loadMore }
+      : { data: loading, loadMore };
   }
 
   /**
-   * Logs to console when there is an error
+   * Logs error to console
    */
   if (error) {
     console.log("useQuery error:" + error);
@@ -57,11 +103,14 @@ const useData = (defaultValues, query, filter, variables = {}) => {
   }
 
   /**
-   * Returns data
+   * Filters the data
    */
   const dataFiltered = data ? data[filter] : {};
 
-  return { data: dataFiltered, fetchMore };
+  /**
+   * Returns data and pagination
+   */
+  return { data: dataFiltered, loadMore };
 };
 
 export default useData;

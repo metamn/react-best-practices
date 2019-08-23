@@ -24,8 +24,8 @@ const defaultProps = {};
  * Defines the database query
  */
 const query = gql`
-  query posts($first: Int, $after: String) {
-    posts(first: $first, after: $after) {
+  query posts($first: Int, $cursor: String) {
+    posts(first: $first, after: $cursor) {
       pageInfo {
         hasNextPage
         endCursor
@@ -51,7 +51,7 @@ const Article = styled(_Article)(props => ({}));
  * Displays posts
  */
 const Posts = () => {
-  const { data } = useData(null, query, "posts", { first: 3 });
+  const { data, loadMore } = useData(null, query, "posts", { first: 3 });
 
   return (
     <>
@@ -60,6 +60,7 @@ const Posts = () => {
           data.edges &&
           data.edges.map(edge => <li key={edge.node.id}>{edge.node.title}</li>)}
       </ul>
+      <button onClick={() => loadMore()}>Load More</button>
     </>
   );
 };
