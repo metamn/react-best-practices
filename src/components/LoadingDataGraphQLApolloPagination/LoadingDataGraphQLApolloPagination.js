@@ -60,7 +60,7 @@ const Posts = () => {
           data.edges &&
           data.edges.map(edge => <li key={edge.node.id}>{edge.node.title}</li>)}
       </ul>
-      <button onClick={() => loadMore()}>Load More</button>
+      <button onClick={() => loadMore()}>Next page</button>
     </>
   );
 };
