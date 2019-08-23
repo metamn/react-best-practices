@@ -85,12 +85,15 @@ const Articles = props => {
   /**
    * Loads the data
    */
-  const [data, doFetch] = useDataAPI(
+  const { data, doFetch } = useDataAPI(
     ArticlesPlaceholder(placeholder),
     "http://hn.algolia.com/api/v1/search?query=redux",
     "hits"
   );
 
+  /**
+   * Manages errors
+   */
   if (!data) {
     return "There is no data";
   }
@@ -101,11 +104,16 @@ const Articles = props => {
 
   return (
     <ul>
-      {data.map(item => (
-        <li key={item.objectID}>
-          <a href={item.url}>{item.title}</a>
-        </li>
-      ))}
+      {data &&
+        data.map(item => {
+          const { objectID, url, title } = item;
+
+          return (
+            <li key={objectID}>
+              <a href={url}>{title}</a>
+            </li>
+          );
+        })}
     </ul>
   );
 };

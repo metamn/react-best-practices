@@ -3,10 +3,6 @@ import useDataApi from "use-data-api";
 /**
  * Loads data from an API with Axios.
  *
- * While loading data either displays default values as a placeholder or returns a `Loading...` string.
- *
- * Later this string response can be used to display a graphical placeholder
- *
  * @param  {Object} defaultValues The default values to return while loading data from the DB
  * @param  {String} query         The URL to the API endpoint to be called
  * @param  {String} filter        The part of the data to return
@@ -40,25 +36,44 @@ const useDataAPI = (defaultValues, query, filter) => {
   });
 
   /**
-   * If there is default data it returns while the real data is loaded from the database.
-   * If there is no default data returns a `Loading...` string
+   * Manages the loading state
+   *
+   * - If there is default data it is returned to be displayed while the real data is loading from the database.
+   * - If there is no default data it returns a `Loading...` string. In the caller component this can be catched and replaced by a placeholder.
    */
   if (isLoading) {
-    return defaultValues ? [defaultValues, doFetch] : ["Loading...", doFetch];
+    const loading = "Loading...";
+
+    return defaultValues
+      ? { data: defaultValues, doFetch }
+      : { data: loading, doFetch };
   }
 
   /**
-   * Logs to console when there is an error
+   * Logs errors to console
+   *
+   * After logging returns `defaultValues` otherwise the UI gets broken since the error is not catched just logged.
+   *
+   * The `use-data-api` doesn't return error messages just an error flag.
+   * Errors must be handled in the parent component.
+   *
+   * @link: https://www.robinwieruch.de/react-hooks-fetch-data/
    */
   if (isError) {
-    console.log("useDataApi error:" + isError);
-    return;
+    console.log("useDataAPI error");
+
+    return { data: defaultValues, doFetch };
   }
 
   /**
-   * Returns data
+   * Filters the data
    */
-  return [data.hits, doFetch];
+  const dataFiltered = data ? data[filter] : {};
+
+  /**
+   * Returns data and the pagination function
+   */
+  return { data: dataFiltered, doFetch };
 };
 
 export default useDataAPI;

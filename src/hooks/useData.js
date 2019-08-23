@@ -152,7 +152,7 @@ const useData = (defaultValues, query, filter, variables = {}) => {
   const dataFiltered = data ? data[filter] : {};
 
   /**
-   * Returns data and pagination
+   * Returns data and the pagination function
    */
   return { data: dataFiltered, loadMore };
 };

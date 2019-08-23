@@ -52,7 +52,7 @@ const LoadMore = props => {
         event.preventDefault();
       }}
     >
-      <button type="submit">Got to page: </button>
+      <button type="submit">Go to page: </button>
       <input
         type="text"
         value={page}
@@ -79,12 +79,15 @@ const Articles = props => {
   /**
    * Loads the data
    */
-  const [data, doFetch] = useDataAPI(
+  const { data, doFetch } = useDataAPI(
     null,
     `http://hn.algolia.com/api/v1/search?query=redux&page=${page}`,
     "hits"
   );
 
+  /**
+   * Manages errors
+   */
   if (!data) {
     return "There is no data";
   }
@@ -93,15 +96,21 @@ const Articles = props => {
     return "Data is null";
   }
 
+  /**
+   * Returns either the data or the placeholder
+   */
   return typeof data === "object" ? (
     <>
       <ul>
-        {typeof data === "object" &&
-          data.map(item => (
-            <li key={item.objectID}>
-              <a href={item.url}>{item.title}</a>
+        {data.map(item => {
+          const { objectID, url, title } = item;
+
+          return (
+            <li key={objectID}>
+              <a href={url}>{title}</a>
             </li>
-          ))}
+          );
+        })}
       </ul>
       <LoadMore page={page} setPage={setPage} doFetch={doFetch} />
     </>
