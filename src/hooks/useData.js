@@ -2,59 +2,67 @@ import React, { useState } from "react";
 import { useQuery } from "./index";
 
 /**
- * Loads the next page
+ * Loads the next set of data
  *
- * @param  {[type]} fetchMore [description]
- * @param  {[type]} data      [description]
- * @param  {[type]} variables [description]
- * @return {[type]}           [description]
+ * @param  {Function} fetchMore An Apollo function to fetch more data
+ * @param  {Object} data        The data received from Apollo
+ * @param  {String} filter      The part of the data to return
+ * @param  {Object} variables   The query variables
+ * @return {Function}           The load more function
+ *
+ * @link https://www.apollographql.com/docs/react/features/pagination/
  */
 const useLoadMore = (fetchMore, data, filter, variables) => {
+  /**
+   * Returns an empty function if something is wrong with the data
+   */
+  if (!data) return () => {};
+  if (!data[filter]) return () => {};
+
+  /**
+   * Loads more data.
+   *
+   * @return {Object}  A new set of data
+   *
+   * It can return two kind of results:
+   * - `Next page`: simply loads the next page
+   * - `Load more`: keeps old data and adds the new data
+   *
+   * `Load more` can't be implemented here because is specific to the GraphQL schema.
+   * It must be implemented in the parent component.
+   * For Posts in WP GraphQL it looks like:
+   *
+   *```
+   *return {
+	 posts: {
+	   __typename: previousResult.posts.__typename,
+	   pageInfo: fetchMoreResult.posts.pageInfo,
+	   edges: [
+		 ...previousResult.posts.edges,
+		 ...fetchMoreResult.posts.edges
+	   ]
+	 }
+   };
+   ```
+   *
+   * Notice:
+   *
+   * - Apollo knows both offset and cursor based navigation.
+   * - Here the cursor based variant is implemented, more exactly the Relay style cursor since the backend is WP GraphQL which uses this style
+   * - Other servers might require other methods
+   */
   function loadMore() {
     fetchMore({
       variables: {
         ...variables,
-        // This is Relay-style cursor pagination: https://www.apollographql.com/docs/react/features/pagination/#relay-style-cursor-pagination
-        cursor: data.posts.pageInfo.endCursor
+        cursor: data[filter].pageInfo.endCursor
       },
       updateQuery: (previousResult, { fetchMoreResult }) => {
         if (!fetchMoreResult) {
           return previousResult;
         }
 
-        /**
-         * We can return two kind of results here: 'Load more' or 'Next page'
-         *
-         * Next page:
-         * ```
-         * return {...fetchMoreResult}
-         * ```
-         *
-         * Load more:
-         * ```
-         * return {
-           posts: {
-             __typename: previousResult.posts.__typename,
-             pageInfo: fetchMoreResult.posts.pageInfo,
-             edges: [
-               ...previousResult.posts.edges,
-               ...fetchMoreResult.posts.edges
-             ]
-           }
-         };
-		 ```
-         */
-
-        return {
-          posts: {
-            __typename: previousResult.posts.__typename,
-            pageInfo: fetchMoreResult.posts.pageInfo,
-            edges: [
-              ...previousResult.posts.edges,
-              ...fetchMoreResult.posts.edges
-            ]
-          }
-        };
+        return { ...fetchMoreResult };
       }
     });
   }

@@ -25,7 +25,7 @@ const defaultProps = {};
  */
 const query = gql`
   query posts($first: Int, $cursor: String) {
-    postsX(first: $first, after: $cursor) {
+    posts(first: $first, after: $cursor) {
       pageInfo {
         hasNextPage
         endCursor
@@ -60,7 +60,7 @@ const Posts = () => {
           data.edges &&
           data.edges.map(edge => <li key={edge.node.id}>{edge.node.title}</li>)}
       </ul>
-      <button onClick={() => loadMore()}>Load More</button>
+      <button onClick={() => loadMore()}>Next page</button>
     </>
   );
 };
