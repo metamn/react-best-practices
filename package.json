@@ -6,7 +6,6 @@
     "@apollo/react-hooks": "^3.0.1",
     "apollo-boost": "^0.4.4",
     "graphql": "^14.4.2",
-    "graphql-tag": "^2.10.1",
     "polished": "^3.4.1",
     "react": "^16.9.0",
     "react-content-loader": "^4.2.2",

@@ -3,8 +3,8 @@ import PropTypes from "prop-types";
 import styled from "styled-components";
 
 import { ApolloProvider } from "@apollo/react-hooks";
-import apolloClient from "./apolloClient.js";
-import gql from "graphql-tag";
+import apolloClient from "../../apolloClient.js";
+import { gql } from "apollo-boost";
 
 import { useData } from "../../hooks";
 
