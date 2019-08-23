@@ -5,46 +5,24 @@ import Home from "./Home";
 
 # React best practices
 
-An ongoing experiment on React best practices.
+An ongoing experiment on React best practices. Since Hooks.
 
-## 1. Loading data
+## Introduction
+
+Among modern frameworks React is the one which feels truly complete.
+
+Ditching the concept of web in favor of user interface and betting all on a real programming language makes UI design and development with React highly integrated and all around programmable. A feature unseen before.
+
+React is famous about its steep learning curve. No wonder. There are lots of things to learn &mdash; from servers to user interactions &mdash; and many of them are a paradigm shift.
+
+A surprisingly compact ecosystem around React makes best practices easily extractable. There are a handful of opinion leaders who share their thoughts which are in line.
+
+This project tries to distill all these and offer working code and documentation.
+
+## Loading data
 
 Perhaps every React app deals with data.
 
-It loads from a database, from an API, from the filesystem &mdash; you name it. Even happens to an app to update or add new data.
+- **Topics**: Performance, Placeholders, Pagination, Error handling, Cancellation, Testing
 
-There are two well established ways to make interacting with data easy: `GraphQL` and `REST API`.
-
-`GraphQL` is the [modern way](http://metamn.io/react/graphql-and-rest-apis-with-aws/). It enables data driven applications versus `REST` which still uses old, web-specific paradigms like `URL` and `CRUD`.
-
-On both fronts there are clear winner libraries to rely. `Apollo` for GraphQL and `Axios` for REST APIs. Both of them work more or less in the same way making easy to a React developer to abstract away their differences.
-
-### 1.1 Performance
-
-#### 1.1.1 Apollo GraphQL
-
-#### 1.1.2 Axios REST API
-
-### 1.2 Placeholders
-
-Loading data is a time consuming operation lasting from miliseconds to seconds. To make this delay unobtrusive on the UI placeholders are used as a best practice.
-
-There are different types of placeholders from spinners, simple `Loading...` text to complete monochromatic mockups as seen lately on Facebook and Instagram.
-
-The best one is which mimics exactly the shape of the real data and produces no surprise &mdash; subtle cognitive dissonance &mdash; when the real data arrives.
-
-#### 1.2.1 Default values as placeholders
-
-#### 1.2.2 SVG mockups as placeholders
-
-### 1.3 Pagination
-
-### 1.4 Error handling
-
-### 1.5 Cancellation
-
-### 1.6 Testing
-
-## Resources
-
-- [GraphQL and REST APIs with AWS](http://metamn.io/react/graphql-and-rest-apis-with-aws/)
+- **Technologies**: Apollo GraphQL, Axios REST API, SVG placeholders

@@ -1,0 +1,46 @@
+import { Meta, Story, Preview } from "@storybook/addon-docs/blocks";
+import LoadingData from "./LoadingData";
+
+<Meta title="Loading data" component={LoadingData} />
+
+# Loading data
+
+Perhaps every React app deals with data.
+
+It loads from a database, from an API, from the filesystem &mdash; you name it. Even happens to an app to update or add new data.
+
+There are two well established ways to make interacting with data easy: `GraphQL` and `REST API`.
+
+`GraphQL` is the [modern way](http://metamn.io/react/graphql-and-rest-apis-with-aws/). It enables data driven applications versus `REST` which still uses old, web-specific paradigms like `URL` and `CRUD`.
+
+On both fronts there are clear winner libraries to rely. `Apollo` for GraphQL and `Axios` for REST APIs. Both of them work more or less in the same way making easy to a React developer to abstract away their differences.
+
+## Performance
+
+### Apollo GraphQL
+
+### Axios REST API
+
+## Placeholders
+
+Loading data is a time consuming operation lasting from miliseconds to seconds. To make this delay unobtrusive on the UI placeholders are used as a best practice.
+
+There are different types of placeholders from spinners, simple `Loading...` text to complete monochromatic mockups as seen lately on Facebook and Instagram.
+
+The best one is which mimics exactly the shape of the real data and produces no surprise &mdash; subtle cognitive dissonance &mdash; when the real data arrives.
+
+### Default values as placeholders
+
+### SVG mockups as placeholders
+
+## Pagination
+
+## Error handling
+
+## Cancellation
+
+## Testing
+
+## Resources
+
+- [GraphQL and REST APIs with AWS](http://metamn.io/react/graphql-and-rest-apis-with-aws/)
