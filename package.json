@@ -47,6 +47,7 @@
     "@storybook/addon-links": "^5.2.0-beta.39",
     "@storybook/addons": "^5.2.0-beta.39",
     "@storybook/react": "^5.2.0-beta.39",
+    "babel-loader": "^8.0.6",
     "flatted": "^2.0.1"
   }
 }
