@@ -22,7 +22,11 @@ import { useQuery } from "./index";
    }
  `;
 
- useData({title: "Ioan Chivu", url: "http://inu.ro"}, query, 'generalSettings')
+ const variables = {
+    hideEmpty: true
+  }
+
+ useData({title: "Ioan Chivu", url: "http://inu.ro"}, query, 'generalSettings', variables)
  * ```
  *
  */
@@ -30,13 +34,18 @@ const useData = (defaultValues, query, filter, variables = {}) => {
   /**
    * Queries the database
    */
-  const { data, error, loading } = useQuery(query, variables);
+  const { data, error, loading, fetchMore } = useQuery(query, variables);
 
   /**
-   * Returns default data while real data is loaded from the database
+   * If there is default data it returns while the real data is loaded from the database.
+   * If there is no default data returns a `Loading...` string
    */
   if (loading) {
-    return defaultValues;
+    const loading = "Loading...";
+
+    return defaultValues
+      ? { data: defaultValues, fetchMore }
+      : { data: loading, fetchMore };
   }
 
   /**
@@ -50,7 +59,9 @@ const useData = (defaultValues, query, filter, variables = {}) => {
   /**
    * Returns data
    */
-  return data[filter];
+  const dataFiltered = data ? data[filter] : {};
+
+  return { data: dataFiltered, fetchMore };
 };
 
 export default useData;

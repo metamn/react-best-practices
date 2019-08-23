@@ -89,7 +89,7 @@ const DescriptionPlaceholder = props => {};
 const Settings = props => {
   const defaultProps = SettingsPlaceholder(props);
 
-  const data = useData(defaultProps, query, "generalSettings");
+  const { data } = useData(defaultProps, query, "generalSettings");
   const { title, url, description } = data;
 
   return (

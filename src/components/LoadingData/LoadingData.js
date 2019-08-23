@@ -9,6 +9,7 @@ import md from "./LoadingData.md";
 import LoadingDataApiAxios from "../LoadingDataApiAxios";
 import LoadingDataGraphQLApollo from "../LoadingDataGraphQLApollo";
 import LoadingDataApiAxiosPlaceholderSVG from "../LoadingDataApiAxiosPlaceholderSVG";
+import LoadingDataGraphQLApolloPagination from "../LoadingDataGraphQLApolloPagination";
 
 import { Section as _Section } from "../SemanticHTML";
 import PlaceholderText from "../PlaceholderText";
@@ -72,6 +73,11 @@ const LoadingData = props => {
             Loading data from GraphQL with Apollo
           </Link>
         </li>
+        <li>
+          <Link to="/loading-data/graphql-apollo-pagination">
+            Loading data from GraphQL with Apollo and pagination
+          </Link>
+        </li>
       </ul>
 
       <Route path="/loading-data/api-axios" component={LoadingDataApiAxios} />
@@ -82,6 +88,10 @@ const LoadingData = props => {
       <Route
         path="/loading-data/graphql-apollo"
         component={LoadingDataGraphQLApollo}
+      />
+      <Route
+        path="/loading-data/graphql-apollo-pagination"
+        component={LoadingDataGraphQLApolloPagination}
       />
     </Section>
   );
