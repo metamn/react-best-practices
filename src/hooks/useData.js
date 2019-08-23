@@ -1,4 +1,3 @@
-import React, { useState } from "react";
 import { useQuery } from "./index";
 
 /**
@@ -141,9 +140,8 @@ const useData = (defaultValues, query, filter, variables = {}) => {
     error.graphQLErrors.map(err => {
       const { message } = err;
       console.log("useData error: " + message);
+      return { data: defaultValues, loadMore };
     });
-
-    return { data: defaultValues, loadMore };
   }
 
   /**

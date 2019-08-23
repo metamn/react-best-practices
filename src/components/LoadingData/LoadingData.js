@@ -12,7 +12,6 @@ import LoadingDataApiAxiosPlaceholderSVG from "../LoadingDataApiAxiosPlaceholder
 import LoadingDataGraphQLApolloPagination from "../LoadingDataGraphQLApolloPagination";
 
 import { Section as _Section } from "../SemanticHTML";
-import PlaceholderText from "../PlaceholderText";
 
 /**
  * Defines the prop types

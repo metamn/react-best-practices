@@ -1,4 +1,3 @@
-import React from "react";
 import { useQuery as _useQuery } from "@apollo/react-hooks";
 
 /**

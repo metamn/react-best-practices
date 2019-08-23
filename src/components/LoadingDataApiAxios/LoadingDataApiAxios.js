@@ -1,7 +1,6 @@
 import React from "react";
 import PropTypes from "prop-types";
 import styled from "styled-components";
-import uuid from "uuid";
 
 import { useDataAPI } from "../../hooks";
 
@@ -85,7 +84,7 @@ const Articles = props => {
   /**
    * Loads the data
    */
-  const { data, doFetch } = useDataAPI(
+  const { data } = useDataAPI(
     ArticlesPlaceholder(placeholder),
     "http://hn.algolia.com/api/v1/search?query=redux",
     "hits"

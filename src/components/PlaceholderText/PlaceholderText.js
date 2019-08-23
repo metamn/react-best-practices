@@ -1,6 +1,4 @@
-import React from "react";
 import PropTypes from "prop-types";
-import styled from "styled-components";
 import uuid from "uuid";
 
 /**
@@ -29,11 +27,6 @@ const defaultProps = {
   rowLength: 60,
   content: "/ "
 };
-
-/**
- * Styles the component container
- */
-const Container = styled("div")(props => ({}));
 
 /**
  * Displays the component

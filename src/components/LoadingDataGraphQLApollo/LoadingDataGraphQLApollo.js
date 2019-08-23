@@ -79,11 +79,6 @@ const SettingsPlaceholder = props => {
 };
 
 /**
- * Generates a text placeholder for description
- */
-const DescriptionPlaceholder = props => {};
-
-/**
  * Loads site settings from the database
  */
 const Settings = props => {
