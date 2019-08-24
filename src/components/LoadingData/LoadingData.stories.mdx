@@ -1,5 +1,6 @@
 import { Meta, Story, Preview } from "@storybook/addon-docs/blocks";
 import LoadingData from "./LoadingData";
+import LoadingDataGraphQLApollo from "../LoadingDataGraphQLApollo";
 
 <Meta title="Loading data" component={LoadingData} />
 
@@ -52,6 +53,12 @@ There are different types of placeholders from spinners, `Loading...` text to co
 The best placeholder is no placeholder. Next to it is the one which mimics exactly the shape of the real data and produces no surprise &mdash; subtle cognitive dissonance &mdash; when the real data arrives.
 
 ### Default values as placeholders
+
+<Preview>
+  <Story name="Default values as placeholders">
+    <LoadingDataGraphQLApollo />
+  </Story>
+</Preview>
 
 ### SVG mockups as placeholders
 
