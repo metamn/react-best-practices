@@ -1,0 +1,65 @@
+import { Meta, Story, Preview } from "@storybook/addon-docs/blocks";
+import LoadingImages from "./LoadingImages";
+
+<Meta title="Loading images" component={LoadingImages} />
+
+# Loading images
+
+Images are a vast and continuously evolving subject in web development. From capturing screenshots automatically to displaying them responsively without flipping the page on loading — perhaps with placeholders — the list grows.
+
+Just consider the following use case: display screenshots of webpages for design inspiration. The process is:
+
+1. Select the best part of the website to be screenshoted.
+2. Create both portrait and landscape screenshots with large, retina friendly resolution. (Many times these two modes differ completely if the design was properly responsive).
+3. Resize them to lower resolutions for mobile and tablet displays.
+4. Optimize them with compression.
+5. Convert them to modern formats like `WebP`
+6. Add images to content in a responsive way with art direction and resolution switching.
+7. Display them responsively without flicks during page load using an intrinsic ratio container.
+8. Display a progressive placeholder while loading.
+9. Make sure tens of images don't slow the page by using a lazy loading technique.
+10. Make sure they are served via a CDN for fast delivery.
+
+What if this process could be reduced to:
+
+1. Select the best part of the website to be screenshoted.
+2. Create both portrait and landscape screenshots with large, retina friendly resolution.
+3. Add images to content with a single line of code without the need to set up `<picture>` or `srcset`, `sizes`.
+
+That's all can be done with services like Imigix, Cloudinary, Cloudimage and co. They worth the effort. I'm maintaing such a design inspiration website with majority of the tasks above (1-10) automatized with scripts (Gulp, Webpack) and local utilities (PNGQuant, ImageMin). Still the process is tedious.
+
+## Cloudimage
+
+- It offers a free account with unlimited images, unlimited transformations and 25 GB monthly traffic.
+- 1 minute account creation, React package install and configuration.
+- Adding image to content is an one liner: `<Img src="bohen-portrait.png" alt="Demo image" ratio={0.75} />`
+- Art direction is a two liner:
+
+```
+{isPortrait ? (
+  <Img src="bohen-portrait.png" alt="Demo image" ratio={0.75} />
+) : (
+  <Img src="bohen-landscape.png" alt="Demo image" ratio={1.78} />
+)}
+```
+
+- The image is taken over by Cloudimage and
+  - It is resized on the fly to as many sizes as the types of devices are trying to display them
+  - It is optimized and converted to modern formats
+  - A responsive standard HTML `<img>` tag is generated
+  - Placeholders and loading animations are added
+  - Everything is wrapped into an intrinsic ratio container to prevent page flicking
+  - They are loaded via a global CDN
+
+<Preview>
+  <Story name="Art direction with Cloudinary">
+    <LoadingImages />
+  </Story>
+</Preview>
+
+## Resources
+
+- [Responsive images](https://developer.mozilla.org/en-US/docs/Learn/HTML/Multimedia_and_embedding/Responsive_images)
+- [Beat &mdash; example of design inspiration implemented manually](https://github.com/metamn/beat)
+- [Cloudimage](https://www.cloudimage.io)
+- [react-cloudimage-responsive](https://github.com/scaleflex/react-cloudimage-responsive)

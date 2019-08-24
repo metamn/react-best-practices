@@ -36,7 +36,10 @@ const LoadingImages = props => {
 
   return (
     <CloudimageProvider config={cloudimageConfig}>
-      <h1>Simple demo of react-cloudimage-responsive</h1>
+      <p>
+        Simple demo of `react-cloudimage-responsive` displaying different images
+        for screens in landscape and portrait mode
+      </p>
 
       {isPortrait ? (
         <Img src="bohen-portrait.png" alt="Demo image" ratio={0.75} />
