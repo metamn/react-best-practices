@@ -31,7 +31,12 @@ const defaultProps = {
 /**
  * Styles the component container
  */
-const Article = styled(_Article)(props => ({}));
+const Article = styled(_Article)(props => ({
+  "& h3": {
+    fontSize: "125%",
+    margin: "var(--lem) 0"
+  }
+}));
 
 /**
  * Generates a text placeholder for articles
@@ -113,6 +118,7 @@ const LoadingDataApiAxios = props => {
     <Article
       className="LoadingDataApiAxios"
       title="Loading data from an API with Axios"
+      displayTitle={true}
     >
       <Articles {...props} />
     </Article>

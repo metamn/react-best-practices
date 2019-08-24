@@ -44,7 +44,12 @@ const query = gql`
 /**
  * Styles the component container
  */
-const Article = styled(_Article)(props => ({}));
+const Article = styled(_Article)(props => ({
+  "& h3": {
+    fontSize: "125%",
+    margin: "var(--lem) 0"
+  }
+}));
 
 /**
  * Displays posts
@@ -73,6 +78,7 @@ const LoadingDataGraphQLApolloPagination = props => {
       <Article
         className="LoadingDataGraphQLApolloPagination"
         title="Loading data from GraphQL with Apollo and pagination"
+        displayTitle={true}
       >
         <Posts />
       </Article>

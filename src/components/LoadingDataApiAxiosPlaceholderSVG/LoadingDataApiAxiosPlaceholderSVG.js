@@ -20,7 +20,12 @@ const defaultProps = {};
 /**
  * Styles the component container
  */
-const Article = styled(_Article)(props => ({}));
+const Article = styled(_Article)(props => ({
+  "& h3": {
+    fontSize: "125%",
+    margin: "var(--lem) 0"
+  }
+}));
 
 /**
  * Displays a load more button
@@ -112,6 +117,7 @@ const LoadingDataApiAxiosPlaceholderSVG = props => {
     <Article
       className="LoadingDataApiAxiosPlaceholderSVG"
       title="Loading data from an API with Axios using an SVG Placeholder"
+      displayTitle={true}
     >
       <Articles />
     </Article>

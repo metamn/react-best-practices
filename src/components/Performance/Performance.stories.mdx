@@ -1,6 +1,9 @@
 import { Meta, Story, Preview } from "@storybook/addon-docs/blocks";
 import Performance from "./Performance";
 
+import Img, { CloudimageProvider } from "react-cloudimage-responsive";
+import cloudimageConfig from "../../cloudimageConfig.js";
+
 <Meta title="Performance" component={Performance} />
 
 # Performance
@@ -15,7 +18,35 @@ Do not overthing performance.
 
 All quotes come from Kent C. Dodds &mdash; Please find the links in the footnotes.
 
-For someone coming outside the React world "Unnecessary re-renders" might sound a thing to worry about. I've rewritten three times my first React project just to make sure this is true.
+### Re-renders
+
+For someone coming outside the React world _unnecessary re-renders_ might sound a thing to worry about. I've rewritten three times my first React project just to make sure it worths not to worry about.
+
+How unnecessary re-renders look like? In this project we have:
+
+```
+| Component                          | Re-renders            |
+|------------------------------------|-----------------------|
+|                                    | First load | 2nd load |
+|------------------------------------|------------|----------|
+| LoadingDataApiAxios                | 3          | 1        |
+| LoadingDataApiAxiosPlaceholderSVG  | 3          | 1        |
+| LoadingDataGraphQLApollo           | 2          | 1        |
+| LoadingDataGraphQLApolloPagination | 2          | 1        |
+```
+
+The number of re-renders can be seen right-side in the console:
+
+<CloudimageProvider config={cloudimageConfig}>
+  <Img
+    src="performance-rerenders.png"
+    alt="Re-renders"
+    ratio={1.83}
+    filter="fsharp4 fcontrast100 fbrigth255"
+  />
+</CloudimageProvider>
+
+In other frameworks on first load there is a single render. Here with Axios / REST API we have three and with Apollo / GraphQL we have two renders.
 
 ## Resources
 

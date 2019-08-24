@@ -105,6 +105,8 @@ const useLoadMore = (fetchMore, data, filter, variables) => {
  *
  */
 const useData = (defaultValues, query, filter, variables = {}) => {
+  console.log("useData");
+
   /**
    * Queries the database
    */

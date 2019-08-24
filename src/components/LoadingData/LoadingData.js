@@ -24,8 +24,9 @@ const defaultProps = {};
  * Styles the component container
  */
 const Section = styled(_Section)(props => ({
-  "& h2": {
-    fontSize: "125%"
+  "& h3": {
+    fontSize: "125%",
+    marginBottom: "var(--lem)"
   }
 }));
 
@@ -36,7 +37,7 @@ const LoadingData = props => {
   const { description } = props;
 
   return (
-    <Section className="LoadingData" title="Loading Data">
+    <Section className="LoadingData" title="Loading Data" displayTitle={true}>
       <ul>
         <li>
           <Link to="/loading-data/api-axios-placeholder-svg">

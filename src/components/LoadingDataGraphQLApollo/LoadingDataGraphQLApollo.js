@@ -54,7 +54,12 @@ const query = gql`
 /**
  * Styles the component container
  */
-const Article = styled(_Article)(props => ({}));
+const Article = styled(_Article)(props => ({
+  "& h3": {
+    fontSize: "125%",
+    margin: "var(--lem) 0"
+  }
+}));
 
 /**
  * Generates a text placeholder for settings
@@ -98,6 +103,7 @@ const LoadingDataGraphQLApollo = props => {
       <Article
         className="LoadingDataGraphQLApollo"
         title="Loading data from GraphQL with Apollo"
+        displayTitle={true}
       >
         <Settings {...props} />
       </Article>
