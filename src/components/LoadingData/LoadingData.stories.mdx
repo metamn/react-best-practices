@@ -35,13 +35,21 @@ And the list [continues](https://www.apollographql.com/docs/react/why-apollo/).
 
 ### Axios REST API
 
+In [AJAX and APIs](https://reactjs.org/docs/faq-ajax.html) React officially recommends using Axios. In [How to fetch data in React](https://www.robinwieruch.de/react-fetching-data/) Robin Wieruch &mdash; one of the React thought leaders &mdash; recommends Axios.
+
+Checking [Axios](https://github.com/axios/axios) we might be surprised. Unlike Apollo for GraphQL it tells nothing about data, caching and performance. It just tells: "Promise based HTTP client for the browser and node.js"
+
+To make performant REST API operations one has to look further.
+
 ## Placeholders
 
 Loading data is a time consuming operation lasting from miliseconds to seconds. To make this delay unobtrusive on the UI placeholders are used as a best practice.
 
-There are different types of placeholders from spinners, simple `Loading...` text to complete monochromatic mockups as seen lately on Facebook and Instagram.
+There are different types of placeholders from spinners, `Loading...` text to complete monochromatic mockups as seen lately on Facebook and Instagram.
 
-The best one is which mimics exactly the shape of the real data and produces no surprise &mdash; subtle cognitive dissonance &mdash; when the real data arrives.
+![Placeholder](https://user-images.githubusercontent.com/4838076/34308760-ec55df82-e735-11e7-843b-2e311fa7b7d0.gif)
+
+The best placeholder is no placeholder. Next to it is the one which mimics exactly the shape of the real data and produces no surprise &mdash; subtle cognitive dissonance &mdash; when the real data arrives.
 
 ### Default values as placeholders
 
@@ -59,3 +67,6 @@ The best one is which mimics exactly the shape of the real data and produces no 
 
 - [GraphQL and REST APIs with AWS](http://metamn.io/react/graphql-and-rest-apis-with-aws/)
 - [Why Apollo Client?](https://www.apollographql.com/docs/react/why-apollo/)
+- [AJAX and APIs](https://reactjs.org/docs/faq-ajax.html)
+- [How to fetch data in React](https://www.robinwieruch.de/react-fetching-data/)
+- [Axios](https://github.com/axios/axios)
