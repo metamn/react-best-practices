@@ -1,0 +1,23 @@
+import { Meta, Story, Preview } from "@storybook/addon-docs/blocks";
+import Performance from "./Performance";
+
+<Meta title="Performance" component={Performance} />
+
+# Performance
+
+Do not overthing performance.
+
+> Know that React is fast by default and do some digging before applying performance optimizations pre-maturely
+
+> "Unnecessary re-renders" are not necessarily bad for performance. Just because a component re-renders, doesn't mean the DOM will get updated (updating the DOM can be slow). React does a great job at optimizing itself so you don't have to do weird things to your code to make it fast. It's fast by default.
+
+> In fact, the need to optimize stuff with what I'm about to show you is so rare that I've literally never needed to do it in the 3 years I worked on PayPal products and the even longer time that I've been working with React.
+
+All quotes come from Kent C. Dodds &mdash; Please find the links in the footnotes.
+
+For someone coming outside the React world "Unnecessary re-renders" might sound a thing to worry about. I've rewritten three times my first React project just to make sure this is true.
+
+## Resources
+
+- [5 Tips to Help You Avoid React Hooks Pitfalls](https://kentcdodds.com/blog/react-hooks-pitfalls)
+- [When to useMemo and useCallback](https://kentcdodds.com/blog/usememo-and-usecallback)
