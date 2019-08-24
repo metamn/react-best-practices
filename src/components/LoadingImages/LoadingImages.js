@@ -2,6 +2,7 @@ import React from "react";
 import PropTypes from "prop-types";
 import styled from "styled-components";
 import Img, { CloudimageProvider } from "react-cloudimage-responsive";
+import { useMediaQuery } from "react-responsive";
 
 /**
  * Cloudimage usage:
@@ -31,11 +32,17 @@ const Container = styled("div")(props => ({}));
  * Displays the component
  */
 const LoadingImages = props => {
+  const isPortrait = useMediaQuery({ query: "(orientation: portrait)" });
+
   return (
     <CloudimageProvider config={cloudimageConfig}>
       <h1>Simple demo of react-cloudimage-responsive</h1>
 
-      <Img src="bohen-landscape.png" alt="Demo image" ratio={1.78} />
+      {isPortrait ? (
+        <Img src="bohen-portrait.png" alt="Demo image" ratio={0.75} />
+      ) : (
+        <Img src="bohen-landscape.png" alt="Demo image" ratio={1.78} />
+      )}
     </CloudimageProvider>
   );
 };
