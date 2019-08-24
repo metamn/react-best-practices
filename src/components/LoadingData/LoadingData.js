@@ -3,9 +3,6 @@ import PropTypes from "prop-types";
 import styled from "styled-components";
 import { Link, Route } from "react-router-dom";
 
-import Description, { DescriptionPropTypes } from "../Description";
-import md from "./LoadingData.md";
-
 import LoadingDataApiAxios from "../LoadingDataApiAxios";
 import LoadingDataGraphQLApollo from "../LoadingDataGraphQLApollo";
 import LoadingDataApiAxiosPlaceholderSVG from "../LoadingDataApiAxiosPlaceholderSVG";
@@ -16,26 +13,12 @@ import { Section as _Section } from "../SemanticHTML";
 /**
  * Defines the prop types
  */
-const propTypes = {
-  /**
-   * The description
-   */
-  description: PropTypes.shape(DescriptionPropTypes)
-};
+const propTypes = {};
 
 /**
  * Defines the default props
  */
-const defaultProps = {
-  description: {
-    file: md,
-    placeholder: {
-      numberOfRows: 2,
-      rowLength: 30,
-      content: "/ "
-    }
-  }
-};
+const defaultProps = {};
 
 /**
  * Styles the component container
@@ -54,8 +37,6 @@ const LoadingData = props => {
 
   return (
     <Section className="LoadingData" title="Loading Data">
-      <Description {...description} />
-
       <ul>
         <li>
           <Link to="/loading-data/api-axios-placeholder-svg">

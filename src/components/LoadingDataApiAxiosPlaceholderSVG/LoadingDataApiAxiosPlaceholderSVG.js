@@ -5,34 +5,17 @@ import { Code } from "react-content-loader";
 
 import { useDataAPI } from "../../hooks";
 
-import Description, { DescriptionPropTypes } from "../Description";
-import md from "./LoadingDataApiAxiosPlaceholderSVG.md";
-
 import { Article as _Article } from "../SemanticHTML";
 
 /**
  * Defines the prop types
  */
-const propTypes = {
-  /**
-   * The description
-   */
-  description: PropTypes.shape(DescriptionPropTypes)
-};
+const propTypes = {};
 
 /**
  * Defines the default props
  */
-const defaultProps = {
-  description: {
-    file: md,
-    placeholder: {
-      numberOfRows: 2,
-      rowLength: 30,
-      content: "/ "
-    }
-  }
-};
+const defaultProps = {};
 
 /**
  * Styles the component container
@@ -130,7 +113,6 @@ const LoadingDataApiAxiosPlaceholderSVG = props => {
       className="LoadingDataApiAxiosPlaceholderSVG"
       title="Loading data from an API with Axios using an SVG Placeholder"
     >
-      <Description {...description} />
       <Articles />
     </Article>
   );

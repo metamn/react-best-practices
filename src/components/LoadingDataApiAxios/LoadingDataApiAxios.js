@@ -4,8 +4,6 @@ import styled from "styled-components";
 
 import { useDataAPI } from "../../hooks";
 
-import Description, { DescriptionPropTypes } from "../Description";
-import md from "./LoadingDataApiAxios.md";
 import { Article as _Article } from "../SemanticHTML";
 import PlaceholderText, { PlaceholderTextPropTypes } from "../PlaceholderText";
 
@@ -16,11 +14,7 @@ const propTypes = {
   /**
    * The data placeholder
    */
-  placeholder: PropTypes.shape(PlaceholderTextPropTypes),
-  /**
-   * The description
-   */
-  description: PropTypes.shape(DescriptionPropTypes)
+  placeholder: PropTypes.shape(PlaceholderTextPropTypes)
 };
 
 /**
@@ -31,14 +25,6 @@ const defaultProps = {
     numberOfRows: 20,
     rowLength: 60,
     content: "/ "
-  },
-  description: {
-    file: md,
-    placeholder: {
-      numberOfRows: 2,
-      rowLength: 30,
-      content: "/ "
-    }
   }
 };
 
@@ -128,7 +114,6 @@ const LoadingDataApiAxios = props => {
       className="LoadingDataApiAxios"
       title="Loading data from an API with Axios"
     >
-      <Description {...description} />
       <Articles {...props} />
     </Article>
   );

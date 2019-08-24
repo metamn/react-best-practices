@@ -8,8 +8,6 @@ import { gql } from "apollo-boost";
 
 import { useData } from "../../hooks";
 
-import Description, { DescriptionPropTypes } from "../Description";
-import md from "./LoadingDataGraphQLApollo.md";
 import { Article as _Article } from "../SemanticHTML";
 import PlaceholderText, { PlaceholderTextPropTypes } from "../PlaceholderText";
 
@@ -22,9 +20,10 @@ const propTypes = {
    */
   placeholder: PropTypes.shape(PlaceholderTextPropTypes),
   /**
-   * The description
+   * Display the placeholder only and don't load the data.
+   * Used for demo purposes
    */
-  description: PropTypes.shape(DescriptionPropTypes)
+  displayData: PropTypes.bool
 };
 
 /**
@@ -33,17 +32,10 @@ const propTypes = {
 const defaultProps = {
   placeholder: {
     numberOfRows: 1,
-    rowLength: 30,
+    rowLength: 20,
     content: "/ "
   },
-  description: {
-    file: md,
-    placeholder: {
-      numberOfRows: 1,
-      rowLength: 30,
-      content: "/ "
-    }
-  }
+  displayData: true
 };
 
 /**
@@ -82,10 +74,11 @@ const SettingsPlaceholder = props => {
  * Loads site settings from the database
  */
 const Settings = props => {
-  const defaultProps = SettingsPlaceholder(props);
+  const { placeholder, displayData } = props;
+  const defaultProps = SettingsPlaceholder(placeholder);
 
   const { data } = useData(defaultProps, query, "generalSettings");
-  const { title, url, description } = data;
+  const { title, url, description } = displayData ? data : defaultProps;
 
   return (
     <ul>
@@ -100,16 +93,13 @@ const Settings = props => {
  * Displays the component
  */
 const LoadingDataGraphQLApollo = props => {
-  const { placeholder, description } = props;
-
   return (
     <ApolloProvider client={apolloClient}>
       <Article
         className="LoadingDataGraphQLApollo"
         title="Loading data from GraphQL with Apollo"
       >
-        <Description {...description} />
-        <Settings {...placeholder} />
+        <Settings {...props} />
       </Article>
     </ApolloProvider>
   );
