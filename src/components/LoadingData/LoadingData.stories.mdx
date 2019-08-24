@@ -54,11 +54,45 @@ The best placeholder is no placeholder. Next to it is the one which mimics exact
 
 ### Default values as placeholders
 
+When loading data from a remote endpoint we know apriori its shape. This shape can be prefilled with default values and presented during the loading process.
+
+#### Example:
+
+The shape of the data:
+
+```Javascript
+const query = gql`
+  query generalSettings {
+    generalSettings {
+      title
+      url
+      description
+    }
+  }
+`;
+```
+
+The default values:
+
+```Javascript
+const defaultProps = {
+  placeholder: {
+    numberOfRows: 1, // This row will be shown 3 times for `title`, `url`, `description`
+    rowLength: 20, // This can be further optimized after the first load
+    content: "/ "
+  }
+};
+```
+
+The loading state:
+
 <Preview>
   <Story name="Default values as placeholders, loading state">
     <LoadingDataGraphQLApollo displayData={false} />
   </Story>
 </Preview>
+
+The loaded state:
 
 <Preview>
   <Story name="Default values as placeholders, loaded">
@@ -66,7 +100,32 @@ The best placeholder is no placeholder. Next to it is the one which mimics exact
   </Story>
 </Preview>
 
+#### Further optimizations
+
+##### `rowLength`
+
+After the first load the length of each row can be saved locally.
+Then on consecutive loads each placeholder will have the exactly same length as the text it replaces &mdash; achieving the perfect shape
+
+##### Number of rows
+
+In this current case we know exactly we'll have 3 rows.
+
+In other cases &mdash; when loading a list of categories we don't know how many rows will be returned. Six? Twenty?
+
+Creating a perfect placeholder for this case is impossible at the first load. It's a guess. However if we save the number of rows locally then using on consecutive loads we can have &mdash; again &mdash; the perfect shape.
+
 ### SVG mockups as placeholders
+
+Since the SVG format is pure markup it is programmable. That makes it as valuable as Default values to offer perfectly shaped placeholders.
+
+[Some libraries](https://github.com/danilowoz/react-content-loader) offer basic options to make placeholders follow the shape of the data.
+
+When SVG placeholders are static &mdash; a three-row list placeholder used for a 15 rows result &mdash; they can be as ugly as the good old loading animations and spinners.
+
+In the case above the browser will stretch the 3 row SVG to fill the space designed for 15 rows of data &mdash; distorting the shape and ruining the experience.
+
+Making SVG look and behave better than default values based placeholders is possible with lots of dedication.
 
 ## Pagination
 
@@ -83,3 +142,4 @@ The best placeholder is no placeholder. Next to it is the one which mimics exact
 - [AJAX and APIs](https://reactjs.org/docs/faq-ajax.html)
 - [How to fetch data in React](https://www.robinwieruch.de/react-fetching-data/)
 - [Axios](https://github.com/axios/axios)
+- [react-content-loader](https://github.com/danilowoz/react-content-loader)
