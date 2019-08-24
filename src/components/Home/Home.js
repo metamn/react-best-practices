@@ -36,6 +36,9 @@ const Home = props => {
         <li>
           <Link to="/loading-data">Loading data</Link>
         </li>
+        <li>
+          <Link to="/loading-images">Loading images</Link>
+        </li>
       </ul>
     </Section>
   );

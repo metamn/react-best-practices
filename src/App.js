@@ -8,6 +8,7 @@ import TypographicGrid from "./components/TypographicGrid";
 
 import Home from "./components/Home";
 import LoadingData from "./components/LoadingData";
+import LoadingImages from "./components/LoadingImages";
 
 const App = () => {
   return (
@@ -19,6 +20,7 @@ const App = () => {
         <Switch>
           <Route exact path="/" component={Home} />
           <Route path="/loading-data" component={LoadingData} />
+          <Route path="/loading-images" component={LoadingImages} />
         </Switch>
       </Router>
     </>
