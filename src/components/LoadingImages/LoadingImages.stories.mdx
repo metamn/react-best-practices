@@ -73,6 +73,18 @@ That's all can be done with services like Imigix, Cloudinary, Cloudimage and co.
   </Story>
 </Preview>
 
+In config a default filter is set to `q35.foil1`. That means quality=35 which in text screenshots is to low and needs to be adjusted indiviually.
+
+#### Higher quality
+
+<Preview>
+  <Story name="Higher quality image">
+    <LoadingImages src="performance-rerenders.png" filters="q100" size="1920" />
+  </Story>
+</Preview>
+
+Both the image quality and size was increased. The original image size is 231kb while this has 100kb &mdash; and stays still readable.
+
 ## Resources
 
 - [Responsive images](https://developer.mozilla.org/en-US/docs/Learn/HTML/Multimedia_and_embedding/Responsive_images)

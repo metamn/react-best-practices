@@ -27,7 +27,20 @@ const propTypes = {
   /**
    * The intrinsic ratio of the image
    */
-  ratio: PropTypes.number
+  ratio: PropTypes.number,
+  /**
+   * The filters applied to the image
+   *
+   * In config a default filter is set to `q35.foil1`
+   * That means quality=35 which in text screenshots is to low and needs to be adjusted indiviually
+   *
+   * @link https://github.com/scaleflex/react-cloudimage-responsive#filters
+   */
+  filters: PropTypes.string,
+  /**
+   * The size of the image
+   */
+  size: PropTypes.string
 };
 
 /**
@@ -36,7 +49,9 @@ const propTypes = {
 const defaultProps = {
   src: "bohen-portrait.png",
   alt: "Default image",
-  ratio: 1.5
+  ratio: 1.5,
+  filters: "",
+  size: ""
 };
 
 /**
