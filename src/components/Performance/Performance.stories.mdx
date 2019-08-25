@@ -21,30 +21,6 @@ For someone coming outside the React world _unnecessary re-renders_ might sound 
 
 How unnecessary re-renders look like? In this project we have:
 
-```
-| Component                          | Re-renders            |
-|------------------------------------|-----------------------|
-|                                    | First load | 2nd load |
-|------------------------------------|------------|----------|
-| LoadingDataApiAxios                | 3          | 1        |
-| LoadingDataApiAxiosPlaceholderSVG  | 3          | 1        |
-| LoadingDataGraphQLApollo           | 2          | 1        |
-| LoadingDataGraphQLApolloPagination | 2          | 1        |
-```
-
-The number of re-renders can be seen right-side in the console:
-
-<CloudimageProvider config={cloudimageConfig}>
-  <Img
-    src="performance-rerenders.png"
-    alt="Re-renders"
-    ratio={1.83}
-    filter="fsharp4 fcontrast100 fbrigth255"
-  />
-</CloudimageProvider>
-
-In other frameworks on first load there is a single render. Here with Axios / REST API we have three and with Apollo / GraphQL we have two renders.
-
 ## Resources
 
 - [5 Tips to Help You Avoid React Hooks Pitfalls](https://kentcdodds.com/blog/react-hooks-pitfalls)

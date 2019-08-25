@@ -187,11 +187,17 @@ Until then there are [(complicated) workarounds](https://blog.axlight.com/posts/
 
 ## Error handling
 
-Catching errors and making them unobtrusive for the UI &mdash; done simple.
+Catching errors and making them unobtrusive for the UI.
+
+### Custom
 
 1. The error is logged where first occurs. In hooks, probably.
 2. Default values are returned to make sure the calling component will receive the expected results and won't break the UI.
 3. The calling component handles the error in its own taste.
+
+### Error boundaries
+
+The React way is to use error boundaries. They can be used only with the class syntax in the current React version.
 
 ### Apollo GraphQL
 

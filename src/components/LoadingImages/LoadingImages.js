@@ -1,6 +1,5 @@
 import React from "react";
 import PropTypes from "prop-types";
-import styled from "styled-components";
 import Img, { CloudimageProvider } from "react-cloudimage-responsive";
 import { useMediaQuery } from "react-responsive";
 
@@ -16,38 +15,81 @@ import cloudimageConfig from "../../cloudimageConfig.js";
 /**
  * Defines the prop types
  */
-const propTypes = {};
+const propTypes = {
+  /**
+   * The master image source
+   */
+  src: PropTypes.string,
+  /**
+   * The image title
+   */
+  alt: PropTypes.string,
+  /**
+   * The intrinsic ratio of the image
+   */
+  ratio: PropTypes.number
+};
 
 /**
  * Defines the default props
  */
-const defaultProps = {};
+const defaultProps = {
+  src: "bohen-portrait.png",
+  alt: "Default image",
+  ratio: 1.5
+};
 
 /**
- * Styles the component container
+ * Defines the prop types for art direction
  */
-const Container = styled("div")(props => ({}));
+const propTypesArtDirection = {
+  /**
+   * The master image sources
+   */
+  images: PropTypes.arrayOf(propTypes)
+};
+
+/**
+ * Defines the default props for art direction
+ */
+const defaultPropsArtDirection = {
+  images: [
+    {
+      mediaQuery: "(orientation: portrait)",
+      src: "bohen-portrait.png",
+      alt: "Default image portrait mode",
+      ratio: 0.75
+    },
+    {
+      mediaQuery: "(orientation: landscape)",
+      src: "bohen-landscape.png",
+      alt: "Default image landscape mode",
+      ratio: 1.78
+    }
+  ]
+};
+
+/**
+ * Display an image
+ */
+const Image = props => {
+  return (
+    <CloudimageProvider config={cloudimageConfig}>
+      <Img {...props} />
+    </CloudimageProvider>
+  );
+};
+
+/**
+ * Displays an image with art direction
+ */
+const ImageArtDirection = props => {};
 
 /**
  * Displays the component
  */
 const LoadingImages = props => {
-  const isPortrait = useMediaQuery({ query: "(orientation: portrait)" });
-
-  return (
-    <CloudimageProvider config={cloudimageConfig}>
-      <p>
-        Simple demo of `react-cloudimage-responsive` displaying different images
-        for screens in landscape and portrait mode
-      </p>
-
-      {isPortrait ? (
-        <Img src="bohen-portrait.png" alt="Demo image" ratio={0.75} />
-      ) : (
-        <Img src="bohen-landscape.png" alt="Demo image" ratio={1.78} />
-      )}
-    </CloudimageProvider>
-  );
+  return props.images ? ImageArtDirection(props) : Image(props);
 };
 
 LoadingImages.propTypes = propTypes;
