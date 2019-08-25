@@ -147,14 +147,7 @@ For someone coming outside the React world _unnecessary re-renders_ might sound 
 
 The number of re-renders can be seen right-side in the console:
 
-<CloudimageProvider config={cloudimageConfig}>
-  <Img
-    src="performance-rerenders.png"
-    alt="Re-renders"
-    ratio={1.83}
-    filter="fsharp4 fcontrast100 fbrigth255"
-  />
-</CloudimageProvider>
+![Re-renders](performance-rerenders.png)
 
 In other frameworks on first load there might be a single render.
 Here with Axios / REST API we have three and with Apollo / GraphQL we have two renders.
