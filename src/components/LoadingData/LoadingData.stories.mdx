@@ -165,11 +165,46 @@ Two is ok: the first is for the placeholder the second is for the real data. On 
 
 ## Pagination
 
+Fetching new data from the server and an eventual cancellation of the whole process.
+
+### Apollo GraphQL
+
+- With `fetchMore` a new set of data can be requested.
+- Both offset and cursor based navigation is supported. On cursor based navigation also Relay-style is supported.
+- It can return two kind of results:
+  - `Next page`: simply loads the next page
+  - `Load more`: keeps old data and adds the new data
+
+### Axios REST
+
+- With `doFetch` a new set of data can be requested.
+- It offers `Next page` like navigation
+
+### Cancellation
+
+Is still a gray area in React. Suspense for Data Fetching, caching will come officially to React later this year.
+Until then there are [(complicated) workarounds](https://blog.axlight.com/posts/how-to-create-react-custom-hooks-for-data-fetching-with-useeffect/).
+
 ## Error handling
 
-## Cancellation
+Catching errors and making them unobtrusive for the UI &mdash; done simple.
+
+1. The error is logged where first occurs. In hooks, probably.
+2. Default values are returned to make sure the calling component will receive the expected results and won't break the UI.
+3. The calling component handles the error in its own taste.
+
+### Apollo GraphQL
+
+- Can be configured how to handle the different types of errors.
+- `graphQLErrors` offers verbose error messages
+
+### Axios REST
+
+- The `use-data-api` doesn't return error messages just an error flag.
 
 ## Testing
+
+TBD...
 
 ## Resources
 
