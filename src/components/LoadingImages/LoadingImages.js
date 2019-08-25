@@ -83,13 +83,29 @@ const Image = props => {
 /**
  * Displays an image with art direction
  */
-const ImageArtDirection = props => {};
+const ImageArtDirection = props => {
+  const { images } = props;
+
+  /**
+   * Here we cant' loop through various images and do `useMediaQuery` since hooks can't be called inside a loop
+   *
+   * Temporarily we loop manually ...
+   */
+
+  const image1 = images[0];
+  const image2 = images[1];
+  const mediaQuery = useMediaQuery({ query: image1.mediaQuery });
+
+  return mediaQuery ? <Image {...image1} /> : <Image {...image2} />;
+};
 
 /**
  * Displays the component
  */
 const LoadingImages = props => {
-  return props.images ? ImageArtDirection(props) : Image(props);
+  return props.images
+    ? ImageArtDirection(defaultPropsArtDirection)
+    : Image(props);
 };
 
 LoadingImages.propTypes = propTypes;
