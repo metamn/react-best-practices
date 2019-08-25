@@ -2,6 +2,9 @@ import { Meta, Story, Preview } from "@storybook/addon-docs/blocks";
 import LoadingData from "./LoadingData";
 import LoadingDataGraphQLApollo from "../LoadingDataGraphQLApollo";
 
+import Img, { CloudimageProvider } from "react-cloudimage-responsive";
+import cloudimageConfig from "../../cloudimageConfig.js";
+
 <Meta title="Loading data" component={LoadingData} />
 
 # Loading data
@@ -127,6 +130,39 @@ In the case above the browser will stretch the 3 row SVG to fill the space desig
 
 Making SVG look and behave better than default values based placeholders is possible with lots of dedication.
 
+## Re-renders
+
+For someone coming outside the React world _unnecessary re-renders_ might sound a thing to worry about. How unnecessary re-renders look like? In this project we have:
+
+```
+| Component                          | Re-renders            |
+|------------------------------------|---------------------|
+|                                    | 1st load | 2nd load |
+|------------------------------------|----------|----------|
+| LoadingDataApiAxios                | 3        | 1        |
+| LoadingDataApiAxiosPlaceholderSVG  | 3        | 1        |
+| LoadingDataGraphQLApollo           | 2        | 1        |
+| LoadingDataGraphQLApolloPagination | 2        | 1        |
+```
+
+The number of re-renders can be seen right-side in the console:
+
+<CloudimageProvider config={cloudimageConfig}>
+  <Img
+    src="performance-rerenders.png"
+    alt="Re-renders"
+    ratio={1.83}
+    filter="fsharp4 fcontrast100 fbrigth255"
+  />
+</CloudimageProvider>
+
+In other frameworks on first load there might be a single render.
+Here with Axios / REST API we have three and with Apollo / GraphQL we have two renders.
+
+Two is ok: the first is for the placeholder the second is for the real data. On Axios why there is one more render &mdash; needs to be investigated. With keeping this in mind:
+
+> MOST OF THE TIME YOU SHOULD NOT BOTHER OPTIMIZING UNNECESSARY RERENDERS. (by [Kent C. Dodds](https://kentcdodds.com/blog/usememo-and-usecallback))
+
 ## Pagination
 
 ## Error handling
@@ -143,3 +179,4 @@ Making SVG look and behave better than default values based placeholders is poss
 - [How to fetch data in React](https://www.robinwieruch.de/react-fetching-data/)
 - [Axios](https://github.com/axios/axios)
 - [react-content-loader](https://github.com/danilowoz/react-content-loader)
+- [When to useMemo and useCallback](https://kentcdodds.com/blog/usememo-and-usecallback)
