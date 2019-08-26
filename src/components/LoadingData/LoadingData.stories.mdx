@@ -31,9 +31,9 @@ Apollo GraphQL is such a modern tool. For example:
 
 > Apollo Client takes care of the request cycle from start to finish, including tracking loading and error states for you. There's no middleware to set up or boilerplate to write before making your first request, nor do you need to worry about transforming and caching the response. All you have to do is describe the data your component needs and let Apollo Client do the heavy lifting. 💪
 
-> You'll find that when you switch to Apollo Client, you'll be able to delete a lot of unnecessary code related to data management. The exact amount will vary depending on your application, but some teams have reported up to thousands of lines. While you'll find yourself writing less code with Apollo, that doesn't mean you have to compromise on features! Advanced features like optimistic UI, refetching, and pagination are all easily accessible through useQuery options.
-
 > Just by setting up Apollo Client, you get an intelligent cache out of the box with no additional configuration required. [...] Caching a graph is no easy task, but we've spent two years focused on solving it.
+
+> [...] Advanced features like optimistic UI, refetching, and pagination are all easily accessible through useQuery options.
 
 And the list [continues](https://www.apollographql.com/docs/react/why-apollo/).
 
@@ -44,6 +44,32 @@ In [AJAX and APIs](https://reactjs.org/docs/faq-ajax.html) React officially reco
 Checking [Axios](https://github.com/axios/axios) we might be surprised. Unlike Apollo for GraphQL it tells nothing about data, caching and performance. It just tells: "Promise based HTTP client for the browser and node.js"
 
 To make performant REST API operations one has to look further.
+
+### Re-renders
+
+For someone coming outside the React world _unnecessary re-renders_ might sound a thing to worry about. How unnecessary re-renders look like? In this project we have:
+
+```
+| Component                          | Re-renders          |
+|------------------------------------|---------------------|
+|                                    | 1st load | 2nd load |
+|------------------------------------|----------|----------|
+| LoadingDataApiAxios                | 3        | 1        |
+| LoadingDataApiAxiosPlaceholderSVG  | 3        | 1        |
+| LoadingDataGraphQLApollo           | 2        | 1        |
+| LoadingDataGraphQLApolloPagination | 2        | 1        |
+```
+
+The number of re-renders are logged in this project and can be seen in the browser console:
+
+![Re-renders](performance-rerenders.png)
+
+In other non-async frameworks on first load there might be a single render.
+Here with Axios / REST API we have three and with Apollo / GraphQL we have two renders.
+
+Two is ok: the first is for the placeholder the second is for the real data. On Axios why there is one more render &mdash; needs to be investigated. With keeping this in mind:
+
+> MOST OF THE TIME YOU SHOULD NOT BOTHER OPTIMIZING UNNECESSARY RERENDERS. (by [Kent C. Dodds](https://kentcdodds.com/blog/usememo-and-usecallback))
 
 ## Placeholders
 
@@ -105,18 +131,18 @@ The loaded state:
 
 #### Further optimizations
 
-##### `rowLength`
-
-After the first load the length of each row can be saved locally.
-Then on consecutive loads each placeholder will have the exactly same length as the text it replaces &mdash; achieving the perfect shape
-
 ##### Number of rows
 
 In this current case we know exactly we'll have 3 rows.
 
-In other cases &mdash; when loading a list of categories we don't know how many rows will be returned. Six? Twenty?
+In other cases &mdash; like when loading a list of categories we don't know how many rows will be returned. Six? Twenty?
 
 Creating a perfect placeholder for this case is impossible at the first load. It's a guess. However if we save the number of rows locally then using on consecutive loads we can have &mdash; again &mdash; the perfect shape.
+
+##### Row length
+
+After the first load the length of each row can be saved locally.
+Then on consecutive loads each placeholder will have the exactly same length as the text it replaces &mdash; achieving the perfect shape
 
 ### SVG mockups as placeholders
 
@@ -124,82 +150,62 @@ Since the SVG format is pure markup it is programmable. That makes it as valuabl
 
 [Some libraries](https://github.com/danilowoz/react-content-loader) offer basic options to make placeholders follow the shape of the data.
 
-When SVG placeholders are static &mdash; a three-row list placeholder used for a 15 rows result &mdash; they can be as ugly as the good old loading animations and spinners.
+Otherwise when SVG placeholders are static &mdash; a three-row list placeholder used for a 15 rows result &mdash; they can be as ugly as the good old loading animations and spinners.
 
-In the case above the browser will stretch the 3 row SVG to fill the space designed for 15 rows of data &mdash; distorting the shape and ruining the experience.
+In the case above the browser will stretch the 3 row SVG to fill the space designed for 15 rows of data &mdash; distorting the shape and reducing the user experience.
 
 Making SVG look and behave better than default values based placeholders is possible with lots of dedication.
 
-## Re-renders
-
-For someone coming outside the React world _unnecessary re-renders_ might sound a thing to worry about. How unnecessary re-renders look like? In this project we have:
-
-```
-| Component                          | Re-renders            |
-|------------------------------------|---------------------|
-|                                    | 1st load | 2nd load |
-|------------------------------------|----------|----------|
-| LoadingDataApiAxios                | 3        | 1        |
-| LoadingDataApiAxiosPlaceholderSVG  | 3        | 1        |
-| LoadingDataGraphQLApollo           | 2        | 1        |
-| LoadingDataGraphQLApolloPagination | 2        | 1        |
-```
-
-The number of re-renders can be seen right-side in the console:
-
-![Re-renders](performance-rerenders.png)
-
-In other frameworks on first load there might be a single render.
-Here with Axios / REST API we have three and with Apollo / GraphQL we have two renders.
-
-Two is ok: the first is for the placeholder the second is for the real data. On Axios why there is one more render &mdash; needs to be investigated. With keeping this in mind:
-
-> MOST OF THE TIME YOU SHOULD NOT BOTHER OPTIMIZING UNNECESSARY RERENDERS. (by [Kent C. Dodds](https://kentcdodds.com/blog/usememo-and-usecallback))
-
 ## Pagination
 
-Fetching new data from the server and an eventual cancellation of the whole process.
+On large datasets data is loaded in chunks in a per-page fashion. An initial set of data is displayed then new data is loaded on user request.
+
+Data loading libraries offer this mechanism under the name of pagination.
 
 ### Apollo GraphQL
 
-- With `fetchMore` a new set of data can be requested.
+- Offers the `fetchMore` function for pagination.
 - Both offset and cursor based navigation is supported. On cursor based navigation also Relay-style is supported.
-- It can return two kind of results:
+- Returns two kind of results:
   - `Next page`: simply loads the next page
   - `Load more`: keeps old data and adds the new data
 
 ### Axios REST
 
-- With `doFetch` a new set of data can be requested.
-- It offers `Next page` like navigation
+- Offers the `doFetch` function for pagination.
+- Returns `Next page` like navigation
 
 ### Cancellation
 
-Is still a gray area in React. Suspense for Data Fetching, caching will come officially to React later this year.
-Until then there are [(complicated) workarounds](https://blog.axlight.com/posts/how-to-create-react-custom-hooks-for-data-fetching-with-useeffect/).
+When error occurs during pagination the user has to be able to cancel the operation.
+
+This turns to be a gray area in React. The official technique &mdash; Suspense for data fetching &mdash; will land in later this year.
+
+Until then there are [(complicated) workarounds](https://blog.axlight.com/posts/how-to-create-react-custom-hooks-for-data-fetching-with-useeffect/) for those in need.
 
 ## Error handling
 
-Catching errors and making them unobtrusive for the UI.
+Error handling is about catching errors before they do harm the user experience.
 
-### Custom
+The React way is to use error boundaries &mdash; a technique only supporting the class syntax right now. Since this guide is about hooks we can't use this approach for now.
 
-1. The error is logged where first occurs. In hooks, probably.
+What's left is custom error handling:
+
+1. The error is logged where first occurs. In hooks, for this current project.
 2. Default values are returned to make sure the calling component will receive the expected results and won't break the UI.
 3. The calling component handles the error in its own taste.
 
-### Error boundaries
-
-The React way is to use error boundaries. They can be used only with the class syntax in the current React version.
-
 ### Apollo GraphQL
 
-- Can be configured how to handle the different types of errors.
-- `graphQLErrors` offers verbose error messages
+It gives us a good hand to better handle errors:
+
+- It can be [configured](https://www.apollographql.com/docs/react/features/error-handling/) to handle different ways the different types of errors.
+- The deafult policy is to treat GraphQL errors the same as network errors and any data is ignored from the response.
+- Then with the help of `graphQLErrors` we can catch the error and log in a verbose manner.
 
 ### Axios REST
 
-- The `use-data-api` doesn't return error messages just an error flag.
+The `use-data-api` doesn't return error messages just an error flag.
 
 ## Testing
 
@@ -214,3 +220,4 @@ TBD...
 - [Axios](https://github.com/axios/axios)
 - [react-content-loader](https://github.com/danilowoz/react-content-loader)
 - [When to useMemo and useCallback](https://kentcdodds.com/blog/usememo-and-usecallback)
+- [Handling errors with Apollo](https://www.apollographql.com/docs/react/features/error-handling/)
