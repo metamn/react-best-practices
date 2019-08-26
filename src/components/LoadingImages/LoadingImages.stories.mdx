@@ -28,7 +28,7 @@ What if this process could be reduced to:
 2. Create both portrait and landscape screenshots with large, retina friendly resolution.
 3. Add images to content with a single line of code without the need to set up `<picture>` or `srcset`, `sizes`.
 
-That's all can be done with services like Imigix, Cloudinary, Cloudimage and co. They worth the effort. I'm maintaing such a design inspiration website with majority of the tasks above (1-10) automatized with scripts (Gulp, Webpack) and local utilities (PNGQuant, ImageMin). Still the process is tedious.
+That can be done with services like Imigix, Cloudinary, Cloudimage and co. They worth the switch. I'm [maintaing](https://github.com/metamn/beat/blob/master/tools/gulp/tasks/image.js) such a design inspiration website with majority of the tasks automatized with scripts (Node, Gulp, Webpack) and local utilities (PNGQuant, ImageMin). Still the process is tedious and I'll definitively switch to Cloudimage.
 
 ## Cloudimage
 
@@ -53,9 +53,9 @@ That's all can be done with services like Imigix, Cloudinary, Cloudimage and co.
   - Everything is wrapped into an intrinsic ratio container to prevent page flicking
   - They are loaded via a global CDN
 
-### Art direction
+### Art direction example
 
-Different images are displayed on landscape and portrait screens.
+The image below should display in landscape mode for laptops and in portrait mode for tablets and mobiles in portrait mode.
 
 <Preview>
   <Story name="Art direction with Cloudinary">
@@ -65,11 +65,23 @@ Different images are displayed on landscape and portrait screens.
 
 ### Params and options
 
+Cloudimage offers plenty of options to customize image rendering.
+
+The following case study is using a few of them to reduce optimizations for screenshots containing lots of text.
+
 #### Original image
+
+- Type: PNG Image
+- Size: 232 KB
+- Dimensions: 1,920px × 1,044px
 
 ![Original image](performance-rerenders.png)
 
-#### Default (no) params
+#### Default options
+
+- Type: PNG Image
+- Size: 135 KB
+- Dimensions: 800px × 435px
 
 <Preview>
   <Story name="Simple image">
@@ -77,9 +89,9 @@ Different images are displayed on landscape and portrait screens.
   </Story>
 </Preview>
 
-In config a default filter is set to `q35.foil1`. That means quality=35 which in text screenshots is to low and needs to be adjusted indiviually.
+At this size and quality (35 of 100 by default) when the browser is zoomed the image becomes blurry.
 
-#### Higher quality
+#### Higher quality and size
 
 <Preview>
   <Story name="Higher quality image">
@@ -87,7 +99,11 @@ In config a default filter is set to `q35.foil1`. That means quality=35 which in
   </Story>
 </Preview>
 
-Both the image quality and size was increased. The original image size is 231kb while this has 100kb &mdash; and stays still readable.
+- Type: PNG Image
+- Size: 100 KB
+- Dimensions: 1,920px × 1,044px
+
+Both the image quality and size was increased. The original image size is 231 KB while this has 100 KB only and stays still readable.
 
 ## Resources
 
