@@ -42,29 +42,22 @@ const PlaceholderText = props => {
   /**
    * Generates a text row
    */
-  const textRow = useMemo(
-    () => [...Array(rowLength)].map(i => content).join(""),
-    [content, rowLength]
-  );
+  const textRow = [...Array(rowLength)].map(i => content).join("");
 
   /**
    * Generates the text rows
    */
-  const textRows = useMemo(
-    () =>
-      [...Array(numberOfRows)].map(i => {
-        /**
-         * Generates a random uuid
-         */
-        const id = uuid.v4();
+  const textRows = [...Array(numberOfRows)].map(i => {
+    /**
+     * Generates a random uuid
+     */
+    const id = uuid.v4();
 
-        return {
-          id: id,
-          text: textRow
-        };
-      }),
-    [numberOfRows, textRow]
-  );
+    return {
+      id: id,
+      text: textRow
+    };
+  });
 
   return textRows;
 };

@@ -71,7 +71,7 @@ Again one could ask: why don't wrap every function into a `useMemo()`? The answe
 
 > Don’t do anything there that you wouldn’t normally do while rendering. For example, side effects belong in useEffect, not useMemo.
 
-In other words: just expensive calculations, no business logic. And hooks are business logic.
+In other words: just expensive calculations, no business logic. And hooks are business logic. They can't be memoized.
 
 ### Example
 
@@ -108,10 +108,75 @@ const { data } = useDataAPI(
 );
 ```
 
-The number of re-renders before `useMemo` was three; now is a single one.
+The number of re-renders before `useMemo` was three; now is a single one. That's great but [not sure](https://kentcdodds.com/blog/usememo-and-usecallback) if it reduces the component load speed!
+
+Let's measure it with React profiler:
+
+```
+| Articles | Load #1 | Load #2 | Load #3 | Load #4 | Average |
+| -----------------------------------------------------------|
+| no memo  | 5.8     | 3.2     | 3.5     | 3.8     | 4.075   |
+| useMemo  | 3.8     | 4.2     | 3.8     | 4.4     | 4.05    |
+```
+
+## Caching callbacks
+
+By definition:
+
+> `useCallback(fn, deps)` is equivalent to `useMemo(() => fn, deps)`
+
+This makes the rules of `useMemo` apply here too:
+
+1. Use only for expensive calculations
+2. Cannot contain hooks inside
+
+Why two equivalent constructs with different names?
+Perhaps because:
+
+> This is useful when passing callbacks to optimized child components that rely on reference equality to prevent unnecessary renders.
+
+In other words `useCallback` should be used when passing callbacks to children. Perhaps it's a way to force optimized callback usage.
+
+### Example
+
+[Headway.io] has a concrete example:
+
+```
+const Parent = () => {
+	const [showExtraDetails, setShowExtraDetails] = useState(false);
+
+	return (
+		<Child onClick={() => { showData(showExtraDetails); }/>
+	);
+}
+```
+
+> This component will cause Child to re-render every time Parent does, even if Child is a PureComponent or wrapped in React.memo, because the onClick will be different every render. useCallback can handle this situation like so:
+
+```
+const Parent = () => {
+	const [showExtraDetails, setShowExtraDetails] = useState(false);
+
+	const handleClick = useCallback(
+	  () => {
+	    showData(showExtraDetails);
+	  },
+	  [showExtraDetails],
+	);
+
+	return (
+		<Child onClick={handleClick}/>
+	);
+}
+```
+
+> Now handleClick will have the same value until showExtraDetails changes, which will reduce the number of times Child renders.
+
+## Reference equality
 
 ## Resources
 
 - [React v16.6.0: lazy, memo and contextType](https://reactjs.org/blog/2018/10/23/react-v-16-6.html)
 - [React: Optimize Components with React.memo, useMemo, and useCallback](https://headway.io/blog/react-optimize-components-memo-usememo-usecallback/)
 - [Hooks API Reference](https://reactjs.org/docs/hooks-reference.html)
+- [When to useMemo and useCallback](https://kentcdodds.com/blog/usememo-and-usecallback)
