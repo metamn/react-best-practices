@@ -42,7 +42,6 @@ const Article = styled(_Article)(props => ({
  * Generates a text placeholder for articles
  */
 const ArticlesPlaceholder = props => {
-  console.log("ArticlesPlaceholder");
   /**
    * Loads the placeholder
    */
@@ -81,7 +80,7 @@ const Articles = props => {
   ]);
 
   /**
-   * Loads the data
+   * Loads data
    */
   const { data } = useDataAPI(
     articlesPlaceholder,

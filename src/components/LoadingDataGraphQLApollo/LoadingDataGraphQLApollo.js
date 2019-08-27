@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useMemo } from "react";
 import PropTypes from "prop-types";
 import styled from "styled-components";
 
@@ -79,10 +79,28 @@ const SettingsPlaceholder = props => {
  * Loads site settings from the database
  */
 const Settings = props => {
+  /**
+   * Loads props
+   */
   const { placeholder, displayData } = props;
-  const defaultProps = SettingsPlaceholder(placeholder);
 
+  /**
+   * Creates the placeholder
+   */
+  const defaultProps = useMemo(() => SettingsPlaceholder(placeholder), [
+    placeholder
+  ]);
+
+  /**
+   * Loads data
+   */
   const { data } = useData(defaultProps, query, "generalSettings");
+
+  /**
+   * Returns data
+   *
+   * If `displayData` then returns default data (for demo purposes)
+   */
   const { title, url, description } = displayData ? data : defaultProps;
 
   return (

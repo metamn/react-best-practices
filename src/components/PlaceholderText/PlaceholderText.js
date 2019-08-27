@@ -1,3 +1,4 @@
+import React, { useMemo } from "react";
 import PropTypes from "prop-types";
 import uuid from "uuid";
 
@@ -32,6 +33,7 @@ const defaultProps = {
  * Displays the component
  */
 const PlaceholderText = props => {
+  console.log("PlaceholderText");
   /**
    * Loads props
    */
@@ -40,22 +42,29 @@ const PlaceholderText = props => {
   /**
    * Generates a text row
    */
-  const textRow = [...Array(rowLength)].map(i => content).join("");
+  const textRow = useMemo(
+    () => [...Array(rowLength)].map(i => content).join(""),
+    [content, rowLength]
+  );
 
   /**
    * Generates the text rows
    */
-  const textRows = [...Array(numberOfRows)].map(i => {
-    /**
-     * Generates a random uuid
-     */
-    const id = uuid.v4();
+  const textRows = useMemo(
+    () =>
+      [...Array(numberOfRows)].map(i => {
+        /**
+         * Generates a random uuid
+         */
+        const id = uuid.v4();
 
-    return {
-      id: id,
-      text: textRow
-    };
-  });
+        return {
+          id: id,
+          text: textRow
+        };
+      }),
+    [numberOfRows, textRow]
+  );
 
   return textRows;
 };
