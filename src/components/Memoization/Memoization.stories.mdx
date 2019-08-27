@@ -13,21 +13,15 @@ In other words: caching components and functions.
 
 ## Caching components
 
-If a component:
+Introduced rencently `React.memo()`:
 
-1. Is functional (ie. renders something)
-2. Is pure (ie. given the same props always renders the same output)
-3. Usually takes the same props when re-rendering
-4. Renders often
-5. Has medium to big size
+> Bails out components from rendering when their input props are the same
 
-then it can be wrapped into `React.memo()` and it will be cached.
-
-In fact any component can be memoized but those not satisfying the conditions above [might do more harm than good](https://dmitripavlutin.com/use-react-memo-wisely/).
+That makes one think why don't memoize every component? The answer is: [avoid premature optimizations](./?path=/docs/memoization--storybookdocsonly). React is fast enough and every code added in plus might cause more harm than benefit.
 
 ### Measure first
 
-A good starting point to see which component might need memoization is to use the [React profiler](https://reactjs.org/docs/optimizing-performance.html#profiling-components-with-the-chrome-performance-tab)
+A good starting point to see which component might need memoization is to use the React profiler.
 
 <LoadingImages
   images={false}
@@ -35,32 +29,34 @@ A good starting point to see which component might need memoization is to use th
   alt="The React profiler"
 />
 
-`Repeat`, `Meta` and `TypographicGrid` are the components specific to this app &mdash; written by hand &mdash; and are the most time consuming &mdash; among their peers.
+`Repeat`, `Meta` and `TypographicGrid` are the components specific to this app &mdash; written by hand &mdash; which are the most time consuming among their peers.
 
 Their loading times are:
 
 ```
-| Component       | Loading time (ms)                         |
-|-----------------|-------------------------------------------|
-|                 | 1st load | 2nd load | 3rd load | 4th load |
-|-------------------------------------------------------------|
-| Repeat          | 3.7, 3.1 | 4.0, 3.8 | 13 , 2.6 | 4.2, 2.6 |
-| Meta            | 0.8      | 1.4      | 1        | 1.3      |
-| TypographicGrid | 0.7      | 0.8      | 4.5      | 0.8      |
+| Component       | Loading time (ms)                         | Average |
+|-----------------|-------------------------------------------|---------|
+|                 | 1st load | 2nd load | 3rd load | 4th load |         |
+|-------------------------------------------------------------|---------|
+| Repeat          | 3.7, 3.1 | 4.0, 3.8 | 13 , 2.6 | 4.2, 2.6 | 4.625   |
+| Meta            | 0.8      | 1.4      | 1        | 1.3      | 1.125   |
+| TypographicGrid | 0.7      | 0.8      | 4.5      | 0.8      | 1.7     |
 ```
 
 Memoizing them brings in the following results:
 
 ```
-| Component       | Loading time (ms)                         |
-|-----------------|-------------------------------------------|
-|                 | 1st load | 2nd load | 3rd load | 4th load |
-|-------------------------------------------------------------|
-| Repeat          | 2.5, 2.4 | 3.1, 3.1 | 6.5, 3.1 | 3.5, 2.2 |
-| Meta            | 0.9      | 1.1      | 0.9      | 1.4      |
-| TypographicGrid | 1.8      | 0.8      | 1        | 0.7      |
+| Component       | Loading time (ms)                         | Average |
+|-----------------|-------------------------------------------|---------|
+|                 | 1st load | 2nd load | 3rd load | 4th load |         |
+|-------------------------------------------------------------|---------|
+| Repeat          | 2.5, 2.4 | 3.1, 3.1 | 6.5, 3.1 | 3.5, 2.2 | 3.3     |
+| Meta            | 0.9      | 1.1      | 0.9      | 1.4      | 1.075   |
+| TypographicGrid | 1.8      | 0.8      | 1        | 0.7      | 1.075   |
 ```
+
+It seems they all worth memoized in this context. However this feature needs more reasearch.
 
 ## Resources
 
-- [Use React.memo() wisely](https://dmitripavlutin.com/use-react-memo-wisely/)
+- [React v16.6.0: lazy, memo and contextType](https://reactjs.org/blog/2018/10/23/react-v-16-6.html)
