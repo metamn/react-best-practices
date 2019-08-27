@@ -28,8 +28,6 @@ import useDataApi from "use-data-api";
  * @link https://github.com/the-road-to-learn-react/react-hooks-introduction/tree/master/src/useDataApiHook-external-example
  */
 const useDataAPI = (defaultValues, query, filter) => {
-  console.log("useDataAPI");
-
   /**
    * Queries the database
    */

@@ -40,13 +40,14 @@ const LoadingData = props => {
     <Section className="LoadingData" title="Loading Data" displayTitle={true}>
       <ul>
         <li>
-          <Link to="/loading-data/api-axios-placeholder-svg">
-            Loading data from an API with Axios using an SVG Placeholder
-          </Link>
-        </li>
-        <li>
           <Link to="/loading-data/api-axios">
             Loading data from an API with Axios
+          </Link>
+        </li>
+
+        <li>
+          <Link to="/loading-data/api-axios-placeholder-svg">
+            Loading data from an API with Axios using an SVG Placeholder
           </Link>
         </li>
         <li>

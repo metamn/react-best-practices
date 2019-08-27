@@ -17,8 +17,8 @@ const App = () => {
       <Meta />
       <Reset />
       <TypographicGrid
-        displayVerticalRhytm={true}
-        displayHorizontalRhytm={true}
+        displayVerticalRhytm={false}
+        displayHorizontalRhytm={false}
       />
       <Router>
         <Switch>

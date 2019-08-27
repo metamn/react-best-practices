@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useMemo } from "react";
 import PropTypes from "prop-types";
 import styled from "styled-components";
 
@@ -42,6 +42,7 @@ const Article = styled(_Article)(props => ({
  * Generates a text placeholder for articles
  */
 const ArticlesPlaceholder = props => {
+  console.log("ArticlesPlaceholder");
   /**
    * Loads the placeholder
    */
@@ -73,10 +74,17 @@ const Articles = props => {
   const { placeholder } = props;
 
   /**
+   * Creates the placeholder
+   */
+  const articlesPlaceholder = useMemo(() => ArticlesPlaceholder(placeholder), [
+    placeholder
+  ]);
+
+  /**
    * Loads the data
    */
   const { data } = useDataAPI(
-    ArticlesPlaceholder(placeholder),
+    articlesPlaceholder,
     "http://hn.algolia.com/api/v1/search?query=redux",
     "hits"
   );
