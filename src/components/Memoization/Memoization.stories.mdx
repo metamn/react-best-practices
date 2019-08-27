@@ -15,88 +15,51 @@ In other words: caching components and functions.
 
 If a component:
 
-1. Is pure and functional
-2. Renders often
-3. Has medium to big size
+1. Is functional (ie. renders something)
+2. Is pure (ie. given the same props always renders the same output)
+3. Usually takes the same props when re-rendering
+4. Renders often
+5. Has medium to big size
 
 then it can be wrapped into `React.memo()` and it will be cached.
 
 In fact any component can be memoized but those not satisfying the conditions above [might do more harm than good](https://dmitripavlutin.com/use-react-memo-wisely/).
 
-### Pure and functional
-
-Pure and functional can be further refined. They are components which:
-
-- Render something (ie. functional)
-- Have static props which render the same result (ie. pure)
-  - Like `Meta`, `Logo`, `Reset`, `TypographicGrid`, `Link` &mdash; they always have the same props and render the same results
-  - Unlike `Repeat` &mdash; where props are dynamic based on a state or loop variable and each render produces a different result.
-
-Example of a component which worth caching:
-
-```
-/**
- * Displays <meta> tags in <header>
- *
- * Props are static like `My app`, `http://my.app`, 'This is my app'
- * The same result is rendered for the same props
- */
-const Meta = props => {
-  const { title, url, description } = props;
-
-  return (
-    <Helmet>
-      <title>{title}</title>
-      <meta name="title" content={title} />
-      <meta name="description" content={description} />
-      <meta name="url" content={url} />
-      <meta
-        name="viewport"
-        content="minimum-scale=1, initial-scale=1, width=device-width, shrink-to-fit=no"
-      />
-    </Helmet>
-  );
-};
-```
-
-Example of a component which won't worth caching:
-
-```
-/**
- * Imitates the for loop inside JSX.
- *
- * The `children` prop is dynamic
- * The rendered result is always different: a children component which depends on a loop variable
- *
- * <Repeat numberOfTimes={numberOfHorizontalLines} startAt={0}>
- * 	{i => <HorizontalRhythmLine key={i} lineColor={lineColor} />}
- * </Repeat>
- */
-const Repeat = props => {
-  const { startAt, numberOfTimes, children } = props;
-
-  let ret = [];
-  const endAt = startAt + numberOfTimes;
-
-  for (let i = startAt; i < endAt; i++) {
-    ret.push(children(i));
-  }
-
-  return ret;
-};
-```
-
 ### Measure first
 
 A good starting point to see which component might need memoization is to use the [React profiler](https://reactjs.org/docs/optimizing-performance.html#profiling-components-with-the-chrome-performance-tab)
 
-<LoadingImages images={false} src="memoization-1.png" alt="Memoization" />
+<LoadingImages
+  images={false}
+  src="memoization-1.png"
+  alt="The React profiler"
+/>
 
-`Repeat`, `Meta` and `TypographicGrid` are components specific to this app and can be memoized. The last two satisfy the criterias for memoization.
+`Repeat`, `Meta` and `TypographicGrid` are components specific to this app and can be memoized.
 
-Memoizing them brings in the results:
+Before memoization their loading times were:
 
-<LoadingImages images={false} src="memoization-2.png" alt="Memoization" />
+```
+| Component       | Loading time (ms)                         |
+|-----------------|-------------------------------------------|
+|                 | 1st load | 2nd load | 3rd load | 4th load |
+|-------------------------------------------------------------|
+| Repeat          | 3.7, 3.1 | 4.0, 3.8 | 13 , 2.6 | 4.2, 2.6 |
+| Meta            | 0.8      | 1.4      | 1        | 1.3      |
+| TypographicGrid | 0.7      | 0.8      | 4.5      | 0.8      |
+```
+
+Memoizing them brings in the following results:
+
+```
+| Component       | Loading time (ms)                         |
+|-----------------|-------------------------------------------|
+|                 | 1st load | 2nd load | 3rd load | 4th load |
+|-------------------------------------------------------------|
+| Repeat          | 2.5, 2.4 | 3.1, 3.1 | 6.5, 3.1 | 3.5, 2.2 |
+| Meta            | 0.9      | 1.1      | 0.9      | 1.4      |
+| TypographicGrid | 1.8      | 0.8      | 1        | 0.7      |
+```
 
 ## Resources
 
