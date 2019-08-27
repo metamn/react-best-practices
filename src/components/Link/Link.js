@@ -56,4 +56,4 @@ const Link = props => {
 Link.propTypes = propTypes;
 Link.defaultProps = defaultProps;
 
-export default React.memo(Link);
+export default Link;

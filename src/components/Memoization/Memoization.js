@@ -1,6 +1,7 @@
 import React from "react";
 import PropTypes from "prop-types";
 import styled from "styled-components";
+import Repeat from "../Repeat";
 
 /**
  * Defines the prop types
@@ -21,7 +22,15 @@ const Container = styled("div")(props => ({}));
  * Displays the component
  */
 const Memoization = props => {
-  return <Container className="Memoization">Memoization</Container>;
+  return (
+    <Container className="Memoization">
+      <ul>
+        <Repeat numberOfTimes={10} startAt={0}>
+          {i => <li key={i}>Item #{i}</li>}
+        </Repeat>
+      </ul>
+    </Container>
+  );
 };
 
 Memoization.propTypes = propTypes;

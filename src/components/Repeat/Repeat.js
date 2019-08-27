@@ -1,3 +1,4 @@
+import React from "react";
 import PropTypes from "prop-types";
 
 /**
@@ -48,4 +49,4 @@ const Repeat = props => {
 Repeat.propTypes = propTypes;
 Repeat.defaultProps = defaultProps;
 
-export default Repeat;
+export default React.memo(Repeat);

@@ -39,6 +39,9 @@ const Home = props => {
         <li>
           <Link to="/loading-images">Loading images</Link>
         </li>
+        <li>
+          <Link to="/memoization">Memoization</Link>
+        </li>
       </ul>
     </Section>
   );

@@ -88,4 +88,4 @@ const Reset = () => {
   return <GlobalReset />;
 };
 
-export default React.memo(Reset);
+export default Reset;

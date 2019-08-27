@@ -52,5 +52,5 @@ const Meta = props => {
 Meta.propTypes = propTypes;
 Meta.defaultProps = defaultProps;
 
-export default Meta;
+export default React.memo(Meta);
 export { propTypes as MetaPropTypes, defaultProps as MetaDefaultProps };

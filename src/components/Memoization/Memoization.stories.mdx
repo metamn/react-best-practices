@@ -1,4 +1,5 @@
 import { Meta, Story, Preview } from "@storybook/addon-docs/blocks";
+import LoadingImages from "../LoadingImages";
 
 import Memoization from "./Memoization";
 
@@ -24,33 +25,36 @@ In fact any component can be memoized but those not satisfying the conditions ab
 
 ### Pure and functional
 
-Pure and functional cane be further refined. They are components which:
+Pure and functional can be further refined. They are components which:
 
 - Render something (ie. functional)
 - Have static props which render the same result (ie. pure)
-  - Like `Logo`, `Reset`, `TypographicGrid` &mdash; they always have the same props and render the same results
-  - Unlike `Repeat`, `Icon`, `MenuItem` &mdash; where props are dynamic based on a state or loop variable and each render produces a different result.
+  - Like `Meta`, `Logo`, `Reset`, `TypographicGrid`, `Link` &mdash; they always have the same props and render the same results
+  - Unlike `Repeat` &mdash; where props are dynamic based on a state or loop variable and each render produces a different result.
 
 Example of a component which worth caching:
 
 ```
-const Logo = props => {
-  /**
-   * Loads props
-   *
-   * Props are always like `My app`, `http://my.app`
-   * They always render to `<a href="http://my.app"> title="My app">My app</a>`
-   */
-  const { title, url } = props;
+/**
+ * Displays <meta> tags in <header>
+ *
+ * Props are static like `My app`, `http://my.app`, 'This is my app'
+ * The same result is rendered for the same props
+ */
+const Meta = props => {
+  const { title, url, description } = props;
 
   return (
-    <Header className="Logo">
-      <Title className="Title">
-        <Link url={url} title={title}>
-          {title}
-        </Link>
-      </Title>
-    </Header>
+    <Helmet>
+      <title>{title}</title>
+      <meta name="title" content={title} />
+      <meta name="description" content={description} />
+      <meta name="url" content={url} />
+      <meta
+        name="viewport"
+        content="minimum-scale=1, initial-scale=1, width=device-width, shrink-to-fit=no"
+      />
+    </Helmet>
   );
 };
 ```
@@ -61,7 +65,8 @@ Example of a component which won't worth caching:
 /**
  * Imitates the for loop inside JSX.
  *
- * Props (and the rendered results) are always different:
+ * The `children` prop is dynamic
+ * The rendered result is always different: a children component which depends on a loop variable
  *
  * <Repeat numberOfTimes={numberOfHorizontalLines} startAt={0}>
  * 	{i => <HorizontalRhythmLine key={i} lineColor={lineColor} />}
@@ -81,7 +86,17 @@ const Repeat = props => {
 };
 ```
 
-### Measure benefits
+### Measure first
+
+A good starting point to see which component might need memoization is to use the [React profiler](https://reactjs.org/docs/optimizing-performance.html#profiling-components-with-the-chrome-performance-tab)
+
+<LoadingImages images={false} src="memoization-1.png" alt="Memoization" />
+
+`Repeat`, `Meta` and `TypographicGrid` are components specific to this app and can be memoized. The last two satisfy the criterias for memoization.
+
+Memoizing them brings in the results:
+
+<LoadingImages images={false} src="memoization-2.png" alt="Memoization" />
 
 ## Resources
 
