@@ -55,16 +55,6 @@ const defaultProps = {
 };
 
 /**
- * Defines the prop types for art direction
- */
-const propTypesArtDirection = {
-  /**
-   * The master image sources
-   */
-  images: PropTypes.arrayOf(propTypes)
-};
-
-/**
  * Defines the default props for art direction
  */
 const defaultPropsArtDirection = {

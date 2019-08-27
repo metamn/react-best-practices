@@ -119,8 +119,6 @@ const Articles = props => {
  * Displays the component
  */
 const LoadingDataApiAxios = props => {
-  const { description } = props;
-
   return (
     <Article
       className="LoadingDataApiAxios"

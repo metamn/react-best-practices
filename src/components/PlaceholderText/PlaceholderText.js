@@ -1,4 +1,3 @@
-import React, { useMemo } from "react";
 import PropTypes from "prop-types";
 import uuid from "uuid";
 
@@ -33,7 +32,6 @@ const defaultProps = {
  * Displays the component
  */
 const PlaceholderText = props => {
-  console.log("PlaceholderText");
   /**
    * Loads props
    */

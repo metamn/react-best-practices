@@ -1,5 +1,4 @@
-import React, { useState, useMemo } from "react";
-import PropTypes from "prop-types";
+import React, { useState } from "react";
 import styled from "styled-components";
 import { Code } from "react-content-loader";
 
@@ -111,8 +110,6 @@ const Articles = props => {
  * Displays the component
  */
 const LoadingDataApiAxiosPlaceholderSVG = props => {
-  const { description } = props;
-
   return (
     <Article
       className="LoadingDataApiAxiosPlaceholderSVG"

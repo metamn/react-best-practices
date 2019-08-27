@@ -1,5 +1,4 @@
 import React from "react";
-import PropTypes from "prop-types";
 import styled from "styled-components";
 import { Link, Route } from "react-router-dom";
 
@@ -34,8 +33,6 @@ const Section = styled(_Section)(props => ({
  * Displays the component
  */
 const LoadingData = props => {
-  const { description } = props;
-
   return (
     <Section className="LoadingData" title="Loading Data" displayTitle={true}>
       <ul>
