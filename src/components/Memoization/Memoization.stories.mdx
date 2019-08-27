@@ -1,0 +1,88 @@
+import { Meta, Story, Preview } from "@storybook/addon-docs/blocks";
+
+import Memoization from "./Memoization";
+
+<Meta title="Memoization" component={Memoization} />
+
+# Memoization
+
+In other words: caching components and functions.
+
+[Loading data](./?path=/docs/loading-data--default-values-as-placeholders-loading-state) and [images](./?path=/docs/loading-images--art-direction-with-cloudinary) leverages the power of caching using third party solutions. For components and functions we have built-in mechanism provided by React out of the box: `React.memo()` and `useMemo()`, `useCallback()`.
+
+## Caching components
+
+If a component:
+
+1. Is pure and functional
+2. Renders often
+3. Has medium to big size
+
+then it can be wrapped into `React.memo()` and it will be cached.
+
+In fact any component can be memoized but those not satisfying the conditions above [might do more harm than good](https://dmitripavlutin.com/use-react-memo-wisely/).
+
+### Pure and functional
+
+Pure and functional cane be further refined. They are components which:
+
+- Render something (ie. functional)
+- Have static props which render the same result (ie. pure)
+  - Like `Logo`, `Reset`, `TypographicGrid` &mdash; they always have the same props and render the same results
+  - Unlike `Repeat`, `Icon`, `MenuItem` &mdash; where props are dynamic based on a state or loop variable and each render produces a different result.
+
+Example of a component which worth caching:
+
+```
+const Logo = props => {
+  /**
+   * Loads props
+   *
+   * Props are always like `My app`, `http://my.app`
+   * They always render to `<a href="http://my.app"> title="My app">My app</a>`
+   */
+  const { title, url } = props;
+
+  return (
+    <Header className="Logo">
+      <Title className="Title">
+        <Link url={url} title={title}>
+          {title}
+        </Link>
+      </Title>
+    </Header>
+  );
+};
+```
+
+Example of a component which won't worth caching:
+
+```
+/**
+ * Imitates the for loop inside JSX.
+ *
+ * Props (and the rendered results) are always different:
+ *
+ * <Repeat numberOfTimes={numberOfHorizontalLines} startAt={0}>
+ * 	{i => <HorizontalRhythmLine key={i} lineColor={lineColor} />}
+ * </Repeat>
+ */
+const Repeat = props => {
+  const { startAt, numberOfTimes, children } = props;
+
+  let ret = [];
+  const endAt = startAt + numberOfTimes;
+
+  for (let i = startAt; i < endAt; i++) {
+    ret.push(children(i));
+  }
+
+  return ret;
+};
+```
+
+### Measure benefits
+
+## Resources
+
+- [Use React.memo() wisely](https://dmitripavlutin.com/use-react-memo-wisely/)
