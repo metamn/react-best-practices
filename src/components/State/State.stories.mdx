@@ -14,11 +14,20 @@ By definition, in React one has to:
 
 > Design simple views for each state in your application, and React will efficiently update and render just the right components when your data changes. &mdash; via [Reactjs.org](https://reactjs.org/)
 
-The main concern in React is to manage application state instead of managing requests and responsonses from external sources.
+The keywords are design and state vs. request and response.
 
-To put another way &mdash; designing apps now happens on the front-end / user interface and the back-end is rendered non-relevant in this process. In the past the design happened on the backend &mdash; API first &mdash; then a user interface was constructed around.
+Designing apps with React happens on the front-end / user interface and the back-end is completely ignored in this process. In the past the design happened on the backend &mdash; API first, Model and Controller first &mdash; then the user interface was constructed around.
+
+With state React introduces a powerful mechanism to manage all kind of changes on the user interface &mdash; coming either from user interactions or from the underlying network and services infrastucture.
+
+In the past there were no such mechanisms at all. There were ad-hoc solutions like connecting content - presentation - behavior (HTML - CSS - Javascript) through naming conventions (class names) &mdash; all proved to be impossible to scale.
+
+Now React puts a mathematical model of computation &mdash; [finite-state machines](https://en.wikipedia.org/wiki/Finite-state_machine) &mdash; as the core and sole basis of application design and development. With that new perspectives are opened &mdash; from data-driven applications to autogenerating tests.
 
 ## Resources
 
 - [Realigning Your Model of React After Hooks - With Dan Abramov](https://kentcdodds.com/chats-with-kent-podcast/seasons/01/episodes/realigning-your-model-of-react-after-hooks-with-dan-abramov)
+- [Finite-state machine](https://en.wikipedia.org/wiki/Finite-state_machine)
+- [Write Fewer Tests! - From Automation to Autogeneration](https://slides.com/davidkhourshid/mbt#/)
+- [Relay - A JavaScript framework for building data-driven React applications](https://relay.dev/)
 - [Tomorrowww - Devices as designers](http://metamn.io/beat/tomorrowww/)
