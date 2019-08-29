@@ -1,0 +1,24 @@
+import { Meta, Story, Preview } from "@storybook/addon-docs/blocks";
+
+import State from "./State";
+
+<Meta title="State" component={State} />
+
+# State
+
+Everything in React rolls around the concept of state.
+
+In the past everything rolled around URLs. Requests were made to them and responses received. This was called AJAX, REST, CRUD, MVC and so forth. Now one has to [forget all these](https://kentcdodds.com/chats-with-kent-podcast/seasons/01/episodes/realigning-your-model-of-react-after-hooks-with-dan-abramov) to be able to think the React way.
+
+By definition, in React one has to:
+
+> Design simple views for each state in your application, and React will efficiently update and render just the right components when your data changes. &mdash; via [Reactjs.org](https://reactjs.org/)
+
+The main concern in React is to manage application state instead of managing requests and responsonses from external sources.
+
+To put another way &mdash; designing apps now happens on the front-end / user interface and the back-end is rendered non-relevant in this process. In the past the design happened on the backend &mdash; API first &mdash; then a user interface was constructed around.
+
+## Resources
+
+- [Realigning Your Model of React After Hooks - With Dan Abramov](https://kentcdodds.com/chats-with-kent-podcast/seasons/01/episodes/realigning-your-model-of-react-after-hooks-with-dan-abramov)
+- [Tomorrowww - Devices as designers](http://metamn.io/beat/tomorrowww/)
