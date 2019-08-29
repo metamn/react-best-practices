@@ -10,7 +10,7 @@ const propTypes = {
    */
   numberOfRows: PropTypes.number,
   /**
-   * The lenbgth of the rows
+   * The length of the rows
    */
   rowLength: PropTypes.number,
   /**
