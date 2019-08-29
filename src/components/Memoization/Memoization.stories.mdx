@@ -55,7 +55,7 @@ Memoizing them brings in the following results:
 | TypographicGrid | 1.8      | 0.8      | 1        | 0.7      | 1.075   |
 ```
 
-It seems they all worth memoized in this context. However this feature needs more reasearch.
+It seems they all worth memoized in this context. However, this feature needs more research.
 
 ## Caching functions
 
@@ -71,7 +71,9 @@ Again one could ask: why don't wrap every function into a `useMemo()`? The answe
 
 > Don’t do anything there that you wouldn’t normally do while rendering. For example, side effects belong in useEffect, not useMemo.
 
-In other words: just expensive calculations, no business logic. And hooks are business logic. They can't be memoized.
+In other words: no business logic. And hooks are business logic. They can't be memoized.
+
+(NOTE: Please check 'Resources' at the bottom of the page for quote sources)
 
 ### Example
 
@@ -125,17 +127,12 @@ By definition:
 
 > `useCallback(fn, deps)` is equivalent to `useMemo(() => fn, deps)`
 
-This makes the rules of `useMemo` apply here too:
-
-1. Use only for expensive calculations
-2. Cannot contain hooks inside
-
 Why two equivalent constructs with different names?
 Perhaps because:
 
 > This is useful when passing callbacks to optimized child components that rely on reference equality to prevent unnecessary renders.
 
-In other words `useCallback` should be used when passing callbacks to children. Perhaps it's a way to force optimized callback usage.
+In other words `useCallback` should be used when passing callbacks to children. Perhaps it's a way to remind developers every callback should be wrapped into an `useCallback`.
 
 ### Example
 

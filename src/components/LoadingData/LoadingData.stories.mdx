@@ -11,7 +11,7 @@ import cloudimageConfig from "../../cloudimageConfig.js";
 
 Perhaps every React app deals with data. It loads from a database, from an API, from the filesystem &mdash; you name it.
 
-There are two well established ways to make interacting with data easy: `GraphQL` and `REST API`.
+There are two well-established ways to make interacting with data easy: `GraphQL` and `REST API`.
 
 `GraphQL` is the [modern way](http://metamn.io/react/graphql-and-rest-apis-with-aws/). It enables data driven applications. `REST` is &mdash; still &mdash; based on old, web-specific paradigms like `URL` and `CRUD`.
 
@@ -21,7 +21,7 @@ On both fronts there are clear winner libraries to rely.
 
 ## Performance
 
-Fetching data from remote location is considered a time consuming task which needs to be optimized.
+Fetching data from remote location is considered a time-consuming task which needs to be optimized.
 
 Modern tools, frameworks and services are competing to solve this problem for us. In modern times we don't have to think about performance optimizations &mdash; just stick to the standards and let the magic happen under the hood.
 
@@ -73,7 +73,7 @@ Two is ok: the first is for the placeholder the second is for the real data. On 
 
 ## Placeholders
 
-Loading data is a time consuming operation lasting from miliseconds to seconds. To make this delay unobtrusive on the UI placeholders are used as a best practice.
+Loading data is a time-consuming operation lasting from miliseconds to seconds. To make this delay unobtrusive on the UI placeholders are used as a best practice.
 
 There are different types of placeholders from spinners, `Loading...` text to complete monochromatic mockups as seen lately on Facebook and Instagram.
 
@@ -83,7 +83,7 @@ The best placeholder is no placeholder. Next to it is the one which mimics exact
 
 ### Default values as placeholders
 
-When loading data from a remote endpoint we know apriori its shape. This shape can be prefilled with default values and presented during the loading process.
+When loading data from a remote endpoint we know a priori its shape. This shape can be prefilled with default values and presented during the loading process.
 
 #### Example:
 
@@ -137,7 +137,7 @@ In this current case we know exactly we'll have 3 rows.
 
 In other cases &mdash; like when loading a list of categories we don't know how many rows will be returned. Six? Twenty?
 
-Creating a perfect placeholder for this case is impossible at the first load. It's a guess. However if we save the number of rows locally then using on consecutive loads we can have &mdash; again &mdash; the perfect shape.
+Creating a perfect placeholder for this case is impossible at the first load. It's a guess. However, if we save the number of rows locally then using on consecutive loads we can have &mdash; again &mdash; the perfect shape.
 
 ##### Row length
 
@@ -150,7 +150,7 @@ Since the SVG format is pure markup it is programmable. That makes it as valuabl
 
 [Some libraries](https://github.com/danilowoz/react-content-loader) offer basic options to make placeholders follow the shape of the data.
 
-Otherwise when SVG placeholders are static &mdash; a three-row list placeholder used for a 15 rows result &mdash; they can be as ugly as the good old loading animations and spinners.
+Otherwise, when SVG placeholders are static &mdash; a three-row list placeholder used for a 15 rows result &mdash; they can be as ugly as the good old loading animations and spinners.
 
 In the case above the browser will stretch the 3 row SVG to fill the space designed for 15 rows of data &mdash; distorting the shape and reducing the user experience.
 
@@ -166,7 +166,7 @@ Data loading libraries offer this mechanism under the name of pagination.
 
 - Offers the `fetchMore` function for pagination.
 - Both offset and cursor based navigation is supported. On cursor based navigation also Relay-style is supported.
-- Returns two kind of results:
+- Returns two kinds of results:
   - `Next page`: simply loads the next page
   - `Load more`: keeps old data and adds the new data
 
@@ -200,8 +200,8 @@ What's left is custom error handling:
 It gives us a good hand to better handle errors:
 
 - It can be [configured](https://www.apollographql.com/docs/react/features/error-handling/) to handle different ways the different types of errors.
-- The deafult policy is to treat GraphQL errors the same as network errors and any data is ignored from the response.
-- Then with the help of `graphQLErrors` we can catch the error and log in a verbose manner.
+- The default policy is to treat GraphQL errors the same as network errors and any data is ignored from the response.
+- Then with the help of `graphQLErrors` we can catch the error and log verbosely.
 
 ### Axios REST
 
