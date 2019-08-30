@@ -9,7 +9,7 @@ import Memoization from "./Memoization";
 
 In other words: caching components, functions and values.
 
-[Loading data](./?path=/docs/loading-data--default-values-as-placeholders-loading-state) and [images](./?path=/docs/loading-images--art-direction-with-cloudinary) leverages the power of caching using third party solutions. For components and functions we have built-in mechanism provided by React out of the box: `React.memo()` and `useMemo()`, `useCallback()`.
+[Loading data](./?path=/docs/loading-data--default-values-as-placeholders-loading-state) and [images](./?path=/docs/loading-images--art-direction-with-cloudinary) leverages the power of caching using third party solutions. For components and functions we have built-in mechanism provided by React: `React.memo()` and `useMemo()`, `useCallback()`.
 
 ## Caching components
 
@@ -59,20 +59,24 @@ It seems they all worth memoized in this context. However, this feature needs mo
 
 ## Caching values
 
-By definition `useMemo(() => memoizedValue(a, b), [a, b])` returns a memoized value:
+By definition `const memoizedValue = useMemo(() => computeExpensiveValue(a, b), [a, b]);` returns a memoized _value_:
 
 > Will only recompute the memoized value when one of the dependencies has changed. This optimization helps to avoid expensive calculations on every render. &mdash; via [Hooks API Reference](https://reactjs.org/docs/hooks-reference.html)
 
 Memoized value can be anything from a function &mdash; like the example above &mdash; to a value: `useMemo(() => ['snickers', 'skittles', 'twix', 'milky way'], [])`.
 
-There is a special hook &mdash; `useCallback()` &mdash; for memoizing functions _only_. Perhaps a best practice would be to use `useMemo()` for memorizing values only. See [When to useMemo and useCallback](https://kentcdodds.com/blog/usememo-and-usecallback).
+There is a special hook &mdash; `useCallback()` &mdash; for memoizing functions _only_. Perhaps a best practice would be to use `useMemo()` for memorizing values only.
 
 ```
-function Blub() {
-	const bar = React.useCallback(() => {}, [])
-	const baz = React.useMemo(() => [1, 2, 3], [])
-	return <Foo bar={bar} baz={baz} />
-}
+/**
+ * For functions
+ */
+const bar = React.useCallback(() => {}, [])
+
+/**
+ * For non-functions
+ */
+const baz = React.useMemo(() => [1, 2, 3], [])
 ```
 
 Again one could ask: why don't wrap everything into a `useMemo()`? The answer is:
@@ -81,13 +85,27 @@ Again one could ask: why don't wrap everything into a `useMemo()`? The answer is
 
 In other words: no business logic. And hooks are business logic. They can't be memoized.
 
+```
+/**
+ * Loads data
+ */
+const { data } = useMemo(
+  () => useData(defaultProps, query, "generalSettings"),
+  [defaultProps, query]
+);
+```
+
+Will trigger the following error:
+
+> React Hook "useData" cannot be called inside a callback. React Hooks must be called in a React function component or a custom React Hook function react-hooks/rules-of-hooks
+
 ## Caching functions
 
-By definition: `useCallback(fn, deps)` is equivalent to `useMemo(() => fn, deps)` and returns a memoized callback.
+By definition: `useCallback(fn, deps)` is equivalent to `useMemo(() => fn, deps)` and returns a memoized _callback_.
 
 > This is useful when passing callbacks to optimized child components that rely on reference equality to prevent unnecessary renders. &mdash; via [Hooks API Reference](https://reactjs.org/docs/hooks-reference.html)
 
-The keywords are referential equality.
+The keywords here are referential equality.
 
 ## When to use them?
 
@@ -99,7 +117,7 @@ There are two cases when `useMemo` and `useCallback` should be used:
 
 ### Referential equality
 
-In Javascript only primitives are equal; more complex stuff like arrays, objects, functions behave differently.
+In Javascript only primitives are referentially equal; more complex stuff like arrays, objects, functions are not.
 
 > When you define an object inside your React function component, it is not going to be referentially equal to the last time that same object was defined (even if it has all the same properties with all the same values). &mdash; via [When to useMemo and useCallback](https://kentcdodds.com/blog/usememo-and-usecallback)
 
@@ -114,11 +132,31 @@ false === false // true
 () => {} === () => {} // false
 ```
 
-Many times in React referential equality is used to check if an operation has to be performed or not. Both `useEffect`, `useMemo`, `useCallback` relies on a dependencies array to check if they need to execute. If in the dependencies array non-primitives are passed they will always trigger the execution. If these non-primitives are memoized they won't trigger the execution.
+Many times in React referential equality is used to check if an operation has to be performed or not.
 
-#### Example 1
+For example &mdash; but not exclusively &mdash; both `useEffect`, `useMemo`, `useCallback` relies on a dependencies array to check if they need to execute. If in the dependencies array non-primitives are passed they will always trigger the execution. If these non-primitives are memoized they won't trigger the execution.
 
-From [Headway.io](https://headway.io/blog/react-optimize-components-memo-usememo-usecallback/)
+```
+function Foo({bar, baz}) {
+	React.useEffect(() => {
+		const options = {bar, baz}
+		buzz(options)
+	}, [bar, baz]) // This will check for a referential equality
+
+	return <div>foobar</div>
+}
+
+function Blub() {
+	/**
+	 * If `bar`, `baz` is not memoized the `useEffect` in `Foo` will be always executed.
+	 */
+	const bar = React.useCallback(() => {}, [])
+	const baz = React.useMemo(() => [1, 2, 3], [])
+	return <Foo bar={bar} baz={baz} />
+}
+```
+
+Another example of referential equality is passing callbacks to child components. Illustrated by the example from [Headway.io](https://headway.io/blog/react-optimize-components-memo-usememo-usecallback/)
 
 ```
 const Parent = () => {
@@ -150,30 +188,6 @@ const Parent = () => {
 ```
 
 > Now handleClick will have the same value until showExtraDetails changes, which will reduce the number of times Child renders.
-
-#### Example 2.
-
-From [When to useMemo and useCallback](https://kentcdodds.com/blog/usememo-and-usecallback).
-
-```
-function Foo({bar, baz}) {
-	React.useEffect(() => {
-		const options = {bar, baz}
-		buzz(options)
-	}, [bar, baz])
-
-	return <div>foobar</div>
-}
-
-function Blub() {
-	/**
-	 * If `bar`, `baz` is not memoized the `useEffect` in `Foo` will be always executed.
-	 */
-	const bar = React.useCallback(() => {}, [])
-	const baz = React.useMemo(() => [1, 2, 3], [])
-	return <Foo bar={bar} baz={baz} />
-}
-```
 
 ### Computationally expensive calculations
 
@@ -229,10 +243,10 @@ Let's measure it with React profiler:
 
 ## Summing up
 
-1. Use `React.memo()` to memoize components only when the performance measurements make it required.
-2. `useCallback()` to memoize functions which will be used in referential equality checks.
-3. `useMemo()` to memoize values which will be used in referential equality checks.
-4. When performance measurements require wrap expensive calculations into `useCallback()` or `useMemo()`
+1. Use `React.memo()`, `useCallback()` or `useMemo()` to memoize components, functions and values only when the performance measurements make it required.
+2. Always `useCallback()` to memoize functions which will be used in referential equality checks.
+3. Always `useMemo()` to memoize values which will be used in referential equality checks.
+4. Don't overuse them: hooks can't be memoized just stuff which can be rendered.
 
 ## Resources
 
