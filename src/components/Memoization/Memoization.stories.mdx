@@ -7,7 +7,7 @@ import Memoization from "./Memoization";
 
 # Memoization
 
-In other words: caching components and functions.
+In other words: caching components, functions and values.
 
 [Loading data](./?path=/docs/loading-data--default-values-as-placeholders-loading-state) and [images](./?path=/docs/loading-images--art-direction-with-cloudinary) leverages the power of caching using third party solutions. For components and functions we have built-in mechanism provided by React out of the box: `React.memo()` and `useMemo()`, `useCallback()`.
 
@@ -15,7 +15,7 @@ In other words: caching components and functions.
 
 Introduced rencently `React.memo()`:
 
-> Bails out components from rendering when their input props are the same
+> Bails out components from rendering when their input props are the same &mdash; via [React v16.6.0: lazy, memo and contextType](https://reactjs.org/blog/2018/10/23/react-v-16-6.html)
 
 That makes one think why don't memoize every component? The answer is: [avoid premature optimizations](./?path=/docs/memoization--storybookdocsonly). React is fast enough and every code added in plus might cause more harm than benefit.
 
@@ -57,86 +57,43 @@ Memoizing them brings in the following results:
 
 It seems they all worth memoized in this context. However, this feature needs more research.
 
-## Caching functions
+## Caching values
 
-By definition `useMemo(() => memoizedValue(a, b), [a, b])` :
+By definition `useMemo(() => memoizedValue(a, b), [a, b])` returns a memoized value:
 
-> Will only recompute the memoized value when one of the dependencies has changed. This optimization helps to avoid expensive calculations on every render.
+> Will only recompute the memoized value when one of the dependencies has changed. This optimization helps to avoid expensive calculations on every render. &mdash; via [Hooks API Reference](https://reactjs.org/docs/hooks-reference.html)
 
-In other words:
+Memoized value can be anything from a function &mdash; like the example above &mdash; to a value: `useMemo(() => ['snickers', 'skittles', 'twix', 'milky way'], [])`.
 
-> useMemo allows you to memoize the results of a function, and will return that result until an array of dependencies change.
+There is a special hook &mdash; `useCallback()` &mdash; for memoizing functions _only_. Perhaps a best practice would be to use `useMemo()` for memorizing values only. See [When to useMemo and useCallback](https://kentcdodds.com/blog/usememo-and-usecallback).
 
-Again one could ask: why don't wrap every function into a `useMemo()`? The answer is:
+```
+function Blub() {
+	const bar = React.useCallback(() => {}, [])
+	const baz = React.useMemo(() => [1, 2, 3], [])
+	return <Foo bar={bar} baz={baz} />
+}
+```
 
-> Don’t do anything there that you wouldn’t normally do while rendering. For example, side effects belong in useEffect, not useMemo.
+Again one could ask: why don't wrap everything into a `useMemo()`? The answer is:
+
+> Don’t do anything there that you wouldn’t normally do while rendering. For example, side effects belong in useEffect, not useMemo. &mdash; via [Hooks API Reference](https://reactjs.org/docs/hooks-reference.html)
 
 In other words: no business logic. And hooks are business logic. They can't be memoized.
 
-(NOTE: Please check 'Resources' at the bottom of the page for quote sources)
+## Caching functions
 
-### Example
+By definition: `useCallback(fn, deps)` is equivalent to `useMemo(() => fn, deps)` and returns a memoized callback.
 
-In the `LoadingDataApiAxios` component while the data is loading a placeholder is displayed:
+> This is useful when passing callbacks to optimized child components that rely on reference equality to prevent unnecessary renders. &mdash; via [Hooks API Reference](https://reactjs.org/docs/hooks-reference.html)
 
-```
-/**
- * Loads the data
- */
-const { data } = useDataAPI(
-  ArticlesPlaceholder(placeholder),
-  "http://hn.algolia.com/api/v1/search?query=redux",
-  "hits"
-);
-```
+The keywords are referential equality.
 
-The `placeholder` prop is constant &mdash; is defined as a proptype and never gets touched. That makes the `ArticlesPlaceholder` function ideal to be wrapped into a `useMemo`:
+## Examples
 
-```
-/**
- * Creates the placeholder
- */
-const articlesPlaceholder = useMemo(() => ArticlesPlaceholder(placeholder), [
-  placeholder
-]);
+### Callback functions
 
-/**
- * Loads the data
- */
-const { data } = useDataAPI(
-  articlesPlaceholder,
-  "http://hn.algolia.com/api/v1/search?query=redux",
-  "hits"
-);
-```
-
-The number of re-renders before `useMemo` was three; now is a single one. That's great but [not sure](https://kentcdodds.com/blog/usememo-and-usecallback) if it reduces the component load speed!
-
-Let's measure it with React profiler:
-
-```
-| Articles | Load #1 | Load #2 | Load #3 | Load #4 | Average |
-| -----------------------------------------------------------|
-| no memo  | 5.8     | 3.2     | 3.5     | 3.8     | 4.075   |
-| useMemo  | 3.8     | 4.2     | 3.8     | 4.4     | 4.05    |
-```
-
-## Caching callbacks
-
-By definition:
-
-> `useCallback(fn, deps)` is equivalent to `useMemo(() => fn, deps)`
-
-Why two equivalent constructs with different names?
-Perhaps because:
-
-> This is useful when passing callbacks to optimized child components that rely on reference equality to prevent unnecessary renders.
-
-In other words `useCallback` should be used when passing callbacks to children. Perhaps it's a way to remind developers every callback should be wrapped into an `useCallback`.
-
-### Example
-
-[Headway.io](https://headway.io/blog/react-optimize-components-memo-usememo-usecallback/) has a concrete example:
+[Headway.io](https://headway.io/blog/react-optimize-components-memo-usememo-usecallback/)
 
 ```
 const Parent = () => {
@@ -168,6 +125,52 @@ const Parent = () => {
 ```
 
 > Now handleClick will have the same value until showExtraDetails changes, which will reduce the number of times Child renders.
+
+### Simple functions
+
+In the `LoadingDataApiAxios` component while the data is loading a placeholder is displayed:
+
+```
+/**
+ * Loads the data
+ */
+const { data } = useDataAPI(
+  ArticlesPlaceholder(placeholder),
+  "http://hn.algolia.com/api/v1/search?query=redux",
+  "hits"
+);
+```
+
+The `placeholder` prop is constant &mdash; is defined as a proptype and never gets touched. That makes the `ArticlesPlaceholder` function ideal to be memoized:
+
+```
+/**
+ * Creates the placeholder
+ */
+const articlesPlaceholder = useCallback(() => ArticlesPlaceholder(placeholder), [
+  placeholder
+]);
+
+/**
+ * Loads the data
+ */
+const { data } = useDataAPI(
+  articlesPlaceholder,
+  "http://hn.algolia.com/api/v1/search?query=redux",
+  "hits"
+);
+```
+
+The number of re-renders before memoization was three; now is a single one. That's great but [not sure](https://kentcdodds.com/blog/usememo-and-usecallback) if it reduces the component load speed!
+
+Let's measure it with React profiler:
+
+```
+| Articles | Load #1 | Load #2 | Load #3 | Load #4 | Average |
+| -----------------------------------------------------------|
+| no memo  | 5.8     | 3.2     | 3.5     | 3.8     | 4.075   |
+| useMemo  | 3.8     | 4.2     | 3.8     | 4.4     | 4.05    |
+```
 
 ## Reference equality
 

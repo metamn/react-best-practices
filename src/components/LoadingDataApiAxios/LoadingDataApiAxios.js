@@ -1,4 +1,4 @@
-import React, { useMemo } from "react";
+import React, { useCallback } from "react";
 import PropTypes from "prop-types";
 import styled from "styled-components";
 
@@ -42,6 +42,8 @@ const Article = styled(_Article)(props => ({
  * Generates a text placeholder for articles
  */
 const ArticlesPlaceholder = props => {
+	console.log('ArticlesPlaceholder');
+	
   /**
    * Loads the placeholder
    */
@@ -75,7 +77,7 @@ const Articles = props => {
   /**
    * Creates the placeholder
    */
-  const articlesPlaceholder = useMemo(() => ArticlesPlaceholder(placeholder), [
+  const articlesPlaceholder = useCallback(() => ArticlesPlaceholder(placeholder), [
     placeholder
   ]);
 
@@ -101,7 +103,7 @@ const Articles = props => {
 
   return (
     <ul>
-      {data &&
+      {data && data.map &&
         data.map(item => {
           const { objectID, url, title } = item;
 
