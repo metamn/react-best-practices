@@ -42,8 +42,6 @@ const Article = styled(_Article)(props => ({
  * Generates a text placeholder for articles
  */
 const ArticlesPlaceholder = props => {
-	console.log('ArticlesPlaceholder');
-	
   /**
    * Loads the placeholder
    */
@@ -77,9 +75,10 @@ const Articles = props => {
   /**
    * Creates the placeholder
    */
-  const articlesPlaceholder = useCallback(() => ArticlesPlaceholder(placeholder), [
-    placeholder
-  ]);
+  const articlesPlaceholder = useCallback(
+    () => ArticlesPlaceholder(placeholder),
+    [placeholder]
+  );
 
   /**
    * Loads data
@@ -103,7 +102,8 @@ const Articles = props => {
 
   return (
     <ul>
-      {data && data.map &&
+      {data &&
+        data.map &&
         data.map(item => {
           const { objectID, url, title } = item;
 
