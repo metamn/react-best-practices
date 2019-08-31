@@ -1,11 +1,11 @@
-import React, { useCallback } from "react";
+import React, { useMemo } from "react";
 import PropTypes from "prop-types";
 import styled from "styled-components";
 
-import { useDataAPI } from "../../hooks";
+import { useDataAPI, usePlaceholderTextRows } from "../../hooks";
 
 import { Article as _Article } from "../SemanticHTML";
-import PlaceholderText, { PlaceholderTextPropTypes } from "../PlaceholderText";
+import { PlaceholderTextPropTypes } from "../../hooks/usePlaceholderTextRows";
 
 /**
  * Defines the prop types
@@ -41,16 +41,11 @@ const Article = styled(_Article)(props => ({
 /**
  * Generates a text placeholder for articles
  */
-const ArticlesPlaceholder = props => {
-  /**
-   * Loads the placeholder
-   */
-  const placeholder = PlaceholderText(props);
-
+const ArticlesPlaceholder = placeholderTextRows => {
   /**
    * Generates an articles specific placeholder
    */
-  const articlesPlaceholder = placeholder.map(placeholder => {
+  const articlesPlaceholder = placeholderTextRows.map(placeholder => {
     const { id, text } = placeholder;
 
     return {
@@ -71,14 +66,14 @@ const Articles = props => {
    * Loads props
    */
   const { placeholder } = props;
+  const placeholderTextRows = usePlaceholderTextRows(placeholder)
 
   /**
    * Creates the placeholder
    */
-  const articlesPlaceholder = useCallback(
-    () => ArticlesPlaceholder(placeholder),
-    [placeholder]
-  );
+  const articlesPlaceholder = useMemo(() => ArticlesPlaceholder(placeholderTextRows), [
+    placeholderTextRows
+  ]);
 
   /**
    * Loads data

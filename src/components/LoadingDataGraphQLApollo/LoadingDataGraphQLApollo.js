@@ -6,10 +6,10 @@ import { ApolloProvider } from "@apollo/react-hooks";
 import apolloClient from "../../apolloClient.js";
 import { gql } from "apollo-boost";
 
-import { useData } from "../../hooks";
+import { useData, usePlaceholderTextRows } from "../../hooks";
 
 import { Article as _Article } from "../SemanticHTML";
-import PlaceholderText, { PlaceholderTextPropTypes } from "../PlaceholderText";
+import { PlaceholderTextPropTypes } from "../../hooks/usePlaceholderTextRows";
 
 /**
  * Defines the prop types
@@ -64,9 +64,8 @@ const Article = styled(_Article)(props => ({
 /**
  * Generates a text placeholder for settings
  */
-const SettingsPlaceholder = props => {
-  const placeholder = PlaceholderText(props);
-  const { text } = placeholder[0];
+const SettingsPlaceholder = placeholderTextRows => {
+  const { text } = placeholderTextRows[0];
 
   return {
     title: text,
@@ -83,12 +82,12 @@ const Settings = props => {
    * Loads props
    */
   const { placeholder, displayData } = props;
-
+  const placeholderTextRows = usePlaceholderTextRows(placeholder);
   /**
    * Creates the placeholder
    */
-  const defaultProps = useMemo(() => SettingsPlaceholder(placeholder), [
-    placeholder
+  const defaultProps = useMemo(() => SettingsPlaceholder(placeholderTextRows), [
+    placeholderTextRows
   ]);
 
   /**
