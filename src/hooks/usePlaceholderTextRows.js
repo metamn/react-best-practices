@@ -20,11 +20,27 @@ const propTypes = {
   content: PropTypes.string
 };
 
-const usePlaceholderTextRows = ({
-  numberOfRows = 1,
-  rowLength = 60,
-  content = "/ "
-}) => {
+/**
+ * Defines the default props
+ */
+const defaultProps = {
+  numberOfRows: 1,
+  rowLength: 60,
+  content: "/ "
+};
+
+/**
+ * Returns a text placeholder
+ *
+ * @param  {Object} props The placeholder props
+ * @return {Object}       The placeholder object
+ */
+const usePlaceholderTextRows = props => {
+  /**
+   * Loads props
+   */
+  const { numberOfRows, rowLength, content } = props;
+
   /**
    * Generates a text row
    */
@@ -55,6 +71,9 @@ const usePlaceholderTextRows = ({
   return textRows;
 };
 
-export { propTypes as PlaceholderTextPropTypes };
-
 export default usePlaceholderTextRows;
+
+export {
+  propTypes as PlaceholderTextPropTypes,
+  defaultProps as PlaceholderTextDefaultProps
+};

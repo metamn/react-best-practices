@@ -2,10 +2,13 @@ import React, { useMemo } from "react";
 import PropTypes from "prop-types";
 import styled from "styled-components";
 
-import { useDataAPI, usePlaceholderTextRows } from "../../hooks";
+import {
+  useDataAPI,
+  usePlaceholderTextRows,
+  PlaceholderTextPropTypes
+} from "../../hooks";
 
 import { Article as _Article } from "../SemanticHTML";
-import { PlaceholderTextPropTypes } from "../../hooks/usePlaceholderTextRows";
 
 /**
  * Defines the prop types
@@ -66,14 +69,19 @@ const Articles = props => {
    * Loads props
    */
   const { placeholder } = props;
-  const placeholderTextRows = usePlaceholderTextRows(placeholder)
+
+  /**
+   * Loads the placeholder
+   */
+  const placeholderTextRows = usePlaceholderTextRows(placeholder);
 
   /**
    * Creates the placeholder
    */
-  const articlesPlaceholder = useMemo(() => ArticlesPlaceholder(placeholderTextRows), [
-    placeholderTextRows
-  ]);
+  const articlesPlaceholder = useMemo(
+    () => ArticlesPlaceholder(placeholderTextRows),
+    [placeholderTextRows]
+  );
 
   /**
    * Loads data

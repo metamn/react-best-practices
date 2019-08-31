@@ -6,10 +6,13 @@ import { ApolloProvider } from "@apollo/react-hooks";
 import apolloClient from "../../apolloClient.js";
 import { gql } from "apollo-boost";
 
-import { useData, usePlaceholderTextRows } from "../../hooks";
+import {
+  useData,
+  usePlaceholderTextRows,
+  PlaceholderTextPropTypes
+} from "../../hooks";
 
 import { Article as _Article } from "../SemanticHTML";
-import { PlaceholderTextPropTypes } from "../../hooks/usePlaceholderTextRows";
 
 /**
  * Defines the prop types
@@ -82,7 +85,12 @@ const Settings = props => {
    * Loads props
    */
   const { placeholder, displayData } = props;
+
+  /**
+   * Loads the placeholder
+   */
   const placeholderTextRows = usePlaceholderTextRows(placeholder);
+
   /**
    * Creates the placeholder
    */
