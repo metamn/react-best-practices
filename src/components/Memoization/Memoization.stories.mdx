@@ -17,7 +17,7 @@ Introduced rencently `React.memo()`:
 
 > Bails out components from rendering when their input props are the same &mdash; via [React v16.6.0: lazy, memo and contextType](https://reactjs.org/blog/2018/10/23/react-v-16-6.html)
 
-That makes one think why don't memoize every component? The answer is: [avoid premature optimizations](./?path=/docs/memoization--storybookdocsonly). React is fast enough and every code added in plus might cause more harm than benefit.
+That makes one think why don't memoize every component? The answer is: [avoid premature optimizations](./?path=/docs/performance--storybookdocsonly). React is fast enough and every code added in plus might cause more harm than benefit.
 
 ### Measure first
 
@@ -29,7 +29,7 @@ A good starting point to see which component might need memoization is to use th
   alt="The React profiler"
 />
 
-`Repeat`, `Meta` and `TypographicGrid` are the components specific to this app &mdash; written by hand &mdash; which are the most time consuming among their peers.
+`Repeat`, `Meta` and `TypographicGrid` are the components specific to this app &mdash; written by hand &mdash; which are the most time consuming among their peers. In their input props are the same on every render.
 
 Their loading times are:
 
@@ -59,7 +59,7 @@ It seems they all worth memoized in this context. However, this feature needs mo
 
 ## Caching values
 
-By definition `const memoizedValue = useMemo(() => computeExpensiveValue(a, b), [a, b]);` returns a memoized _value_:
+By definition `useMemo(() => computeExpensiveValue(a, b), [a, b]);` returns a memoized _value_:
 
 > Will only recompute the memoized value when one of the dependencies has changed. This optimization helps to avoid expensive calculations on every render. &mdash; via [Hooks API Reference](https://reactjs.org/docs/hooks-reference.html)
 
@@ -74,7 +74,7 @@ There is a special hook &mdash; `useCallback()` &mdash; for memoizing functions 
 const bar = React.useCallback(() => {}, [])
 
 /**
- * For non-functions
+ * For values
  */
 const baz = React.useMemo(() => [1, 2, 3], [])
 ```
@@ -97,7 +97,7 @@ const { data } = useMemo(
 
 Will trigger the following error:
 
-> React Hook "useData" cannot be called inside a callback. React Hooks must be called in a React function component or a custom React Hook function react-hooks/rules-of-hooks
+> React Hook "useData" cannot be called inside a callback. React Hooks must be called in a React function component or a custom React Hook function
 
 ## Caching functions
 
@@ -105,7 +105,7 @@ By definition: `useCallback(fn, deps)` is equivalent to `useMemo(() => fn, deps)
 
 > This is useful when passing callbacks to optimized child components that rely on reference equality to prevent unnecessary renders. &mdash; via [Hooks API Reference](https://reactjs.org/docs/hooks-reference.html)
 
-The keywords here are referential equality.
+The keywords here are 'passing callbacks' and 'referential equality'.
 
 ## When to use them?
 
@@ -191,9 +191,9 @@ const Parent = () => {
 
 ### Computationally expensive calculations
 
-These are the rare occasions.
+These are the rare occasions. Is hard to find a reason to use memoization to reduce expensive calculations. Remember: [avoid premature optimizations](./?path=/docs/performance--storybookdocsonly) and always measure first.
 
-Checking the current example project is hard to find a reason to use memoization to reduce expensive calculations.
+#### Example
 
 In the `LoadingDataApiAxios` component while the data is loading a placeholder is displayed:
 
@@ -243,9 +243,9 @@ Let's measure it with React profiler:
 
 ## Summing up
 
-1. Use `React.memo()`, `useCallback()` or `useMemo()` to memoize components, functions and values only when the performance measurements make it required.
-2. Always `useCallback()` to memoize functions which will be used in referential equality checks.
-3. Always `useMemo()` to memoize values which will be used in referential equality checks.
+1. Always `useCallback()` to memoize functions which will be used in referential equality checks.
+2. Always `useMemo()` to memoize values which will be used in referential equality checks.
+3. Use `React.memo()`, `useCallback()`, `useMemo()` to memoize components, functions and values only when the performance measurements make it required.
 4. Don't overuse them: hooks can't be memoized just stuff which can be rendered.
 
 ## Resources
