@@ -1,1 +1,3 @@
 # React best practices
+
+Work in progress. Highly experimental. Don't get trapped by the title &mdash; it's the goal not the solution
