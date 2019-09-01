@@ -1,6 +1,10 @@
 import { Meta, Story, Preview } from "@storybook/addon-docs/blocks";
 
-import ThinkingInReact, { PureComponent } from "./ThinkingInReact";
+import ThinkingInReact, {
+  PureComponent,
+  SideEffects,
+  SideEffectsWithUseEffect
+} from "./ThinkingInReact";
 
 <Meta title="Thinking In React" component={ThinkingInReact} />;
 
@@ -36,21 +40,25 @@ Such components in functional programming are called _pure functions_.
 
 Having only pure functions in a complex system is almost impossible. Therefore the concept of _side effects_ is introduced.
 
-```
-example here
-```
+<Preview>
+  <Story name="Side effects">
+    <SideEffects param1="String" param2={true} />
+  </Story>
+</Preview>
 
 When side effects are not avoidable at least they have to be implemented in a way [to do not distort the original application flow](https://overreacted.io/writing-resilient-components/#writing-resilient-components).
 
-```
-example here with useEffect
-```
+<Preview>
+  <Story name="Side effects managed with useEffect">
+    <SideEffectsWithUseEffect param1="String" param2={true} />
+  </Story>
+</Preview>
 
 ## Coupling
 
 Coupling, again, is easy when the participating components behave predictable:
 
-1. They are isolated &mdash; they are aware only, and they take care only about their own problems; They do not interfere with how other components work;
+1. They are isolated &mdash; they are aware, and they take care _only_ about their own problems; They do not interfere with how other components work;
 2. They communicate asynchrounously &mdash; they subscribe (listen) to input events, react when an event happens, and return observables other components can subscribe to.
 
 ```

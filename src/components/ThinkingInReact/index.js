@@ -1,1 +1,6 @@
-export { default, PureComponent } from "./ThinkingInReact";
+export {
+  default,
+  PureComponent,
+  SideEffects,
+  SideEffectsWithUseEffect
+} from "./ThinkingInReact";
