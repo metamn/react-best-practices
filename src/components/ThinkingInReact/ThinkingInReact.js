@@ -13,7 +13,7 @@ const PureComponent = props => {
    * 2.2 No external information is used beside input params to produce the return value
    * 2.3 No additional operations are performed beside the planned functionality
    */
-  return <div>{JSON.stringify(props)}</div>;
+  return <div>Pure component props: {JSON.stringify(props)}</div>;
 };
 
 /**
