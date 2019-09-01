@@ -6,19 +6,59 @@ import ThinkingInReact from "./ThinkingInReact";
 
 # Thinking In React
 
-React follows the reactive, functional programming paradigm. That's a big shift from the old proactive, imperative approach.
+React follows the [reactive, functional programming paradigm](https://blog.danlew.net/2017/07/27/an-introduction-to-functional-reactive-programming/). That's a big shift from the old proactive, imperative approach.
 
-Both solve the same problem &mdash; build modular, interactive applications &mdash; in a different way.
+Both paradigms solve the same problem &mdash; build modular, interactive applications &mdash; in a different way.
 
 The old way implemented modularity through tight-coupling, and, interaction in a synchronous way. The new way implements modularity with loose-coupling, and, interaction in an asynchrounous way.
 
-Modularity and interaction can be expressed with other terms like composition and coupling. Composition is about how the components of the system can add up to form a whole, while coupling is about how they communicate with each other.
+Modularity and interaction can be expressed with other terms like composition and coupling &mdash; more helpful terms in this context. Composition is about how the components of the system can add up to form a whole, while coupling is about how they communicate with each other.
 
 Reactive functional programming, is in fact, the combination of functional programming and reactive programming. The first deals with composition, the second with coupling.
+
+## Composition
+
+Composition is easy when the underlying components behave predictable:
+
+1. They have clear interfaces &mdash; input params and return values &mdash; which can be easily combined.
+2. During execution, while input params are transformed into return values:
+   2.1 The process doesn't distort the input params
+   2.2 No external information is used beside input params to produce the return value.
+   2.3 No additional operations are performed beside the planned functionality
+
+Such components in functional programming are called _pure functions_.
+
+```
+example here
+```
+
+Having only pure functions in a complex system is almost impossible. Therefore the concept of _side effects_ is introduced.
+
+```
+example here
+```
+
+When side effects are not avoidable at least they have to be implemented in a way [to do not distort the original application flow](https://overreacted.io/writing-resilient-components/#writing-resilient-components).
+
+```
+example here with useEffect
+```
+
+## Coupling
+
+Coupling, again, is easy when the participating components behave predictable:
+
+1. They are isolated &mdash; they are aware only, and they take care only about their own problems; They do not interfere with how other components work;
+2. They communicate asynchrounously &mdash; they subscribe (listen) to input events, react when an event happens, and return observables other components can subscribe to.
+
+```
+lots of examples here
+```
 
 ## Resources
 
 - [An Introduction to Functional Reactive Programming](https://blog.danlew.net/2017/07/27/an-introduction-to-functional-reactive-programming/)
+- [Writing Resilient Components](https://overreacted.io/writing-resilient-components/#writing-resilient-components)
 
 ---
 
