@@ -8,6 +8,7 @@ import TypographicGrid from "./components/TypographicGrid";
 
 import Home from "./components/Home";
 import ThinkingInReact from "./components/ThinkingInReact";
+import RulesOfReact from "./components/RulesOfReact";
 import LoadingData from "./components/LoadingData";
 import LoadingImages from "./components/LoadingImages";
 import Memoization from "./components/Memoization";
@@ -25,6 +26,7 @@ const App = () => {
         <Switch>
           <Route exact path="/" component={Home} />
           <Route path="/thinking-in-react" component={ThinkingInReact} />
+          <Route path="/rules-of-react" component={RulesOfReact} />
           <Route path="/loading-data" component={LoadingData} />
           <Route path="/loading-images" component={LoadingImages} />
           <Route path="/memoization" component={Memoization} />
