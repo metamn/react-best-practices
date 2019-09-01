@@ -34,6 +34,9 @@ const Home = props => {
       <Logo />
       <ul>
         <li>
+          <Link to="/thinking-in-react">Thinking In React</Link>
+        </li>
+        <li>
           <Link to="/loading-data">Loading data</Link>
         </li>
         <li>

@@ -1,34 +1,45 @@
 import React from "react";
-import PropTypes from "prop-types";
 import styled from "styled-components";
 
-/**
- * Defines the prop types
- */
-const propTypes = {};
+import { Section as _Section } from "../SemanticHTML";
 
 /**
- * Defines the default props
+ * A pure component example
  */
-const defaultProps = {};
+const PureComponent = props => {
+  /**
+   * 1. Clear interfaces (props as input param, JSX as return value)
+   * 2.1 Input params are not distorted
+   * 2.2 No external information is used beside input params to produce the return value
+   * 2.3 No additional operations are performed beside the planned functionality
+   */
+  return <div>{JSON.stringify(props)}</div>;
+};
 
 /**
  * Styles the component container
  */
-const Container = styled("div")(props => ({}));
+const Section = styled(_Section)(props => ({
+  "& h3": {
+    fontSize: "125%",
+    marginBottom: "var(--lem)"
+  }
+}));
 
 /**
  * Displays the component
  */
 const ThinkingInReact = props => {
-  return <Container className="ThinkingInReact">ThinkingInReact</Container>;
+  return (
+    <Section
+      className="ThinkingInReact"
+      title="Thinking in React"
+      displayTitle={true}
+    >
+      <PureComponent />
+    </Section>
+  );
 };
-
-ThinkingInReact.propTypes = propTypes;
-ThinkingInReact.defaultProps = defaultProps;
 
 export default ThinkingInReact;
-export {
-  propTypes as ThinkingInReactPropTypes,
-  defaultProps as ThinkingInReactDefaultProps
-};
+export { PureComponent };

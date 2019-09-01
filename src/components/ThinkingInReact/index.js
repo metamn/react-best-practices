@@ -1,5 +1,1 @@
-export {
-  default,
-  ThinkingInReactPropTypes,
-  ThinkingInReactDefaultProps
-} from "./ThinkingInReact";
+export { default, PureComponent } from "./ThinkingInReact";

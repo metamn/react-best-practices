@@ -1,8 +1,8 @@
 import { Meta, Story, Preview } from "@storybook/addon-docs/blocks";
 
-import ThinkingInReact from "./ThinkingInReact";
+import ThinkingInReact, { PureComponent } from "./ThinkingInReact";
 
-<Meta title="ThinkingInReact" component={ThinkingInReact} />
+<Meta title="ThinkingInReact" component={ThinkingInReact} />;
 
 # Thinking In React
 
@@ -23,14 +23,16 @@ Composition is easy when the underlying components behave predictable:
 1. They have clear interfaces &mdash; input params and return values &mdash; which can be easily combined.
 2. During execution, while input params are transformed into return values:
    2.1 The process doesn't distort the input params
-   2.2 No external information is used beside input params to produce the return value.
+   2.2 No external information is used beside input params to produce the return value
    2.3 No additional operations are performed beside the planned functionality
 
 Such components in functional programming are called _pure functions_.
 
-```
-example here
-```
+<Preview>
+  <Story name="Pure component">
+    <PureComponent param1="String" param2={true} />
+  </Story>
+</Preview>
 
 Having only pure functions in a complex system is almost impossible. Therefore the concept of _side effects_ is introduced.
 
