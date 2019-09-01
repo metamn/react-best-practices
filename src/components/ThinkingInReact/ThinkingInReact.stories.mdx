@@ -22,7 +22,7 @@ Reactive functional programming, is in fact, the combination of functional progr
 
 ## Composition
 
-Composition is easy when the underlying components behave predictable:
+Composition is easy when the underlying components behave predictably:
 
 1. They have clear interfaces &mdash; input params and return values &mdash; which can be easily combined.
 2. During execution, while input params are transformed into return values:
@@ -56,19 +56,54 @@ When side effects are not avoidable at least they have to be implemented in a wa
 
 ## Coupling
 
-Coupling, again, is easy when the participating components behave predictable:
+Coupling, again, is easy when the participating components behave predictably:
 
 1. They are isolated &mdash; they are aware, and they take care _only_ about their own problems; They do not interfere with how other components work;
 2. They communicate asynchrounously &mdash; they subscribe (listen) to input events, react when an event happens, and return observables other components can subscribe to.
 
+In React terms:
+
+1. _Isolation_ means only the component can update its own state, and, cannot modify other component's state.
+2. _Asynchrounous communication_ means [Hooks](https://reactjs.org/docs/hooks-overview.html).
+
 ```
-lots of examples here
+|================|                  |================|
+| Component 1    |                  | Component 2    |
+|================|                  |================|
+| Props          |                  | Props          |
+|----------------|                  |----------------|
+| Isolated state |                  | Isolated state |
+|----------------|                  |----------------|
+|                | <--- Hooks --->  |                |
+|                | <--- Hooks --->  |                |
+| Side effects   | <--- Hooks --->  | Side effects   |
+|                | <--- Hooks --->  |                |
+|                | <--- Hooks --->  |                |
+|----------------|                  |----------------|
+| Return JSX     |                  | Return JSX     |
+|================|                  |================|
+```
+
+React provides some basic hooks and gives the opportunity to build any other hook. The important hooks in this Reactive Functional Programming context are:
+
+```
+|-------------|-----------------------------------------------|
+| Hook        | Side effect                                   |
+|-------------| ----------------------------------------------|
+| useState    | Local state store (simple)                    |
+| useReducer  | Local state store (complex)                   |
+| useContext  | Local data store                              |
+| useCallback | Optimized communication with child components |
+| useMemo     | Local cache store                             |
+| useEffect   | Anything else                                 |
+|-------------------------------------------------------------|
 ```
 
 ## Resources
 
 - [An Introduction to Functional Reactive Programming](https://blog.danlew.net/2017/07/27/an-introduction-to-functional-reactive-programming/)
 - [Writing Resilient Components](https://overreacted.io/writing-resilient-components/#writing-resilient-components)
+- [Hooks at a Glance](https://reactjs.org/docs/hooks-overview.html)
 
 ---
 
