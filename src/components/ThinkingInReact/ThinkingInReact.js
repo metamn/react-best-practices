@@ -63,9 +63,19 @@ const SideEffectsWithUseEffect = props => {
    * By using `useEffect` the rendering of the component is not suspended, the flow is not distorted. First the component is rendered with the default value then after 3 seconds React automatically updates the component with the new value.
    */
   useEffect(() => {
-    setTimeout(function() {
+    /**
+     * Performs the side effect
+     */
+    const timer = setTimeout(function() {
       setExternal("Initial value replaced with useEffect");
     }, 3000);
+
+    /**
+     * Cleans up the side effect
+     *
+     * @link https://reactjs.org/docs/hooks-effect.html
+     */
+    return () => clearTimeout(timer);
   }, []);
 
   return (
