@@ -10,10 +10,27 @@ React likes to call itself unopinionated in spite of:
 
 1. It's built on the [Reactive Functional Programming](<(./?path=/docs/thinkinginreact)>) paradigm which is a very strong opinion about app design and development.
 2. It has a mandatory set of rules to follow: [Rules of Hooks](https://reactjs.org/docs/hooks-rules.html)
-3. It has another set of recommendations &mdash; [Thinking in React](https://reactjs.org/docs/thinking-in-react.html) &mdash; which can be ignored at the cost of reinventing the whee.
+3. It has another set of recommendations &mdash; [Thinking in React](https://reactjs.org/docs/thinking-in-react.html) &mdash; which can be ignored at the cost of reinventing the wheel.
 4. It has a clear opinion about itself:
 
 > React is, in our opinion, the premier way to build big, fast Web apps with JavaScript. It has scaled very well for us at Facebook and Instagram. &mdash; [Thinking in React](https://reactjs.org/docs/thinking-in-react.html)
+
+And the rules are:
+
+## For building apps
+
+1. Break The UI Into A Component Hierarchy
+2. Build A Static Version in React
+3. Identify The Minimal (but complete) Representation Of UI State
+4. Identify Where Your State Should Live
+5. Add Inverse Data Flow
+
+## For Hooks
+
+1. Call Hooks from React function components
+2. Call Hooks from custom Hooks
+3. Always use Hooks at the top level of your React function
+4. Don’t call Hooks inside loops, conditions, or nested functions
 
 ## Resources
 
