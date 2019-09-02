@@ -15,7 +15,18 @@ React likes to call itself unopinionated in spite of:
 
 > React is, in our opinion, the premier way to build big, fast Web apps with JavaScript. It has scaled very well for us at Facebook and Instagram. &mdash; [Thinking in React](https://reactjs.org/docs/thinking-in-react.html)
 
-And the rules are:
+And the rules, recommendations are:
+
+## From Reactive Functional Programming
+
+1. Try to go first with pure functions.
+2. If not possible always use Hooks to implement the side effects.
+
+## For Hooks
+
+1. Call Hooks from React function components, or from other Hooks only.
+2. Always use Hooks at the top level of your React function
+3. Don’t call Hooks inside loops, conditions, or nested functions
 
 ## For building apps
 
@@ -25,12 +36,7 @@ And the rules are:
 4. Identify Where Your State Should Live
 5. Add Inverse Data Flow
 
-## For Hooks
-
-1. Call Hooks from React function components
-2. Call Hooks from custom Hooks
-3. Always use Hooks at the top level of your React function
-4. Don’t call Hooks inside loops, conditions, or nested functions
+Following these rules can assure one is on the _React way_.
 
 ## Resources
 
