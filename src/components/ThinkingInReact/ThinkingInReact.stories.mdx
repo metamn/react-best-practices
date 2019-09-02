@@ -67,21 +67,30 @@ In React terms:
 2. _Asynchrounous communication_ means [Hooks](https://reactjs.org/docs/hooks-overview.html).
 
 ```
-|================|                  |================|
-| Component 1    |                  | Component 2    |
-|================|                  |================|
-| Props          |                  | Props          |
-|----------------|                  |----------------|
-| Isolated state |                  | Isolated state |
-|----------------|                  |----------------|
-|                | <--- Hooks --->  |                |
-|                | <--- Hooks --->  |                |
-| Side effects   | <--- Hooks --->  | Side effects   |
-|                | <--- Hooks --->  |                |
-|                | <--- Hooks --->  |                |
-|----------------|                  |----------------|
-| Return JSX     |                  | Return JSX     |
-|================|                  |================|
+   |================|                  |================|
+   | Component 1    |                  | Component 2    |
+   |================|                  |================|
+   | Props          |                  | Props          |
+   |----------------|                  |----------------|
+   | Local state    |                  | Local state    |
+   |----------------|                  |----------------|
+   |                | <--- Hooks --->  |                |
+   |                | <--- Hooks --->  |                |
+   | Side effects   | <--- Hooks --->  | Side effects   |
+   |                | <--- Hooks --->  |                |
+   |                | <--- Hooks --->  |                |
+   |----------------|                  |----------------|
+   | Return JSX     |                  | Return JSX     |
+   |================|                  |================|
+
+     ^                 ^                ^                 ^
+     |                 |                |                 |
+     | Hooks           | Hooks          | Hooks           | Hooks
+	 |	               | 	            |	              |
+|----------|     |-----------|     |----------|     |-----------|
+| State    |     | Data      |     | Cache    |     | Comm.     |    ...
+| store    |     | store     |     | store    |     |           |    ...
+|----------|     |-----------|     |----------|     |-----------|
 ```
 
 React provides some basic hooks and gives the opportunity to build any other hook. The important hooks in this Reactive Functional Programming context are:
