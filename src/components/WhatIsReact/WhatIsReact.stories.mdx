@@ -1,0 +1,103 @@
+import { Meta, Story, Preview } from "@storybook/addon-docs/blocks";
+
+import WhatIsReact from "./WhatIsReact";
+
+<Meta title="What Is React?" component={WhatIsReact} />
+
+# What Is React?
+
+React follows the [reactive, functional programming paradigm](https://blog.danlew.net/2017/07/27/an-introduction-to-functional-reactive-programming/). That's a big shift from the old proactive, imperative approach.
+
+Both paradigms solve the same problem &mdash; build modular, interactive applications &mdash; in a different way.
+
+The old way implemented modularity through tight-coupling, and, interaction in a synchronous way. The new way implements modularity with loose-coupling, and, interaction in an asynchrounous way.
+
+Modularity and interaction can be expressed with other terms like composition and coupling &mdash; more helpful terms in this context. Composition is about how the components of the system can add up to form a whole, while coupling is about how they communicate with each other.
+
+Reactive functional programming, is in fact, the combination of functional programming and reactive programming. The first deals with composition, the second with coupling.
+
+## Composition
+
+Composition is easy when the underlying components behave predictably:
+
+1. They have clear interfaces &mdash; input params and return values &mdash; which can be easily combined.
+2. During execution, while input params are transformed into return values:
+   2.1 The process doesn't distort the input params
+   2.2 No external information is used beside input params to produce the return value
+   2.3 No additional operations are performed beside the planned functionality
+
+Such components in functional programming are called _pure functions_.
+
+...
+
+Having only pure functions in a complex system is almost impossible. Therefore the concept of _side effects_ is introduced.
+
+...
+
+When side effects are not avoidable at least they have to be implemented in a way [to do not distort the original application flow](https://overreacted.io/writing-resilient-components/#writing-resilient-components).
+
+...
+
+## Coupling
+
+Coupling, again, is easy when the participating components behave predictably:
+
+1. They are isolated &mdash; they are aware, and they take care _only_ about their own problems; They do not interfere with how other components work;
+2. They communicate asynchrounously &mdash; they subscribe (listen) to input events, react when an event happens, and return observables other components can subscribe to.
+
+In React terms:
+
+1. _Isolation_ means only the component can update its own state, and, cannot modify other component's state.
+2. _Asynchrounous communication_ means [Hooks](https://reactjs.org/docs/hooks-overview.html).
+
+```
+   |================|                  |================|
+   | Component 1    |                  | Component 2    |
+   |================|                  |================|
+   | Props          |                  | Props          |
+   |----------------|                  |----------------|
+   | Local state    |                  | Local state    |
+   |----------------|                  |----------------|
+   |                | <--- Hooks --->  |                |
+   |                | <--- Hooks --->  |                |
+   | Side effects   | <--- Hooks --->  | Side effects   |
+   |                | <--- Hooks --->  |                |
+   |                | <--- Hooks --->  |                |
+   |----------------|                  |----------------|
+   | Return JSX     |                  | Return JSX     |
+   |================|                  |================|
+
+     ^                 ^                ^                 ^
+     |                 |                |                 |
+     | Hooks           | Hooks          | Hooks           | Hooks
+	 |	               | 	            |	              |
+|----------|     |-----------|     |----------|     |-----------|
+| State    |     | Data      |     | Cache    |     | Comm.     |    ...
+| store    |     | store     |     | store    |     |           |    ...
+|----------|     |-----------|     |----------|     |-----------|
+```
+
+React provides some basic hooks and gives the opportunity to build any other hook. The important hooks in this Reactive Functional Programming context are:
+
+```
+|-------------|-----------------------------------------------|
+| Hook        | Side effect                                   |
+|-------------| ----------------------------------------------|
+| useState    | Local state store (simple)                    |
+| useReducer  | Local state store (complex)                   |
+| useContext  | Local data store                              |
+| useCallback | Optimized communication with child components |
+| useMemo     | Local cache store                             |
+| useEffect   | General handler for anything else             |
+|-------------------------------------------------------------|
+```
+
+## Resources
+
+- [An Introduction to Functional Reactive Programming](https://blog.danlew.net/2017/07/27/an-introduction-to-functional-reactive-programming/)
+- [Writing Resilient Components](https://overreacted.io/writing-resilient-components/#writing-resilient-components)
+- [Hooks at a Glance](https://reactjs.org/docs/hooks-overview.html)
+
+---
+
+[Home](./?path=/docs/home--storybookdocsonly)
