@@ -1,5 +1,1 @@
-export {
-  default,
-  WhatIsReactPropTypes,
-  WhatIsReactDefaultProps
-} from "./WhatIsReact";
+export { default, PureComponent } from "./WhatIsReact";
