@@ -34,7 +34,7 @@ const Home = props => {
       <Logo />
       <ul>
         <li>
-          <Link to="/thinking-in-react">Thinking In React</Link>
+          <Link to="/what-is-react">What Is React?</Link>
         </li>
         <li>
           <Link to="/rules-of-react">Rules of React</Link>
