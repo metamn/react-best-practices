@@ -48,18 +48,18 @@ State is a hot issue and worth watching the progress.
 For example [Apollo GraphQL](https://www.apollographql.com/docs/react/essentials/local-state/) can manage local state by now. Or, combining default React state Hooks with `useContext` can replace a good few features Redux offers.
 
 ```
-|================|=============================|=============
-| Implementation | When to use                 | State type |
-|================|=============================|=============
-| useState       | Simple states               | Local      |
-|----------------|-----------------------------|------------|
-| useReducer     | Complex state logic         | Local      |
-|----------------|-----------------------------|------------|
-| useMachine     | Complex state logic         | Local      |
-|                | Fool-proof states           |            |
-|----------------|-----------------------------|------------|
-| Redux          | When none above are enough  | Global     |
-|================|=============================|============|
+|================|=============================|===========================================
+| Implementation | When to use                 | State type | Notes                       |
+|================|=============================|===========================================
+| useState       | Simple states               | Local      |                             |
+|----------------|-----------------------------|------------|-----------------------------|
+| useReducer     | Complex state logic         | Local      | With `useContext` ~= Redux  |
+|----------------|-----------------------------|------------|-----------------------------|
+| useMachine     | Complex state logic         | Local      | Use for component design    |
+|                | Fool-proof states           |            | Autogenerate tests          |
+|----------------|-----------------------------|------------|-----------------------------|
+| Redux          | When none above are enough  | Global     |                             |
+|================|=============================|============|=============================|
 ```
 
 ## Usage
