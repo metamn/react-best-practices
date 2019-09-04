@@ -6,9 +6,33 @@ import State from "./State";
 
 # State
 
-Everything in React rolls around the concept of state.
+Everything in React rolls around the concept of state &mdash; a term coming from the Reactive programming nature of React.
+
+In [Reactive programming](https://blog.danlew.net/2017/07/27/an-introduction-to-functional-reactive-programming/) state is managed by a component internally, and instructions to change state are coming externally from other components.
+
+In other words a component emits a request to another component to change its state and when the receiver component receives the request it changes its state.
+
+Sounds simple and straightforward &mdash; but in an older paradigm, imperative programming, things were different. A component could directly change the state of another component via a simple function call. This made components tightly coupled which [lead to high complexity in the codebase](https://eloquentjavascript.net/1st_edition/chapter6.html).
+
+```
+|---------------------------------------------------------------|
+| Paradigm   | Step 1           | Step 2          | Step 3      |
+|------------|------------------|-----------------|-------------|
+| Reactive   | Component 1      | Component 2     | Component 2 |
+|            | emits request    | receives        | changes its |
+|            | for state change | the request     | own state   |
+|------------|------------------|-----------------|-------------|
+| Imperative | Component 2      | Component 1     |             |
+|            | exposes a state  | calls the state |             |
+|            | change function  | change function |             |
+|            |                  | of Component 2  |             |
+|---------------------------------------------------------------|
+```
 
 ## Resources
+
+- [An Introduction to Functional Reactive Programming](https://blog.danlew.net/2017/07/27/an-introduction-to-functional-reactive-programming/)
+- [Functional Programming - Eloquent JavaScript](https://eloquentjavascript.net/1st_edition/chapter6.html)
 
 ---
 
