@@ -40,6 +40,9 @@ const Home = props => {
           <Link to="/rules-of-react">Rules of React</Link>
         </li>
         <li>
+          <Link to="/state">State</Link>
+        </li>
+        <li>
           <Link to="/loading-data">Loading data</Link>
         </li>
         <li>

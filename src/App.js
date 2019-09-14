@@ -12,6 +12,7 @@ import RulesOfReact from "./components/RulesOfReact";
 import LoadingData from "./components/LoadingData";
 import LoadingImages from "./components/LoadingImages";
 import Memoization from "./components/Memoization";
+import State from "./components/State";
 
 const App = () => {
   return (
@@ -30,6 +31,7 @@ const App = () => {
           <Route path="/loading-data" component={LoadingData} />
           <Route path="/loading-images" component={LoadingImages} />
           <Route path="/memoization" component={Memoization} />
+          <Route path="/state" component={State} />
         </Switch>
       </Router>
     </>
