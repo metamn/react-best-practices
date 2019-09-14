@@ -19,7 +19,7 @@ const defaultProps = {};
  */
 const SimpleState = () => {
   /**
-   * Declares the state
+   * Sets up state
    */
   const [name, setName] = useState("John");
 
@@ -56,12 +56,53 @@ const SimpleState = () => {
  * State with useReducer
  */
 const StateWithReducer = () => {
+  /**
+   * The initial state of the menu
+   */
+  const initialState = "closed";
+
+  /**
+   * The reducer function
+   */
+  const reducer = (state, action) => {
+    switch (action) {
+      case "open":
+        return "opened";
+      case "close":
+        return "closed";
+      default:
+        throw new Error();
+    }
+  };
+
+  /**
+   * Sets up state
+   */
+  const [state, dispatch] = useReducer(reducer, initialState);
+
+  /**
+   * Sets up button text
+   */
+  const buttonText = state === "closed" ? "Open" : "Close";
+
+  /**
+   * Handles the click
+   */
+  const handleClick = () => {
+    const action = state === "closed" ? "open" : "close";
+    dispatch(action);
+  };
+
   return (
     <>
       <h4>State with useReducer</h4>
       <div className="Container">
-        <div className="Menu">
-          <input type="button" value="Open" />
+        <div className={`Menu ${state}`}>
+          <input
+            type="button"
+            value={buttonText}
+            onClick={() => handleClick()}
+          />
         </div>
         <div className="Content">Content</div>
       </div>
@@ -91,7 +132,11 @@ const Article = styled(_Article)(props => ({
   },
   "& .Menu": {
     background: "grey",
-    padding: "1.25em"
+    padding: "1.25em",
+
+    ["&.opened"]: {
+      minWidth: "33vw"
+    }
   },
   "& .Content": {
     marginLeft: "1.25em",
