@@ -1,6 +1,10 @@
-import React, { useState, useReducer } from "react";
+import React, { useState, useReducer, useRef, useCallback } from "react";
 import PropTypes from "prop-types";
 import styled from "styled-components";
+
+import { Machine } from "xstate";
+import { useMachine } from "@xstate/react";
+import { TweenMax, Elastic } from "gsap";
 
 import { Article as _Article } from "../SemanticHTML";
 
@@ -76,7 +80,7 @@ const StateWithReducer = () => {
   };
 
   /**
-   * Sets up state
+   * Sets up state management
    */
   const [state, dispatch] = useReducer(reducer, initialState);
 
@@ -98,6 +102,129 @@ const StateWithReducer = () => {
       <h4>State with useReducer</h4>
       <div className="Container">
         <div className={`Menu ${state}`}>
+          <input
+            type="button"
+            value={buttonText}
+            onClick={() => handleClick()}
+          />
+        </div>
+        <div className="Content">Content</div>
+      </div>
+    </>
+  );
+};
+
+/**
+ * State with useMachine
+ */
+const StateWithMachine = () => {
+  /**
+   * Defines the state machine
+   */
+  const menuMachine = Machine({
+    initial: "closed",
+    states: {
+      closed: {
+        on: {
+          OPEN: "opening"
+        }
+      },
+      opening: {
+        invoke: {
+          src: "openMenu",
+          onDone: { target: "open" }
+        },
+        on: {
+          CLOSE: "closing"
+        }
+      },
+      open: {
+        on: {
+          CLOSE: "closing"
+        }
+      },
+      closing: {
+        invoke: {
+          src: "closeMenu",
+          onDone: { target: "closed" }
+        },
+        on: {
+          OPEN: "opening"
+        }
+      }
+    }
+  });
+
+  const menuRef = useRef();
+
+  // Drfines the services the machine can "invoke".
+  // useCallback ensures that our services always using the latest props/state/refs
+  // so long as we add them as deps.
+  const openMenu = useCallback(
+    (context, event) => {
+      return new Promise(resolve => {
+        TweenMax.to(menuRef.current, 0.5, {
+          width: 300,
+          backdropFilter: "blur(2px)",
+          ease: Elastic.easeOut.config(1, 1),
+          onComplete: resolve
+        });
+      });
+    },
+    [menuRef]
+  );
+
+  const closeMenu = useCallback(
+    (context, event) => {
+      return new Promise(resolve => {
+        TweenMax.to(menuRef.current, 0.5, {
+          width: 125,
+          backdropFilter: "blur(0px)",
+          ease: Elastic.easeOut.config(1, 1),
+          onComplete: resolve
+        });
+      });
+    },
+    [menuRef]
+  );
+
+  /**
+   * Sets up state management
+   */
+  const [state, dispatch] = useMachine(menuMachine, {
+    // Configures the machine's services.
+    // these have to return a promise for xstate to know when to
+    // take the onDone transtiion
+    services: {
+      openMenu,
+      closeMenu
+    }
+  });
+
+  /**
+   * Sets up button text
+   */
+  const buttonText =
+    state.matches("open") || state.matches("opening") ? "Close" : "Open";
+
+  /**
+   * Handles the click
+   */
+  const handleClick = () => {
+    /**
+     * Calculates the next state
+     */
+    const nextState =
+      state.matches("open") || state.matches("opening") ? "CLOSE" : "OPEN";
+
+    dispatch(nextState);
+  };
+
+  return (
+    <>
+      <h4>State with useMachine</h4>
+      <div className="Container">
+        <div className={`Menu ${state.value}`} ref={menuRef}>
           <input
             type="button"
             value={buttonText}
@@ -152,6 +279,7 @@ const State = props => {
     <Article className="State" title="State" displayTitle={true}>
       <SimpleState />
       <StateWithReducer />
+      <StateWithMachine />
     </Article>
   );
 };
