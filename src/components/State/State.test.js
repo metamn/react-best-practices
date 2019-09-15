@@ -14,11 +14,11 @@ describe("StateWithMachine", () => {
    * Tests the events in the test model
    */
   testModel.withEvents({
-    OPEN: ({ getByText }) => {
-      fireEvent.click(getByText("Good"));
+    OPEN: ({ getByLabelText }) => {
+      fireEvent.click(getByLabelText("state-switcher-button"));
     },
-    CLOSE: ({ getByTestId }) => {
-      fireEvent.click(getByTestId("close-button"));
+    CLOSE: ({ getByLabelText }) => {
+      fireEvent.click(getByLabelText("state-switcher-button"));
     }
   });
 

@@ -281,6 +281,7 @@ const StateWithMachine = () => {
           <input
             type="button"
             value={buttonText}
+            aria-label="state-switcher-button"
             onClick={() => handleClick()}
           />
         </div>
