@@ -1,6 +1,10 @@
 import { Meta, Story, Preview } from "@storybook/addon-docs/blocks";
 
-import State from "./State";
+import State, {
+  SimpleState,
+  StateWithReducer,
+  StateWithMachine
+} from "./State";
 
 <Meta title="State" component={State} />
 
@@ -66,7 +70,23 @@ For example [Apollo GraphQL](https://www.apollographql.com/docs/react/essentials
 
 ## Usage
 
-Tbd.
+<Preview>
+  <Story name="Simple state with useState">
+    <SimpleState />
+  </Story>
+</Preview>
+
+<Preview>
+  <Story name="Sequential state with useReducer">
+    <StateWithReducer />
+  </Story>
+</Preview>
+
+<Preview>
+  <Story name="Sequential state with useMachine">
+    <StateWithMachine />
+  </Story>
+</Preview>
 
 ## Resources
 

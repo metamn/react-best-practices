@@ -1,1 +1,6 @@
-export { default, StatePropTypes, StateDefaultProps } from "./State";
+export {
+  default,
+  SimpleState,
+  StateWithMachine,
+  StateWithReducer
+} from "./State";

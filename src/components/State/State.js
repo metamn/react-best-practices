@@ -42,16 +42,22 @@ const SimpleState = () => {
 
   return (
     <>
-      <h4>Simple state</h4>
-      <p>Name: {name}</p>
+      <h4>Simple state with `useState`</h4>
       <p>
-        <input type="text" value="Johanna" ref={inputTextRef} />
-        <input
-          type="button"
-          value="Set name"
-          onClick={() => handleClick()}
-        ></input>
+        Use when state is independent, ie. next state doesn't depends on a
+        previous state.
       </p>
+      <div className="Example">
+        <p>State: {name}</p>
+        <p>
+          <input type="text" value="Johanna" ref={inputTextRef} />
+          <input
+            type="button"
+            value="Set state"
+            onClick={() => handleClick()}
+          ></input>
+        </p>
+      </div>
     </>
   );
 };
@@ -99,8 +105,11 @@ const StateWithReducer = () => {
 
   return (
     <>
-      <h4>State with useReducer</h4>
-      <div className="Container">
+      <h4>Complex state with `useReducer`</h4>
+      <p>
+        Use when state is sequential, ie next state depends on a previous state.
+      </p>
+      <div className="Example Container">
         <div className={`Menu ${state}`}>
           <input
             type="button"
@@ -108,7 +117,9 @@ const StateWithReducer = () => {
             onClick={() => handleClick()}
           />
         </div>
-        <div className="Content">Content</div>
+        <div className="Content">
+          <p>State: {state}</p>
+        </div>
       </div>
     </>
   );
@@ -222,8 +233,11 @@ const StateWithMachine = () => {
 
   return (
     <>
-      <h4>State with useMachine</h4>
-      <div className="Container">
+      <h4>Complex state with `useMachine`</h4>
+      <p>
+        Use when state is sequential, ie next state depends on a previous state.
+      </p>
+      <div className="Example Container">
         <div className={`Menu ${state.value}`} ref={menuRef}>
           <input
             type="button"
@@ -231,7 +245,9 @@ const StateWithMachine = () => {
             onClick={() => handleClick()}
           />
         </div>
-        <div className="Content">Content</div>
+        <div className="Content">
+          <p>State: {state.value}</p>
+        </div>
       </div>
     </>
   );
@@ -249,12 +265,14 @@ const Article = styled(_Article)(props => ({
     fontWeight: "bold",
     margin: "var(--lem) 0"
   },
+  "& .Example": {
+    border: "1px solid lightgray",
+    padding: "1.25em",
+    margin: "1.25em"
+  },
   "& .Container": {
     width: "90%",
     minHeight: "33vh",
-    border: "1px solid lightgray",
-    padding: "1.25em",
-    margin: "1.25em",
     display: "flex"
   },
   "& .Menu": {
@@ -288,4 +306,4 @@ State.propTypes = propTypes;
 State.defaultProps = defaultProps;
 
 export default State;
-export { propTypes as StatePropTypes, defaultProps as StateDefaultProps };
+export { SimpleState, StateWithMachine, StateWithReducer };
