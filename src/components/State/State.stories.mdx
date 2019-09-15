@@ -12,6 +12,8 @@ Everything in React rolls around the concept of state &mdash; a term coming from
 
 In [Reactive programming](https://blog.danlew.net/2017/07/27/an-introduction-to-functional-reactive-programming/) state is managed by a component internally; requests to change state can come externally from other components.
 
+![Reactive programming](/slide04-thumb.png)
+
 In other words a component emits a request to another component to change its state and when the receiver component receives the request it changes its state.
 
 Sounds simple and straightforward &mdash; but in an older paradigm, imperative programming, things were different. A component could directly change the state of another component via a simple function call. This made components tightly coupled which [lead to high complexity in the codebase](https://eloquentjavascript.net/1st_edition/chapter6.html).
