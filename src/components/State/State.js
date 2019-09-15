@@ -30,7 +30,7 @@ const SimpleState = () => {
   /**
    * Declares a ref to be able to access the input text value
    */
-  let inputTextRef = React.createRef();
+  let inputTextRef = useRef(null);
 
   /**
    * Handles the name change click
@@ -109,6 +109,7 @@ const StateWithReducer = () => {
       <p>
         Use when state is sequential, ie next state depends on a previous state.
       </p>
+      <p>Here we have 2 interconnected states: closed, open.</p>
       <div className="Example Container">
         <div className={`Menu ${state}`}>
           <input
@@ -236,6 +237,9 @@ const StateWithMachine = () => {
       <h4>Complex state with `useMachine`</h4>
       <p>
         Use when state is sequential, ie next state depends on a previous state.
+      </p>
+      <p>
+        Here we have 4 interconnected states: closed, opening, open, closing.
       </p>
       <div className="Example Container">
         <div className={`Menu ${state.value}`} ref={menuRef}>
