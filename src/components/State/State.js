@@ -5,6 +5,7 @@ import styled from "styled-components";
 import { Machine } from "xstate";
 import { useMachine } from "@xstate/react";
 import { TweenMax, Elastic } from "gsap";
+import { assert } from "chai";
 
 import { Article as _Article } from "../SemanticHTML";
 
@@ -127,46 +128,80 @@ const StateWithReducer = () => {
 };
 
 /**
+ * Defines the Menu state machine
+ */
+const menuMachine = Machine({
+  initial: "closed",
+  states: {
+    closed: {
+      on: {
+        OPEN: "opening"
+      },
+      meta: {
+        test: ({ getByLabelText }) => {
+          /**
+           * Every state has to have a test method associated to verify if the machine is in this current state
+           *
+           * - It uses the `assert` method from https://www.chaijs.com/api/assert/#method_equal
+           * - It uses the `getByLabelText` method from `https://testing-library.com/docs/dom-testing-library/api-queries`
+           *
+           * - In the component's render method we have a line where the current state is displayed:
+           * `<span aria-label="state">{state.value}</span>`
+           * - `getByLabelText('state')` will return: `<span aria-label="state">closed</span>`
+           */
+          const status = getByLabelText("state");
+          assert.equal(status.textContent, "closed");
+        }
+      }
+    },
+    opening: {
+      on: {
+        CLOSE: "closing"
+      },
+      meta: {
+        test: ({ getByLabelText }) => {
+          const status = getByLabelText("state");
+          assert.equal(status.textContent, "opening");
+        }
+      },
+      invoke: {
+        src: "openMenu",
+        onDone: { target: "open" }
+      }
+    },
+    open: {
+      on: {
+        CLOSE: "closing"
+      },
+      meta: {
+        test: ({ getByLabelText }) => {
+          const status = getByLabelText("state");
+          assert.equal(status.textContent, "open");
+        }
+      }
+    },
+    closing: {
+      on: {
+        OPEN: "opening"
+      },
+      meta: {
+        test: ({ getByLabelText }) => {
+          const status = getByLabelText("state");
+          assert.equal(status.textContent, "closing");
+        }
+      },
+      invoke: {
+        src: "closeMenu",
+        onDone: { target: "closed" }
+      }
+    }
+  }
+});
+
+/**
  * State with useMachine
  */
 const StateWithMachine = () => {
-  /**
-   * Defines the state machine
-   */
-  const menuMachine = Machine({
-    initial: "closed",
-    states: {
-      closed: {
-        on: {
-          OPEN: "opening"
-        }
-      },
-      opening: {
-        invoke: {
-          src: "openMenu",
-          onDone: { target: "open" }
-        },
-        on: {
-          CLOSE: "closing"
-        }
-      },
-      open: {
-        on: {
-          CLOSE: "closing"
-        }
-      },
-      closing: {
-        invoke: {
-          src: "closeMenu",
-          onDone: { target: "closed" }
-        },
-        on: {
-          OPEN: "opening"
-        }
-      }
-    }
-  });
-
   const menuRef = useRef();
 
   // Drfines the services the machine can "invoke".
@@ -250,7 +285,9 @@ const StateWithMachine = () => {
           />
         </div>
         <div className="Content">
-          <p>State: {state.value}</p>
+          <p>
+            State: <span aria-label="state">{state.value}</span>
+          </p>
         </div>
       </div>
     </>
@@ -310,4 +347,4 @@ State.propTypes = propTypes;
 State.defaultProps = defaultProps;
 
 export default State;
-export { SimpleState, StateWithMachine, StateWithReducer };
+export { SimpleState, StateWithMachine, StateWithReducer, menuMachine };

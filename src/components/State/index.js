@@ -2,5 +2,6 @@ export {
   default,
   SimpleState,
   StateWithMachine,
-  StateWithReducer
+  StateWithReducer,
+  menuMachine
 } from "./State";
