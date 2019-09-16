@@ -209,9 +209,6 @@ const StateWithMachine = () => {
    * Sets up state management
    */
   const [state, dispatch] = useMachine(menuMachine, {
-    // Configures the machine's services.
-    // these have to return a promise for xstate to know when to
-    // take the onDone transtiion
     services: {
       openMenu: (context, event) => openMenu(menuRef.current),
       closeMenu: (context, event) => closeMenu(menuRef.current)

@@ -73,7 +73,7 @@ describe("StateWithMachine", () => {
    */
   const testMachine = Machine(menuMachineWithTests, {
     services: {
-      openMenu: (context, event) => openMenu(),
+      openMenu: (context, event) => console.log("context", context),
       closeMenu: (context, event) => closeMenu()
     }
   });
@@ -81,12 +81,7 @@ describe("StateWithMachine", () => {
   /**
    * Creates the test model
    */
-  const testModel = createModel(testMachine);
-
-  /**
-   * Tests the events in the test model
-   */
-  testModel.withEvents({
+  const testModel = createModel(testMachine).withEvents({
     OPEN: ({ getByLabelText }) => {
       fireEvent.click(getByLabelText("state-switcher-button"));
     },
