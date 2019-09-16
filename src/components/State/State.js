@@ -5,7 +5,6 @@ import styled from "styled-components";
 import { Machine } from "xstate";
 import { useMachine } from "@xstate/react";
 import { TweenMax, Elastic } from "gsap";
-import { assert } from "chai";
 
 import { Article as _Article } from "../SemanticHTML";
 
@@ -130,39 +129,17 @@ const StateWithReducer = () => {
 /**
  * Defines the Menu state machine
  */
-const menuMachine = Machine({
+const menuMachineDefinition = {
   initial: "closed",
   states: {
     closed: {
       on: {
         OPEN: "opening"
-      },
-      meta: {
-        test: ({ getByLabelText }) => {
-          /**
-           * Every state has to have a test method associated to verify if the machine is in this current state
-           *
-           * - It uses the `assert` method from https://www.chaijs.com/api/assert/#method_equal
-           * - It uses the `getByLabelText` method from `https://testing-library.com/docs/dom-testing-library/api-queries`
-           *
-           * - In the component's render method we have a line where the current state is displayed:
-           * `<span aria-label="state">{state.value}</span>`
-           * - `getByLabelText('state')` will return: `<span aria-label="state">closed</span>`
-           */
-          const status = getByLabelText("state");
-          assert.equal(status.textContent, "closed");
-        }
       }
     },
     opening: {
       on: {
         CLOSE: "closing"
-      },
-      meta: {
-        test: ({ getByLabelText }) => {
-          const status = getByLabelText("state");
-          assert.equal(status.textContent, "opening");
-        }
       },
       invoke: {
         src: "openMenu",
@@ -172,23 +149,11 @@ const menuMachine = Machine({
     open: {
       on: {
         CLOSE: "closing"
-      },
-      meta: {
-        test: ({ getByLabelText }) => {
-          const status = getByLabelText("state");
-          assert.equal(status.textContent, "open");
-        }
       }
     },
     closing: {
       on: {
         OPEN: "opening"
-      },
-      meta: {
-        test: ({ getByLabelText }) => {
-          const status = getByLabelText("state");
-          assert.equal(status.textContent, "closing");
-        }
       },
       invoke: {
         src: "closeMenu",
@@ -196,44 +161,49 @@ const menuMachine = Machine({
       }
     }
   }
-});
+};
+
+/**
+ * Defines the open menu service for Machine
+ */
+const openMenu = element => (context, event) => {
+  return new Promise(resolve => {
+    TweenMax.to(element, 0.5, {
+      width: 300,
+      backdropFilter: "blur(2px)",
+      ease: Elastic.easeOut.config(1, 1),
+      onComplete: resolve
+    });
+  });
+};
+
+/**
+ * Defines the close menu service for Machine
+ */
+const closeMenu = element => (context, event) => {
+  return new Promise(resolve => {
+    TweenMax.to(element, 0.5, {
+      width: 125,
+      backdropFilter: "blur(0px)",
+      ease: Elastic.easeOut.config(1, 1),
+      onComplete: resolve
+    });
+  });
+};
 
 /**
  * State with useMachine
  */
 const StateWithMachine = () => {
+  /**
+   * Sets au a ref to the menu
+   */
   const menuRef = useRef();
 
-  // Drfines the services the machine can "invoke".
-  // useCallback ensures that our services always using the latest props/state/refs
-  // so long as we add them as deps.
-  const openMenu = useCallback(
-    (context, event) => {
-      return new Promise(resolve => {
-        TweenMax.to(menuRef.current, 0.5, {
-          width: 300,
-          backdropFilter: "blur(2px)",
-          ease: Elastic.easeOut.config(1, 1),
-          onComplete: resolve
-        });
-      });
-    },
-    [menuRef]
-  );
-
-  const closeMenu = useCallback(
-    (context, event) => {
-      return new Promise(resolve => {
-        TweenMax.to(menuRef.current, 0.5, {
-          width: 125,
-          backdropFilter: "blur(0px)",
-          ease: Elastic.easeOut.config(1, 1),
-          onComplete: resolve
-        });
-      });
-    },
-    [menuRef]
-  );
+  /**
+   * Sets up the state machine for the menu
+   */
+  const menuMachine = Machine(menuMachineDefinition);
 
   /**
    * Sets up state management
@@ -243,8 +213,8 @@ const StateWithMachine = () => {
     // these have to return a promise for xstate to know when to
     // take the onDone transtiion
     services: {
-      openMenu,
-      closeMenu
+      openMenu: (context, event) => openMenu(menuRef.current),
+      closeMenu: (context, event) => closeMenu(menuRef.current)
     }
   });
 
@@ -348,4 +318,11 @@ State.propTypes = propTypes;
 State.defaultProps = defaultProps;
 
 export default State;
-export { SimpleState, StateWithMachine, StateWithReducer, menuMachine };
+export {
+  SimpleState,
+  StateWithMachine,
+  StateWithReducer,
+  menuMachineDefinition,
+  openMenu,
+  closeMenu
+};

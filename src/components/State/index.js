@@ -3,5 +3,7 @@ export {
   SimpleState,
   StateWithMachine,
   StateWithReducer,
-  menuMachine
+  menuMachineDefinition,
+  openMenu,
+  closeMenu
 } from "./State";

@@ -58,6 +58,7 @@
     "@testing-library/react": "^9.1.4",
     "@xstate/test": "^0.1.0",
     "babel-loader": "^8.0.6",
+    "deepmerge": "^4.0.0",
     "flatted": "^2.0.1"
   }
 }
