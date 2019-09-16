@@ -50,7 +50,7 @@ const SimpleState = () => {
       <div className="Example">
         <p>State: {name}</p>
         <p>
-          <input type="text" value="Johanna" ref={inputTextRef} />
+          <input type="text" defaultValue="Johanna" ref={inputTextRef} />
           <input
             type="button"
             value="Set state"
