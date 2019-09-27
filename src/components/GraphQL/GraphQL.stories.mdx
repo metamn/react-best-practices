@@ -10,9 +10,72 @@ GraphQL is a reactive and functional approach to work with APIs. By using decoup
 
 ## Different GraphQL service providers
 
-AWS
-Apollo
-Headless CMS
+### AWS AppSync with Amplify
+
+1. Create API
+- Enter name
+2. Create Resources
+- Enter manually the Type definition
+```
+## Enter a custom type name below as well as the fields it contains. 
+## Fields can of the type String, Int, Float, Boolean, ID, and other custom types that you define.
+## After defining your type, edit any resource details below such as adding a secondary index and press "Create".
+type Post {
+	id: ID!
+	title: String!
+	content: String!
+}
+```
+3. Automatically get resolvers for resources: 
+- All queries, mutations, subscriptions and filters, inputs
+- Where is possible there is a way to attach custom resolvers
+![AWS AppSync Resolvers](aws-appsync-1.png)
+4. Automatically get DynamoDB tables
+5. Automatically get API documentation via the Query explorer
+6. `amplify codegen`: automatically generate GraphQL documents (JSON schema, queries, mutations, and subscriptions) and generate types for your JavaScript, TypeScript, or Flow application.
+![AWS Amplify Codegen](aws-appsync-2.png)
+7. If you want to connect resources (articles with authors) you'll have to write your own types (queries) and perhaps resolvers too
+
+### Apollo
+
+It's less automated than AWS. All [the following tasks](https://www.apollographql.com/docs/tutorial/introduction/) has to be done manually. No generators ...
+
+1. Build a schema
+2. Hook up your data sources
+3. Write your graph's resolvers
+4. Run your graph in production
+5. Connect your API to a client
+
+
+### Headless CMS
+
+From the [list](https://docs.google.com/spreadsheets/d/1AmrfMT6a-tT9x4nR__RumuCcT6NedxliFf-76Ocv2pQ/edit?usp=sharing) the most populars with a free GraphQL tier are:
+
+#### TakeShape
+
+- Works fine, it deploys the site to Netlify with a click.
+- https://api.takeshape.io/project/2336ee80-2e97-455e-b496-3d06d09efa1a/graphql
+API KEY: c4d2cb04607d409da7c2b371e84a89fb
+
+#### GraphCMS
+
+1. Build visually you model / resources: https://graphcms.com/docs/getting-started/define-content-structure/
+2. Automatically get some resolvers (they are visible only in the Query explorer)
+3. Automatically get database tables
+4. Automatically get API documentation via the Query explorer
+5. That's all ... no docs, no codegen, no react integration
+
+#### Prismic
+
+- GraphQL support has to be asked for / enabled manually by the support team
+- https://metamn.prismic.io/graphql
+
+
+#### WPGraphQL
+
+- Works out of the box
+- However you'll have to stick to the basic data structure it offers
+- Probably it can be extended with Advanced Custom Fields
 
 ## Advantages over REST
 
@@ -217,9 +280,10 @@ const resolvers = {
 ![The move to one data graph](graphql-3.png)
 
 
-
 ## Resources
 
 - [GraphQL vs. REST](https://blog.apollographql.com/graphql-vs-rest-5d425123e34b)
 - [Queries and Mutations](https://graphql.org/learn/queries/)
 - [Expedia Group Transforms Product Development with Apollo](https://www.apollographql.com/customers/expediagroup/)
+- [Start here to learn how to build fullstack apps with Apollo](https://www.apollographql.com/docs/tutorial/introduction/)
+- [A list of developer friendly headless CMS services on JAMStack](https://docs.google.com/spreadsheets/d/1AmrfMT6a-tT9x4nR__RumuCcT6NedxliFf-76Ocv2pQ/edit?usp=sharing)
