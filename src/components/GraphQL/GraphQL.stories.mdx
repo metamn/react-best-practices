@@ -8,6 +8,7 @@ import GraphQL from "./GraphQL";
 
 GraphQL is a reactive and functional approach to work with APIs.
 
+It uses decoupling and composition to achieve more flexible results.
 
 ## Advantages over REST
 
@@ -159,6 +160,46 @@ A strange thing might be the `GET /graphql?mutation=` line which uses `GET` inst
 In GraphQL:
 
 > [...] technically any query could be implemented to cause a data write. However, it's useful to establish a convention that any operations that cause writes should be sent explicitly via a mutation. &mdash; via [Queries and Mutations](https://graphql.org/learn/queries/)
+
+## Route Handlers vs. Resolvers
+
+Composable resolvers to serve nested queries.
+
+```js
+/**
+ * REST server side code (route handler) as a Node.js function
+ * It handles the `GET /authors/:id` endpoint call
+ */
+app.get('/authors', function (req, res) {
+  const id = req.id
+  const author = find(authors, { id: id })
+  res.send(author)
+}) 
+```
+
+```js
+/**
+ * GraphQL resolvers
+ * It handles a composed, nested call:
+ * 
+ * query {
+  author(id: 1) {
+    firstName
+    posts {
+      title
+    }
+  }
+}
+ */
+const resolvers = {
+  Query: {
+    author: (root, { id }) => find(authors, { id: id }),
+  },
+  Author: {
+    posts: (author) => filter(posts, { authorId: author.id }),
+  },
+};  
+```
 
 ## Resources
 
