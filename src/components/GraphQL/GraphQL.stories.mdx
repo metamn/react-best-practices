@@ -1,0 +1,97 @@
+import { Meta, Story, Preview } from "@storybook/addon-docs/blocks";
+
+import GraphQL from "./GraphQL";
+
+<Meta title="GraphQL" component={GraphQL} />
+
+# GraphQL
+
+GraphQL is a reactive and functional approach to work with APIs.
+
+
+## Advantages over REST
+
+```
+|=========================================================================================|
+| Concept   | REST           | GraphQL   | Advantages over REST                           | 
+|===========|================|===========|================================================|
+| Core idea | Resource       | Type      | Shape decoupled from fetch                     |
+|-----------|----------------|-----------|------------------------------------------------|
+| Endpoints | URL Routes     | Schema    | Composable queries served by a single endpoint |
+|-----------|----------------|-----------|------------------------------------------------|
+| Code      | Route handlers | Resolvers | Composable resolvers to serve nested queries   |
+|=========================================================================================|
+```
+
+### Resource vs Type
+
+```bash
+# REST Resource
+#
+# GET is coupled with `books`
+# - always returns the same result (shape)
+# - the server controls the details ( returns `author`)
+GET /books/1  
+
+{
+  "title": "Black Hole Blues",
+  "author": { 
+    "firstName": "Janna",
+    "lastName": "Levin"
+  }
+  // ... more fields here
+}
+```
+
+```bash
+# GraphQL Type
+#
+# GET is not coupled with `books`
+# - returns results of any shape
+# - the client controls the details (return some `author` data) 
+GET /graphql?query={ book(id: "1") { title, author { firstName } } }{
+  "title": "Black Hole Blues",
+  "author": {
+    "firstName": "Janna",
+  }
+}
+```
+
+```js
+/**
+ * GraphQL Type
+ * 
+ * In order to control the details the client has to define its own needs.
+ * Like:
+ *  - The shape of the `book` and the `author`
+ *  - The shape of the query
+ * 
+ * The real _decoupling_ is done with the `Query` construct.
+ * It makes the fetch dynamic. Any combination of the shapes can be retrieved.  
+ */
+type Book {
+  id: ID
+  title: String
+  published: Date
+  price: String
+  author: Author
+}
+
+type Author {
+  id: ID
+  firstName: String
+  lastName: String
+  books: [Book]
+}
+
+type Query {
+  book(id: ID!): Book
+  author(id: ID!): Author
+}
+```
+
+
+
+## Resources
+
+- [GraphQL vs. REST](https://blog.apollographql.com/graphql-vs-rest-5d425123e34b)
