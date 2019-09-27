@@ -23,10 +23,12 @@ GraphQL is a reactive and functional approach to work with APIs.
 |=========================================================================================|
 ```
 
-### Resource vs Type
+### Resources vs Types
+
+Shape decoupled from fetch.
 
 ```bash
-# REST Resource
+# REST Resources
 #
 # GET is coupled with `books`
 # - always returns the same result (shape)
@@ -44,7 +46,7 @@ GET /books/1
 ```
 
 ```bash
-# GraphQL Type
+# GraphQL Types
 #
 # GET is not coupled with `books`
 # - returns results of any shape
@@ -59,16 +61,20 @@ GET /graphql?query={ book(id: "1") { title, author { firstName } } }{
 
 ```js
 /**
- * GraphQL Type
+ * GraphQL Types
  * 
  * In order to control the details the client has to define its own needs.
  * Like:
  *  - The shape of the `book` and the `author`
- *  - The shape of the query
+ *  - The shape of the `query`
  * 
- * The real _decoupling_ is done with the `Query` construct.
- * It makes the fetch dynamic. Any combination of the shapes can be retrieved.  
+ * The real _decoupling_ is done by separating the two shape types: data and operations.
+ * An operation can mix'n'match the data types in any ways.  
  */
+
+/**
+ * Data shape
+ */ 
 type Book {
   id: ID
   title: String
@@ -77,6 +83,9 @@ type Book {
   author: Author
 }
 
+/**
+ * Data shape
+ */ 
 type Author {
   id: ID
   firstName: String
@@ -84,12 +93,19 @@ type Author {
   books: [Book]
 }
 
+/**
+ * Operation shape
+ * - There can be other similar types like Mutation, Subscription
+ */ 
 type Query {
   book(id: ID!): Book
   author(id: ID!): Author
 }
 ```
 
+### URL Routes vs. Schema
+
+Composable queries served by a single endpoint.
 
 
 ## Resources
