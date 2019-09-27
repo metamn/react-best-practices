@@ -6,9 +6,13 @@ import GraphQL from "./GraphQL";
 
 # GraphQL
 
-GraphQL is a reactive and functional approach to work with APIs.
+GraphQL is a reactive and functional approach to work with APIs. By using decoupling and composition achieves more flexible results than its REST predecessor.
 
-It uses decoupling and composition to achieve more flexible results.
+## Different GraphQL service providers
+
+AWS
+Apollo
+Headless CMS
 
 ## Advantages over REST
 
@@ -161,7 +165,7 @@ In GraphQL:
 
 > [...] technically any query could be implemented to cause a data write. However, it's useful to establish a convention that any operations that cause writes should be sent explicitly via a mutation. &mdash; via [Queries and Mutations](https://graphql.org/learn/queries/)
 
-## Route Handlers vs. Resolvers
+### Route Handlers vs. Resolvers
 
 Composable resolvers to serve nested queries.
 
@@ -201,7 +205,21 @@ const resolvers = {
 };  
 ```
 
+### Archicetural advantage
+
+#### Before adopting a data graph
+![Before adopting a data graph](graphql-1.png)
+
+#### Experimenting with a Backend-For-Frontend
+![Experimenting with a Backend-For-Frontend](graphql-2.png)
+
+#### The move to one data graph
+![The move to one data graph](graphql-3.png)
+
+
+
 ## Resources
 
 - [GraphQL vs. REST](https://blog.apollographql.com/graphql-vs-rest-5d425123e34b)
 - [Queries and Mutations](https://graphql.org/learn/queries/)
+- [Expedia Group Transforms Product Development with Apollo](https://www.apollographql.com/customers/expediagroup/)
