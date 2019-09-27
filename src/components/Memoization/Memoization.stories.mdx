@@ -67,6 +67,8 @@ Memoized value can be anything from a function &mdash; like the example above &m
 
 There is a special hook &mdash; `useCallback()` &mdash; for memoizing functions _only_. Perhaps a best practice would be to use `useMemo()` for memorizing values only.
 
+### TODO: it seems they differ more than that. If I remember well one of them makes zero (!) re-renders, the other one a single re-render as expected
+
 ```
 /**
  * For functions

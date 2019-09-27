@@ -74,9 +74,9 @@ describe("StateWithMachine", () => {
   const testMachine = Machine(menuMachineWithTests, {
     services: {
       openMenu: (context, event) =>
-        new Promise((resolve, reject) => setTimeout(() => resolve(), 100)),
+        new Promise(resolve => setTimeout(() => resolve(), 100)),
       closeMenu: (context, event) =>
-        new Promise((resolve, reject) => setTimeout(() => resolve(), 100))
+        new Promise(resolve => setTimeout(() => resolve(), 100))
     }
   });
 
