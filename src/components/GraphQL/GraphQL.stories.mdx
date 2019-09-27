@@ -107,7 +107,60 @@ type Query {
 
 Composable queries served by a single endpoint.
 
+```bash
+# REST URL Routes / Endpoints
+#
+# It's a list of multiple URLs you can call one-by-one
+
+GET /books/:id
+GET /authors/:id
+GET /books/:id/comments
+POST /books/:id/comments
+```
+
+```js
+/**
+ * GraphQL Schema
+ * 
+ * A single document containing both data and operation types
+ * It's attached to a single URL: `/graphql`
+ * Queries can be nested, composed
+ */
+
+type Book { ... }
+type Author { ... }
+type Comment { ... }
+input AddCommentInput { ... }
+
+/**
+ * Composed, nested query
+ */ 
+type Query {
+  book(id: ID!): Book
+  author(id: ID!): Author
+}
+
+type Mutation {
+  addComment(input: AddCommentInput): Comment
+}
+```
+
+```bash
+# GraphQL endpoint
+#
+# A single URL endpoint handling both queries and writes
+
+GET /graphql?query={...}
+GET /graphql?mutation={...}
+```
+
+A strange thing might be the `GET /graphql?mutation=` line which uses `GET` instead of `POST` to modify data, as REST recommends.
+
+In GraphQL:
+
+> [...] technically any query could be implemented to cause a data write. However, it's useful to establish a convention that any operations that cause writes should be sent explicitly via a mutation. &mdash; via [Queries and Mutations](https://graphql.org/learn/queries/)
 
 ## Resources
 
 - [GraphQL vs. REST](https://blog.apollographql.com/graphql-vs-rest-5d425123e34b)
+- [Queries and Mutations](https://graphql.org/learn/queries/)
