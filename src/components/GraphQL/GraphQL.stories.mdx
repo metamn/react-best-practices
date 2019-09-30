@@ -6,7 +6,214 @@ import GraphQL from "./GraphQL";
 
 # GraphQL
 
-GraphQL is a reactive and functional approach to work with APIs. By using decoupling and composition achieves more flexible results than its REST predecessor.
+GraphQL is a [reactive, functional](https://blog.danlew.net/2017/07/27/an-introduction-to-functional-reactive-programming/) approach to work with APIs. Using decoupling and composition &mdash; achieves better results than its REST predecessor.
+
+
+## Advantages over REST
+
+```
+|=========================================================================|
+| Concept   | REST           | GraphQL   | Advantages over REST           | 
+|===========|================|===========|================================|
+| Core idea | Resource       | Type      | Data decoupled from operations |
+|-----------|----------------|-----------|--------------------------------|
+| Endpoints | URL Routes     | Schema    | Composable, nested queries     |
+|-----------|----------------|-----------|--------------------------------|
+| Code      | Route handlers | Resolvers | Composable functions           |
+|=========================================================================|
+```
+
+### Resources vs Types
+
+Data decoupled from operations.
+
+```bash
+# REST Resources
+#
+# GET is coupled with `books`
+# - Always returns the same shape
+# - The server controls the shape (returns `author` with fixed details)
+#
+GET /books/1  
+
+{
+  "title": "Black Hole Blues",
+  "author": { 
+    "firstName": "Janna",
+    "lastName": "Levin"
+  }
+}
+```
+
+```bash
+# GraphQL Types
+#
+# GET is not coupled with `books`. 
+# - It can return anything else like `comments`
+# - The client controls the shape (returns `author` with variable details)
+# 
+GET /graphql?query={ book(id: "1") { title, author { firstName } } }
+
+{
+  "title": "Black Hole Blues",
+  "author": {
+    "firstName": "Janna",
+  }
+}
+```
+
+```js
+/**
+ * GraphQL Types
+ * 
+ * - They can be of data type and operations type (Query, Mutation, Subscription)
+ * - Operations can freely mix'n'match how to work with data  
+ */
+
+/**
+ * Data
+ */ 
+type Book {
+  id: ID
+  title: String
+  published: Date
+  price: String
+  author: Author
+}
+
+/**
+ * Data
+ */ 
+type Author {
+  id: ID
+  firstName: String
+  lastName: String
+  books: [Book]
+}
+
+/**
+ * Operation 
+ */ 
+type Query {
+  book(id: ID!): Book
+  author(id: ID!): Author
+}
+```
+
+### URL Routes vs. Schema
+
+Composable, nested queries served by a single endpoint.
+
+```bash
+# REST URL Routes / Endpoints
+#
+# - A list of multiple URLs
+# - URLs can't be nested or composed. They can be called one-by-one
+
+GET /books/:id
+GET /authors/:id
+GET /books/:id/comments
+POST /books/:id/comments
+```
+
+```bash
+# GraphQL Schema
+#
+# - A single URL endpoint handling both queries and writes
+
+GET /graphql?query={...}
+GET /graphql?mutation={...}
+```
+
+```js
+/**
+ * GraphQL Schema
+ * 
+ * - A single document containing both data and operation types
+ * - It's attached to a single URL: `/graphql`
+ * - Queries can be nested, composed
+ */
+
+type Book { ... }
+type Author { ... }
+type Comment { ... }
+input AddCommentInput { ... }
+
+/**
+ * Composed, nested query
+ */ 
+type Query {
+  book(id: ID!): Book
+  author(id: ID!): Author
+}
+
+type Mutation {
+  addComment(input: AddCommentInput): Comment
+}
+```
+
+A strange thing might be to use `GET` instead of `POST` to modify data, as REST recommends.
+
+In GraphQL:
+
+> [...] technically any query could be implemented to cause a data write. However, it's useful to establish a convention that any operations that cause writes should be sent explicitly via a mutation. &mdash; via [Queries and Mutations](https://graphql.org/learn/queries/)
+
+### Route Handlers vs. Resolvers
+
+Composable resolvers to serve nested queries.
+
+```js
+/**
+ * REST Route Handlers
+ *
+ * - A route handler is a Node.js function
+ * - It handles the `GET /authors/:id` endpoint call and nothing more
+ */
+app.get('/authors', function (req, res) {
+  const id = req.id
+  const author = find(authors, { id: id })
+  res.send(author)
+}) 
+```
+
+```js
+/**
+ * GraphQL resolvers
+ *
+ * - A resolver is a JavaScript function.
+ * - It handles a composed, nested call:
+ * 
+ * query {
+  author(id: 1) {
+    firstName
+    books {
+      title
+    }
+  }
+}
+ * 
+ * - `books` has access to `author` which is a result of another resolver
+ */
+const resolvers = {
+  Query: {
+    author: (root, { id }) => find(authors, { id: id }),
+  },
+  Author: {
+    books: (author) => filter(books, { authorId: author.id }),
+  },
+};  
+```
+
+### Archicetural advantage
+
+#### Before adopting a data graph
+![Before adopting a data graph](graphql-1.png)
+
+#### Experimenting with a Backend-For-Frontend
+![Experimenting with a Backend-For-Frontend](graphql-2.png)
+
+#### The move to one data graph
+![The move to one data graph](graphql-3.png)
 
 ## Different GraphQL service providers
 
@@ -80,211 +287,10 @@ API KEY: c4d2cb04607d409da7c2b371e84a89fb
 - However you'll have to stick to the basic data structure it offers
 - Probably it can be extended with Advanced Custom Fields
 
-## Advantages over REST
-
-```
-|=========================================================================================|
-| Concept   | REST           | GraphQL   | Advantages over REST                           | 
-|===========|================|===========|================================================|
-| Core idea | Resource       | Type      | Shape decoupled from fetch                     |
-|-----------|----------------|-----------|------------------------------------------------|
-| Endpoints | URL Routes     | Schema    | Composable queries served by a single endpoint |
-|-----------|----------------|-----------|------------------------------------------------|
-| Code      | Route handlers | Resolvers | Composable resolvers to serve nested queries   |
-|=========================================================================================|
-```
-
-### Resources vs Types
-
-Shape decoupled from fetch.
-
-```bash
-# REST Resources
-#
-# GET is coupled with `books`
-# - always returns the same result (shape)
-# - the server controls the details ( returns `author`)
-GET /books/1  
-
-{
-  "title": "Black Hole Blues",
-  "author": { 
-    "firstName": "Janna",
-    "lastName": "Levin"
-  }
-  // ... more fields here
-}
-```
-
-```bash
-# GraphQL Types
-#
-# GET is not coupled with `books`
-# - returns results of any shape
-# - the client controls the details (return some `author` data) 
-GET /graphql?query={ book(id: "1") { title, author { firstName } } }{
-  "title": "Black Hole Blues",
-  "author": {
-    "firstName": "Janna",
-  }
-}
-```
-
-```js
-/**
- * GraphQL Types
- * 
- * In order to control the details the client has to define its own needs.
- * Like:
- *  - The shape of the `book` and the `author`
- *  - The shape of the `query`
- * 
- * The real _decoupling_ is done by separating the two shape types: data and operations.
- * An operation can mix'n'match the data types in any ways.  
- */
-
-/**
- * Data shape
- */ 
-type Book {
-  id: ID
-  title: String
-  published: Date
-  price: String
-  author: Author
-}
-
-/**
- * Data shape
- */ 
-type Author {
-  id: ID
-  firstName: String
-  lastName: String
-  books: [Book]
-}
-
-/**
- * Operation shape
- * - There can be other similar types like Mutation, Subscription
- */ 
-type Query {
-  book(id: ID!): Book
-  author(id: ID!): Author
-}
-```
-
-### URL Routes vs. Schema
-
-Composable queries served by a single endpoint.
-
-```bash
-# REST URL Routes / Endpoints
-#
-# It's a list of multiple URLs you can call one-by-one
-
-GET /books/:id
-GET /authors/:id
-GET /books/:id/comments
-POST /books/:id/comments
-```
-
-```js
-/**
- * GraphQL Schema
- * 
- * A single document containing both data and operation types
- * It's attached to a single URL: `/graphql`
- * Queries can be nested, composed
- */
-
-type Book { ... }
-type Author { ... }
-type Comment { ... }
-input AddCommentInput { ... }
-
-/**
- * Composed, nested query
- */ 
-type Query {
-  book(id: ID!): Book
-  author(id: ID!): Author
-}
-
-type Mutation {
-  addComment(input: AddCommentInput): Comment
-}
-```
-
-```bash
-# GraphQL endpoint
-#
-# A single URL endpoint handling both queries and writes
-
-GET /graphql?query={...}
-GET /graphql?mutation={...}
-```
-
-A strange thing might be the `GET /graphql?mutation=` line which uses `GET` instead of `POST` to modify data, as REST recommends.
-
-In GraphQL:
-
-> [...] technically any query could be implemented to cause a data write. However, it's useful to establish a convention that any operations that cause writes should be sent explicitly via a mutation. &mdash; via [Queries and Mutations](https://graphql.org/learn/queries/)
-
-### Route Handlers vs. Resolvers
-
-Composable resolvers to serve nested queries.
-
-```js
-/**
- * REST server side code (route handler) as a Node.js function
- * It handles the `GET /authors/:id` endpoint call
- */
-app.get('/authors', function (req, res) {
-  const id = req.id
-  const author = find(authors, { id: id })
-  res.send(author)
-}) 
-```
-
-```js
-/**
- * GraphQL resolvers
- * It handles a composed, nested call:
- * 
- * query {
-  author(id: 1) {
-    firstName
-    posts {
-      title
-    }
-  }
-}
- */
-const resolvers = {
-  Query: {
-    author: (root, { id }) => find(authors, { id: id }),
-  },
-  Author: {
-    posts: (author) => filter(posts, { authorId: author.id }),
-  },
-};  
-```
-
-### Archicetural advantage
-
-#### Before adopting a data graph
-![Before adopting a data graph](graphql-1.png)
-
-#### Experimenting with a Backend-For-Frontend
-![Experimenting with a Backend-For-Frontend](graphql-2.png)
-
-#### The move to one data graph
-![The move to one data graph](graphql-3.png)
-
 
 ## Resources
 
+- [An Introduction to Functional Reactive Programming](https://blog.danlew.net/2017/07/27/an-introduction-to-functional-reactive-programming/)
 - [GraphQL vs. REST](https://blog.apollographql.com/graphql-vs-rest-5d425123e34b)
 - [Queries and Mutations](https://graphql.org/learn/queries/)
 - [Expedia Group Transforms Product Development with Apollo](https://www.apollographql.com/customers/expediagroup/)
